@@ -2,6 +2,7 @@
   <div class="container">
     <div>
       <Logo />
+      <Menu></Menu>
       <h1 class="title">flash_ticketing</h1>
       <div class="links">
         <a
@@ -31,7 +32,11 @@
 
 <script>
 import axios from 'axios'
+import Menu from '@/components/Menu.vue'
 export default {
+  components: {
+    Menu,
+  },
   data() {
     return {
       user: null,
