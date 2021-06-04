@@ -1,8 +1,8 @@
 <template>
   <nav>
     <NuxtLink to="/product">Product</NuxtLink>
-    <NuxtLink to="/product">About</NuxtLink>
-    <NuxtLink to="/product">Login</NuxtLink>
+    <NuxtLink to="/about">About</NuxtLink>
+    <NuxtLink to="/login">Login</NuxtLink>
   </nav>
 </template>
 
