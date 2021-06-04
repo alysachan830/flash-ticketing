@@ -24,6 +24,8 @@
         <p v-if="user">
           Random username: {{ user.name.title }} {{ user.name.first }}
           {{ user.name.last }}
+          <br />
+          gender: {{ user.gender }}
         </p>
       </div>
     </div>
