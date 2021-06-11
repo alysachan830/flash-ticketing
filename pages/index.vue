@@ -40,11 +40,13 @@ export default {
   components: {
     Menu,
   },
-  async asyncData() {
+  async asyncData(context) {
     // Error handling
     try {
-      const productsReq = await apiClientGetProduct(1)
-      const products = productsReq.data.products
+      const apiPath = context.env.API_PATH;
+      const apiBaseUrl = context.env.API_BASE_URL;
+      const productsRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
+      const products = productsRes.data.products
       return {
         products,
       }

@@ -16,10 +16,25 @@
 import { apiClientGetProduct } from '../api/index'
 export default {
   async asyncData() {
+    // // Error handling
+    // try {
+    //   const productsReq = await apiClientGetProduct(1)
+    //   const products = productsReq.data.products
+    //   return {
+    //     products,
+    //   }
+    // } catch (err) {
+    //   console.log(err)
+    //   return {
+    //     err,
+    //   }
+    // }
     // Error handling
     try {
-      const productsReq = await apiClientGetProduct(1)
-      const products = productsReq.data.products
+      const apiPath = context.env.API_PATH;
+      const apiBaseUrl = context.env.API_BASE_URL;
+      const productsRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
+      const products = productsRes.data.products
       return {
         products,
       }
