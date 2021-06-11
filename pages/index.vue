@@ -33,26 +33,49 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import Menu from '@/components/Menu.vue'
+import { apiClientGetProduct } from '../api/index'
 export default {
   components: {
     Menu,
   },
-  data() {
-    return {
-      user: null,
+  async asyncData() {
+    // Error handling
+    try {
+      const productsReq = await apiClientGetProduct(1)
+      const products = productsReq.data.products
+      return {
+        products,
+      }
+    } catch (err) {
+      console.log(err)
+      return {
+        err,
+      }
     }
   },
   mounted() {
-    axios
-      .get('https://randomuser.me/api/')
-      .then((res) => {
-        console.log(res.data)
-        this.user = res.data.results[0]
-      })
-      .catch((err) => console.log(err))
+    // Error handling
+    if (this.err) {
+      alert('載入資料失敗')
+    }
+    console.log(this.products)
   },
+  // data() {
+  //   return {
+  //     user: null,
+  //   }
+  // },
+  // mounted() {
+  //   axios
+  //     .get('https://randomuser.me/api/')
+  //     .then((res) => {
+  //       console.log(res.data)
+  //       this.user = res.data.results[0]
+  //     })
+  //     .catch((err) => console.log(err))
+  // },
 }
 </script>
 
