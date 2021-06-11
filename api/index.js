@@ -25,7 +25,7 @@ const adminRequest = axios.create({
 })
 
 // Forestage API
-export const apiClientGetProduct = clientGetProduct(apiPath, api)
+export const apiClientGetProduct = clientGetProduct()
 // export const apiClientGetProduct = (pageNum) =>
 //   clientRequest.get(`/products?page=${pageNum}`)
 

@@ -21,5 +21,5 @@ productReq.interceptors.response.use(
     return Promise.reject(err)
   }
 )
-export const clientGetProduct = (pageNum) =>
-  productReq.get(`/products?page=${pageNum}`)
+export const clientGetProduct = () =>
+  productReq.get(`/products?page=1`)

@@ -35,7 +35,7 @@ export default {
 
     // const productsRes = apiClientGetProduct();
     try {
-      const productsRes = await apiClientGetProduct();;
+      const productsRes = await apiClientGetProduct();
       const products = productsRes.data.products
       return {
         products,
