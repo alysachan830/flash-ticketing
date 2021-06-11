@@ -9,6 +9,7 @@
     <main>
       <NuxtChild />
       <p> 直接顯示 baseUrl： {{ $config.baseUrl }} </p>
+      <p> 商品列表：{{ products }} </p>
     </main>
   </div>
 </template>
@@ -55,7 +56,7 @@ export default {
     }
     // console.log(this.products)
     // console.log(this.baseUrl)
-    console.log(`Products from server: ${this.products}`)
+    console.log(`Products from server:`, this.products)
   },
 }
 </script>
