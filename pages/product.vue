@@ -39,7 +39,7 @@ export default {
     try {
       // const productsRes = await apiClientGetProduct();
       console.log('apiClientGetProduct: ', apiClientGetProduct);
-      const productsRes = await apiClientGetProduct(apiBaseUrl, apiPath);
+      const productsRes = await apiClientGetProduct();
       console.log('productsRes', productsRes);
       const products = productsRes.data.products
       console.log('products', products);
