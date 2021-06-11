@@ -45,4 +45,12 @@ export default {
   server: {
     port: process.env.PORT || 3000,
   },
+  // env: {
+  //   apiBaseUrl: process.env.API_BASE_URL,
+  //   apiPath: process.env.API_PATH
+  // }
+  privateRuntimeConfig: {
+    apiBaseUrl: process.env.API_BASE_URL,
+    apiPath: process.env.API_PATH
+  }
 }

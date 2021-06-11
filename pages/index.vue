@@ -40,22 +40,32 @@ export default {
   components: {
     Menu,
   },
-  async asyncData(context) {
-    // Error handling
-    try {
-      const apiPath = context.env.API_PATH;
-      const apiBaseUrl = context.env.API_BASE_URL;
-      const productsRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
-      const products = productsRes.data.products
+  async asyncData({ $config: { apiBaseUrl, apiPath } }) {
+    try{
+      const productRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
+      const products = productsRes.data.products;
       return {
-        products,
+        products
       }
-    } catch (err) {
+    }catch(err){
       console.log(err)
-      return {
-        err,
-      }
     }
+    // // Error handling
+    // try {
+    //   // const apiPath = context.env.API_PATH;
+    //   // const apiBaseUrl = context.env.API_BASE_URL;
+    //   // const productsRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
+    //   const productsRes = await axios.get(`${env.apiBaseUrl}/api/${env.apiPath}/products?page=1`);
+    //   const products = productsRes.data.products
+    //   return {
+    //     products,
+    //   }
+    // } catch (err) {
+    //   console.log(err)
+    //   return {
+    //     err,
+    //   }
+    // }
   },
   mounted() {
     // Error handling
