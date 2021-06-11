@@ -38,8 +38,11 @@ export default {
     const apiPath = env.apiPath;
     try {
       // const productsRes = await apiClientGetProduct();
+      console.log('apiClientGetProduct: ', apiClientGetProduct);
       const productsRes = await apiClientGetProduct(apiBaseUrl, apiPath);
+      console.log('productsRes', productsRes);
       const products = productsRes.data.products
+      console.log('products', products);
       return {
         products,
       }
