@@ -8,6 +8,7 @@
     </nav>
     <main>
       <NuxtChild />
+      <p> 直接顯示 baseUrl： {{ $config.baseUrl }} </p>
     </main>
   </div>
 </template>
@@ -35,10 +36,12 @@ export default {
   // },
   async asyncData({ $config: { apiBaseUrl, apiPath } }) {
     try{
-      const productRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
-      const products = productsRes.data.products;
+      // const productRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
+      // const products = productsRes.data.products;
+      const baseUrl = apiBaseUrl
       return {
-        products
+        // products
+        baseUrl
       }
     }catch(err){
       console.log(err)
@@ -49,7 +52,8 @@ export default {
     if (this.err) {
       alert('載入資料失敗')
     }
-    console.log(this.products)
+    // console.log(this.products)
+    console.log(this.baseUrl)
   },
 }
 </script>
