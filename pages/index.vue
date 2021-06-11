@@ -40,16 +40,34 @@ export default {
   components: {
     Menu,
   },
-  async asyncData({ $config: { apiBaseUrl, apiPath } }) {
-    try{
-      const productRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
-      const products = productsRes.data.products;
+  async asyncData({ env }) {
+    // try{
+    //   const productRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
+    //   const products = productsRes.data.products;
+    //   return {
+    //     products
+    //   }
+    // }catch(err){
+    //   console.log(err)
+    // }
+
+    try {
+      // const productsRes = await apiClientGetProduct();
+      console.log('apiClientGetProduct: ', apiClientGetProduct);
+      const productsRes = await apiClientGetProduct();
+      console.log('productsRes', productsRes);
+      const products = productsRes.data.products
+      console.log('products', products);
       return {
-        products
+        products,
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+        console.log(err)
+        return {
+          err,
+        }
     }
+
     // // Error handling
     // try {
     //   // const apiPath = context.env.API_PATH;
