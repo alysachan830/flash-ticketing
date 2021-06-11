@@ -4,7 +4,7 @@ import { clientGetProduct } from './clientGetProduct'
 const apiPath = process.env.API_PATH
 const apiBaseUrl = process.env.API_BASE_URL
 
-export const apiClientGetProduct = clientGetProduct
+
 // Create axios instance
 
 // Client request
@@ -23,6 +23,7 @@ const adminRequest = axios.create({
 })
 
 // Forestage API
+export const apiClientGetProduct = clientGetProduct(1)
 // export const apiClientGetProduct = (pageNum) =>
 //   clientRequest.get(`/products?page=${pageNum}`)
 

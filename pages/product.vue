@@ -9,22 +9,33 @@
     <main>
       <NuxtChild />
       <p> 直接顯示 baseUrl： {{ $config.baseUrl }} </p>
-      <p> 商品列表：{{ products }} </p>
+      <p> 商品列表 (有拆分API)：{{ products }} </p>
     </main>
   </div>
 </template>
 
 <script>
 import { apiClientGetProduct } from '../api/index'
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   async asyncData({ env }) {
-    // Error handling
+    // Success
+    // try {
+    //   const productsRes = await axios.get(`${env.apiBaseUrl}/api/${env.apiPath}/products?page=1`);
+    //   const products = productsRes.data.products
+    //   return {
+    //     products,
+    //   }
+    // } catch (err) {
+    //   console.log(err)
+    //   return {
+    //     err,
+    //   }
+    // }
+
+    // const productsRes = apiClientGetProduct();
     try {
-      // const apiPath = context.env.API_PATH;
-      // const apiBaseUrl = context.env.API_BASE_URL;
-      // const productsRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
-      const productsRes = await axios.get(`${env.apiBaseUrl}/api/${env.apiPath}/products?page=1`);
+      const productsRes = await apiClientGetProduct();;
       const products = productsRes.data.products
       return {
         products,
@@ -35,20 +46,8 @@ export default {
         err,
       }
     }
+
   },
-  // async asyncData({ $config: { apiBaseUrl, apiPath } }) {
-  //   try{
-  //     // const productRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
-  //     // const products = productsRes.data.products;
-  //     const baseUrl = apiBaseUrl
-  //     return {
-  //       // products
-  //       baseUrl
-  //     }
-  //   }catch(err){
-  //     console.log(err)
-  //   }
-  // },
   mounted() {
     // Error handling
     if (this.err) {
