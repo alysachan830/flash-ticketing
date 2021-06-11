@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
 import { clientGetProduct } from './clientGetProduct'
-const apiPath = process.env.API_PATH
-const apiBaseUrl = process.env.API_BASE_URL
+// const apiPath = process.env.API_PATH
+// const apiBaseUrl = process.env.API_BASE_URL
+const apiPath = process.env.apiPath
+const apiBaseUrl = process.env.apiBaseUrl
 
 
 // Create axios instance
@@ -23,7 +25,7 @@ const adminRequest = axios.create({
 })
 
 // Forestage API
-export const apiClientGetProduct = clientGetProduct(1)
+export const apiClientGetProduct = clientGetProduct(apiPath, api)
 // export const apiClientGetProduct = (pageNum) =>
 //   clientRequest.get(`/products?page=${pageNum}`)
 
