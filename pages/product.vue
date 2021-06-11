@@ -34,8 +34,11 @@ export default {
     // }
 
     // const productsRes = apiClientGetProduct();
+    const apiBaseUrl = env.apiBaseUrl;
+    const apiPath = env.apiPath;
     try {
-      const productsRes = await apiClientGetProduct();
+      // const productsRes = await apiClientGetProduct();
+      const productsRes = await apiClientGetProduct(apiBaseUrl, apiPath);
       const products = productsRes.data.products
       return {
         products,
