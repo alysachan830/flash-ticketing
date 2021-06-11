@@ -15,6 +15,7 @@
 
 <script>
 import { apiClientGetProduct } from '../api/index'
+import axios from 'axios'
 export default {
   async asyncData({ env }) {
     // Error handling
