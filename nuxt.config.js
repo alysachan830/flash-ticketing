@@ -26,6 +26,7 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
+    '@nuxtjs/dotenv',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -35,8 +36,21 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: process.env.API_BASE_URL || 'http://localhost:3000',
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+  server: {
+    port: process.env.PORT || 3000,
+  },
+  env: {
+    apiBaseUrl: process.env.API_BASE_URL,
+    apiPath: process.env.API_PATH
+  }
+  // privateRuntimeConfig: {
+  //   apiBaseUrl: process.env.API_BASE_URL,
+  //   apiPath: process.env.API_PATH
+  // }
 }

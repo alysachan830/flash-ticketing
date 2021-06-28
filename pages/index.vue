@@ -2,6 +2,7 @@
   <div class="container">
     <div>
       <Logo />
+      <Menu></Menu>
       <h1 class="title">flash_ticketing</h1>
       <div class="links">
         <a
@@ -20,34 +21,85 @@
         >
           GitHub
         </a>
-        <p v-if="user">
-          Random username: {{ user.name.title }} {{ user.name.first }}
-          {{ user.name.last }}
-          <br />
-          gender: {{ user.gender }}
-        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
+import Menu from '@/components/Menu.vue'
+import { apiClientGetProduct } from '../api/index'
 export default {
-  data() {
-    return {
-      user: null,
+  components: {
+    Menu,
+  },
+  async asyncData({ env }) {
+    // try{
+    //   const productRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
+    //   const products = productsRes.data.products;
+    //   return {
+    //     products
+    //   }
+    // }catch(err){
+    //   console.log(err)
+    // }
+
+    try {
+      // const productsRes = await apiClientGetProduct();
+      console.log('apiClientGetProduct: ', apiClientGetProduct);
+      const productsRes = await apiClientGetProduct();
+      console.log('productsRes', productsRes);
+      const products = productsRes.data.products
+      console.log('products', products);
+      return {
+        products,
+      }
+    } catch (err) {
+        console.log(err)
+        return {
+          err,
+        }
     }
+
+    // // Error handling
+    // try {
+    //   // const apiPath = context.env.API_PATH;
+    //   // const apiBaseUrl = context.env.API_BASE_URL;
+    //   // const productsRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
+    //   const productsRes = await axios.get(`${env.apiBaseUrl}/api/${env.apiPath}/products?page=1`);
+    //   const products = productsRes.data.products
+    //   return {
+    //     products,
+    //   }
+    // } catch (err) {
+    //   console.log(err)
+    //   return {
+    //     err,
+    //   }
+    // }
   },
   mounted() {
-    axios
-      .get('https://randomuser.me/api/')
-      .then((res) => {
-        console.log(res.data)
-        this.user = res.data.results[0]
-      })
-      .catch((err) => console.log(err))
+    // Error handling
+    if (this.err) {
+      alert('載入資料失敗')
+    }
+    console.log(this.products)
   },
+  // data() {
+  //   return {
+  //     user: null,
+  //   }
+  // },
+  // mounted() {
+  //   axios
+  //     .get('https://randomuser.me/api/')
+  //     .then((res) => {
+  //       console.log(res.data)
+  //       this.user = res.data.results[0]
+  //     })
+  //     .catch((err) => console.log(err))
+  // },
 }
 </script>
 
