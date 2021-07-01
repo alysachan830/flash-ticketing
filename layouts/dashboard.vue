@@ -1,7 +1,16 @@
 <template>
   <div class="d-flex">
     <div
-      class="py-16 bg-primary vh-100 d-flex flex-column justify-content-between"
+      class="
+        side-bar-w
+        py-16
+        bg-primary
+        h-100
+        d-flex
+        position-fixed
+        flex-column
+        justify-content-between
+      "
     >
       <!-- Sidebar link -->
       <div>
@@ -50,7 +59,7 @@
         <button type="button" class="btn btn-outline-light w-100">登出</button>
       </div>
     </div>
-    <Nuxt class="py-14 px-20 w-100" />
+    <Nuxt class="ps-200 py-14 pe-20 w-100" />
   </div>
 </template>
 
@@ -68,5 +77,13 @@ a {
   height: 48px;
   background: url('~/assets/images/ivana-cajina-_7LbC5J-jw4-unsplash.jpg')
     center/cover no-repeat;
+}
+
+.side-bar-w {
+  width: 260px;
+}
+
+.ps-200 {
+  padding-left: 352px;
 }
 </style>
