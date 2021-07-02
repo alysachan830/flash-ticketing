@@ -47,19 +47,19 @@ export default {
 
     try {
       // const productsRes = await apiClientGetProduct();
-      console.log('apiClientGetProduct: ', apiClientGetProduct);
-      const productsRes = await apiClientGetProduct();
-      console.log('productsRes', productsRes);
+      console.log('apiClientGetProduct: ', apiClientGetProduct)
+      const productsRes = await apiClientGetProduct()
+      console.log('productsRes', productsRes)
       const products = productsRes.data.products
-      console.log('products', products);
+      console.log('products', products)
       return {
         products,
       }
     } catch (err) {
-        console.log(err)
-        return {
-          err,
-        }
+      console.log(err)
+      return {
+        err,
+      }
     }
 
     // // Error handling
