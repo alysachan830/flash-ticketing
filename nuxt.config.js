@@ -31,7 +31,10 @@ export default {
   css: ['@/assets/stylesheets/all.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '~plugins/v-calendar.js', ssr: false }],
+  plugins: [
+    { src: '~plugins/v-calendar.js', ssr: false },
+    { src: '~plugins/ckeditor.js', ssr: false },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   // components: true,
@@ -50,13 +53,22 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/proxy',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: process.env.API_BASE_URL || 'http://localhost:3000',
+    proxy: true,
   },
-
+  proxy: {
+    '/api': {
+      target: 'https://vue3-course-api.hexschool.io', //'http://example.com',
+      pathRewrite: {
+        '^/api': '/',
+      },
+    },
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
   server: {
