@@ -350,15 +350,7 @@
                   <input
                     :value="inputValue.end"
                     v-on="inputEvents.end"
-                    class="
-                      border
-                      px-2
-                      py-1
-                      w-32
-                      rounded
-                      focus:outline-none
-                      focus:border-indigo-300
-                    "
+                    class="border px-2 py-1 rounded"
                   />
                 </div>
               </template>

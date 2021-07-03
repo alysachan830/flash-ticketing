@@ -6,8 +6,30 @@ import { clientGetProduct } from './clientGetProduct'
 const apiPath = process.env.apiPath
 const apiBaseUrl = process.env.apiBaseUrl
 
+// function onAdminCall(config) {
+//   return config.baseURL === `${apiBaseUrl}/api/${apiPath}/admin/`
+// }
 
 // Create axios instance
+
+axios.interceptors.response.use(
+  (res) => {
+    if (!res.data.success) {
+      const errorMsg = res.data.message
+      throw new Error(errorMsg)
+    }
+    return res
+  },
+  (err) => {
+    // throw error
+    return Promise.reject(err)
+  }
+)
+
+// Set auth header
+function setAuthHeaders(axiosInstance, token) {
+  axiosInstance.defaults.headers.common.Authorization = token
+}
 
 // Client request
 const clientRequest = axios.create({
@@ -24,9 +46,26 @@ const adminRequest = axios.create({
   baseURL: `${apiBaseUrl}/api/${apiPath}/admin/`,
 })
 
+adminRequest.interceptors.request.use(
+  function (config) {
+    // Do something before request is sent
+    // console.log('213131')
+    config.headers = {
+      Authorization:
+        'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI0ODc4MzU1LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjQ4NzgzNTUsImV4cCI6MTYyNTMxMDM1NSwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.TAAlAiRfBLVc5mtnKc1i9YvzLLW3ZUyDu8M0E6Ar4jtHPGsNy_InzKWGqJ4vc368ccFtOCLsLRye2myyvkJDriMQrh-Tv2H4ad34YZekYd6Y-KhapafslZm0sboUrCj56sAPKSk1kAuB0k9vCMv5bnWl0jIIdU-Q-nFWdAgw3XjxeG0HFjalQ0WAM6h0BtG8pB94MSzgn2S4xvtG2KxbpSCI64RRGRqDwoJYx5cqUmGh7qWuMdvYRoVyd6vc7-EvIyf7509Cabdc0DoxbIkPnDLJywBfZ_BwN1rmtu3l9I7qOYmq1SJZsADin3u3HkGa0RhTIDh88UD-k8KWFgPQPA',
+    }
+    return config
+  },
+  function (error) {
+    // Do something with request error
+    return Promise.reject(error)
+  }
+  // { runWhen: onAdminCall }
+)
+
 // Forestage API
 // export const apiClientGetProduct = clientGetProduct()
-export const apiClientGetProduct = clientGetProduct;
+export const apiClientGetProduct = clientGetProduct
 // export const apiClientGetProduct = (pageNum) =>
 //   clientRequest.get(`/products?page=${pageNum}`)
 
@@ -43,3 +82,4 @@ export const apiAdminEditProduct = (id, data) =>
   adminRequest.put(`/product/${id}`, data)
 export const apiAdminDeleteProduct = (id) =>
   adminRequest.delete(`/product/${id}`)
+export const apiAdminAddArticle = (data) => adminRequest.post(`/article`, data)
