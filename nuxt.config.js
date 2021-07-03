@@ -10,17 +10,34 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
+        rel: 'stylesheet',
+      },
+    ],
+    // metaInfo: {
+    //   link: [
+    //     {
+    //       rel: 'stylesheet',
+    //       href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
+    //     },
+    //   ],
+    // },
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  css: ['@/assets/stylesheets/all.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [{ src: '~plugins/v-calendar.js', ssr: false }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
+  // components: true,
+  components: {
+    dirs: ['~/components', '~/components/admin'],
+  },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
@@ -47,8 +64,8 @@ export default {
   },
   env: {
     apiBaseUrl: process.env.API_BASE_URL,
-    apiPath: process.env.API_PATH
-  }
+    apiPath: process.env.API_PATH,
+  },
   // privateRuntimeConfig: {
   //   apiBaseUrl: process.env.API_BASE_URL,
   //   apiPath: process.env.API_PATH
