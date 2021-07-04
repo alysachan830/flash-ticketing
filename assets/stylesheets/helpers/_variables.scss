@@ -302,7 +302,9 @@ $spacers: (
   // 92px
   21: ($spacer * 6.5),
   // 104px
-  22: ($spacer * 7) // 112px
+  22: ($spacer * 7),
+  // 112px
+  23: ($spacer * 9) // 112px
 ) !default;
 
 $negative-spacers: if(
