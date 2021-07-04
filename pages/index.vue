@@ -1,32 +1,111 @@
 <template>
-  <div class="position-relative">
-    <div
-      class="
-        top-banner
-        bg-img
-        d-flex
-        justify-content-center
-        align-items-center
-        img-filter--dark
-      "
-    ></div>
-    <div class="position-absolute top-banner-title text-white text-center">
-      <h2 class="mb-8 font-2xl">亞洲年度新媒體藝術節 2021</h2>
-      <div class="mb-12 d-flex justify-content-center">
-        <p class="me-3">
-          <span class="material-icons align-text-top me-1 text-white font-base">
-            calendar_today
-          </span>
-          06-15 — 07-15
-        </p>
-        <p>
-          <span class="material-icons align-text-top me-1 text-white font-base">
-            location_on
-          </span>
-          國際展覽中心一號展場
-        </p>
+  <div>
+    <!-- Top banner -->
+    <div class="position-relative">
+      <div
+        class="
+          top-banner
+          bg-img
+          d-flex
+          justify-content-center
+          align-items-center
+          img-filter--dark
+        "
+      ></div>
+      <div class="position-absolute top-banner-title text-white text-center">
+        <h2 class="mb-8 font-2xl">亞洲年度新媒體藝術節 2021</h2>
+        <div class="mb-12 d-flex justify-content-center">
+          <p class="me-3">
+            <span
+              class="material-icons align-text-top me-1 text-white font-base"
+            >
+              calendar_today
+            </span>
+            06-15 — 07-15
+          </p>
+          <p>
+            <span
+              class="material-icons align-text-top me-1 text-white font-base"
+            >
+              location_on
+            </span>
+            國際展覽中心一號展場
+          </p>
+        </div>
+        <button class="btn btn-primary btn-lg px-10">搶先購票</button>
       </div>
-      <button class="btn btn-primary btn-lg">搶先購票</button>
+    </div>
+
+    <!-- Quick search options -->
+    <div class="container pt-15 d-flex align-items-center">
+      <p class="font-m text-info pe-12 text-nowrap">快速搜尋</p>
+      <div class="d-flex w-100">
+        <NuxtLink
+          to="/events"
+          class="
+            quick-search
+            text-center text-info
+            shadow-sm
+            rounded-2
+            px-5
+            py-3
+            me-6
+            w-auto
+          "
+        >
+          <span class="text-info align-top material-icons"> palette </span>
+          藝術展覽</NuxtLink
+        >
+        <NuxtLink
+          to="/events"
+          class="
+            quick-search
+            text-center text-info
+            shadow-sm
+            rounded-2
+            px-5
+            py-3
+            me-6
+            w-auto
+          "
+        >
+          <span class="text-info align-top material-icons"> music_note </span>
+          音樂</NuxtLink
+        >
+
+        <NuxtLink
+          to="/events"
+          class="
+            quick-search
+            text-center text-info
+            shadow-sm
+            rounded-2
+            px-5
+            py-3
+            me-6
+            w-auto
+          "
+          ><span class="me-2 text-info align-top material-icons">
+            theater_comedy </span
+          >舞蹈</NuxtLink
+        >
+        <NuxtLink
+          to="/events"
+          class="
+            quick-search
+            text-center text-info
+            shadow-sm
+            rounded-2
+            px-5
+            py-3
+            me-6
+            w-auto
+          "
+        >
+          <span class="me-1 text-info align-top material-icons"> work </span>
+          工作坊</NuxtLink
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -117,34 +196,14 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-// .container {
-//   margin: 0 auto;
-//   min-height: 100vh;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   text-align: center;
-// }
 
-// .title {
-//   font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-//     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-//   display: block;
-//   font-weight: 300;
-//   font-size: 100px;
-//   color: #35495e;
-//   letter-spacing: 1px;
-// }
+.quick-search {
+  flex-basis: 160px;
+  // background: #f7f7f7;
+  transition: background 0.3s;
 
-// .subtitle {
-//   font-weight: 300;
-//   font-size: 42px;
-//   color: #526488;
-//   word-spacing: 5px;
-//   padding-bottom: 15px;
-// }
-
-// .links {
-//   padding-top: 15px;
-// }
+  &:hover {
+    background: darken(#f7f7f7, 5%);
+  }
+}
 </style>
