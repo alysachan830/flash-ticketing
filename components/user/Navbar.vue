@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="bg-primary sticky-top py-6">
+    <nav class="bg-primary fixed-top w-100 py-6">
       <div class="container">
         <div class="row w-100">
           <div class="col-2">
