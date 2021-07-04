@@ -115,7 +115,7 @@
           <h2 class="font-xl mb-4">熱門節目</h2>
           <p>時刻緊貼潮流，為您帶來最豐富的節目體驗。</p>
         </div>
-        <SwiperHotEvents></SwiperHotEvents>
+        <SwiperHotEvents :hot-events="hotEvents"></SwiperHotEvents>
       </div>
     </div>
   </div>
@@ -126,25 +126,11 @@
 import { apiClientGetProduct } from '../api/index'
 export default {
   async asyncData({ env }) {
-    // try{
-    //   const productRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
-    //   const products = productsRes.data.products;
-    //   return {
-    //     products
-    //   }
-    // }catch(err){
-    //   console.log(err)
-    // }
-
     try {
-      // const productsRes = await apiClientGetProduct();
-      console.log('apiClientGetProduct: ', apiClientGetProduct)
-      const productsRes = await apiClientGetProduct()
-      console.log('productsRes', productsRes)
-      const products = productsRes.data.products
-      console.log('products', products)
+      const eventsRes = await apiClientGetProduct()
+      const events = eventsRes.data.products
       return {
-        products,
+        events,
       }
     } catch (err) {
       console.log(err)
@@ -152,45 +138,20 @@ export default {
         err,
       }
     }
-
-    // // Error handling
-    // try {
-    //   // const apiPath = context.env.API_PATH;
-    //   // const apiBaseUrl = context.env.API_BASE_URL;
-    //   // const productsRes = await axios.get(`${apiBaseUrl}/api/${apiPath}/products?page=1`);
-    //   const productsRes = await axios.get(`${env.apiBaseUrl}/api/${env.apiPath}/products?page=1`);
-    //   const products = productsRes.data.products
-    //   return {
-    //     products,
-    //   }
-    // } catch (err) {
-    //   console.log(err)
-    //   return {
-    //     err,
-    //   }
-    // }
+  },
+  computed: {
+    hotEvents() {
+      const hotEvents = this.events.filter((event) => event.tag === 'hottest')
+      return hotEvents
+    },
   },
   mounted() {
     // Error handling
     if (this.err) {
       alert('載入資料失敗')
     }
-    console.log(this.products)
+    console.log(this.events)
   },
-  // data() {
-  //   return {
-  //     user: null,
-  //   }
-  // },
-  // mounted() {
-  //   axios
-  //     .get('https://randomuser.me/api/')
-  //     .then((res) => {
-  //       console.log(res.data)
-  //       this.user = res.data.results[0]
-  //     })
-  //     .catch((err) => console.log(err))
-  // },
 }
 </script>
 

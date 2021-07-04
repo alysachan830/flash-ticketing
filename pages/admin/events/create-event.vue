@@ -782,7 +782,7 @@ export default {
       const form = new FormData()
       form.append('', this.mainImage)
       const AUTH_TOKEN =
-        'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI0ODc4MzU1LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjQ4NzgzNTUsImV4cCI6MTYyNTMxMDM1NSwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.TAAlAiRfBLVc5mtnKc1i9YvzLLW3ZUyDu8M0E6Ar4jtHPGsNy_InzKWGqJ4vc368ccFtOCLsLRye2myyvkJDriMQrh-Tv2H4ad34YZekYd6Y-KhapafslZm0sboUrCj56sAPKSk1kAuB0k9vCMv5bnWl0jIIdU-Q-nFWdAgw3XjxeG0HFjalQ0WAM6h0BtG8pB94MSzgn2S4xvtG2KxbpSCI64RRGRqDwoJYx5cqUmGh7qWuMdvYRoVyd6vc7-EvIyf7509Cabdc0DoxbIkPnDLJywBfZ_BwN1rmtu3l9I7qOYmq1SJZsADin3u3HkGa0RhTIDh88UD-k8KWFgPQPA'
+        'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI1NDA5MTg4LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjU0MDkxODgsImV4cCI6MTYyNTg0MTE4OCwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.aquUuQ1goSLkyJKcwWKx4LDj37f8ajbfL9jC5P7JGBeGM2PV0QHfQavxpmyX2Bw46wYQ5DuN7FPQFqGVR7jDZtqaxZddHOE52Ht_pbBStrM89-f2ALgIrR8nOAwCXJjIEChDGBjAQi0jM_GTzREbz3UzuFydZgRRazuo9Ctc1qidt9qEnkY1G6yqBxoO50RGX-h9oYVXJTvmblxw2hEPUkx4jtF4-Zt5cICSQe1IT_IMiJef2JbTLpVKP2InLYh0YQJkg656aUdY6GXYTGZi6F3SZHCVg0x-cLG_wEZpzx7fzvQhiYD5pSC4kIcxuucuXdT1r7kbk9I9JGAvJ6CxYg'
       axios.defaults.headers.common.Authorization = AUTH_TOKEN
       // const config = {
       //   data: form,
@@ -793,7 +793,7 @@ export default {
       // }
       axios
         .post(
-          'https://vue3-course-api.hexschool.io/api/vuepractice/admin/upload',
+          `https://vue3-course-api.hexschool.io/api/${process.env.API_PATH}/admin/upload`,
           form
         )
         .then((res) => {
@@ -817,11 +817,11 @@ export default {
       const form = new FormData()
       form.append('', this.subImage)
       const AUTH_TOKEN =
-        'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI0ODc4MzU1LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjQ4NzgzNTUsImV4cCI6MTYyNTMxMDM1NSwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.TAAlAiRfBLVc5mtnKc1i9YvzLLW3ZUyDu8M0E6Ar4jtHPGsNy_InzKWGqJ4vc368ccFtOCLsLRye2myyvkJDriMQrh-Tv2H4ad34YZekYd6Y-KhapafslZm0sboUrCj56sAPKSk1kAuB0k9vCMv5bnWl0jIIdU-Q-nFWdAgw3XjxeG0HFjalQ0WAM6h0BtG8pB94MSzgn2S4xvtG2KxbpSCI64RRGRqDwoJYx5cqUmGh7qWuMdvYRoVyd6vc7-EvIyf7509Cabdc0DoxbIkPnDLJywBfZ_BwN1rmtu3l9I7qOYmq1SJZsADin3u3HkGa0RhTIDh88UD-k8KWFgPQPA'
+        'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI1NDA5MTg4LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjU0MDkxODgsImV4cCI6MTYyNTg0MTE4OCwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.aquUuQ1goSLkyJKcwWKx4LDj37f8ajbfL9jC5P7JGBeGM2PV0QHfQavxpmyX2Bw46wYQ5DuN7FPQFqGVR7jDZtqaxZddHOE52Ht_pbBStrM89-f2ALgIrR8nOAwCXJjIEChDGBjAQi0jM_GTzREbz3UzuFydZgRRazuo9Ctc1qidt9qEnkY1G6yqBxoO50RGX-h9oYVXJTvmblxw2hEPUkx4jtF4-Zt5cICSQe1IT_IMiJef2JbTLpVKP2InLYh0YQJkg656aUdY6GXYTGZi6F3SZHCVg0x-cLG_wEZpzx7fzvQhiYD5pSC4kIcxuucuXdT1r7kbk9I9JGAvJ6CxYg'
       axios.defaults.headers.common.Authorization = AUTH_TOKEN
       axios
         .post(
-          'https://vue3-course-api.hexschool.io/api/vuepractice/admin/upload',
+          `https://vue3-course-api.hexschool.io/api/${process.env.API_PATH}/admin/upload`,
           form
         )
         .then((res) => {
@@ -869,11 +869,11 @@ export default {
       console.log(info)
 
       const AUTH_TOKEN =
-        'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI0ODc4MzU1LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjQ4NzgzNTUsImV4cCI6MTYyNTMxMDM1NSwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.TAAlAiRfBLVc5mtnKc1i9YvzLLW3ZUyDu8M0E6Ar4jtHPGsNy_InzKWGqJ4vc368ccFtOCLsLRye2myyvkJDriMQrh-Tv2H4ad34YZekYd6Y-KhapafslZm0sboUrCj56sAPKSk1kAuB0k9vCMv5bnWl0jIIdU-Q-nFWdAgw3XjxeG0HFjalQ0WAM6h0BtG8pB94MSzgn2S4xvtG2KxbpSCI64RRGRqDwoJYx5cqUmGh7qWuMdvYRoVyd6vc7-EvIyf7509Cabdc0DoxbIkPnDLJywBfZ_BwN1rmtu3l9I7qOYmq1SJZsADin3u3HkGa0RhTIDh88UD-k8KWFgPQPA'
+        'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI1NDA5MTg4LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjU0MDkxODgsImV4cCI6MTYyNTg0MTE4OCwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.aquUuQ1goSLkyJKcwWKx4LDj37f8ajbfL9jC5P7JGBeGM2PV0QHfQavxpmyX2Bw46wYQ5DuN7FPQFqGVR7jDZtqaxZddHOE52Ht_pbBStrM89-f2ALgIrR8nOAwCXJjIEChDGBjAQi0jM_GTzREbz3UzuFydZgRRazuo9Ctc1qidt9qEnkY1G6yqBxoO50RGX-h9oYVXJTvmblxw2hEPUkx4jtF4-Zt5cICSQe1IT_IMiJef2JbTLpVKP2InLYh0YQJkg656aUdY6GXYTGZi6F3SZHCVg0x-cLG_wEZpzx7fzvQhiYD5pSC4kIcxuucuXdT1r7kbk9I9JGAvJ6CxYg'
       axios.defaults.headers.common.Authorization = AUTH_TOKEN
       axios
         .post(
-          'https://vue3-course-api.hexschool.io/api/vuepractice/admin/product',
+          `https://vue3-course-api.hexschool.io/api/${process.env.API_PATH}/admin/product`,
           info
         )
         .then((res) => console.log(res.data))

@@ -4,7 +4,7 @@
     <!-- Additional required wrapper -->
     <div class="swiper-wrapper">
       <!-- Slides -->
-      <div class="swiper-slide position-relative">
+      <div v-for="n in 6" :key="n" class="swiper-slide position-relative">
         <a
           href="#"
           class="slide-img-bg hover__filter--darken rounded-4"
@@ -12,15 +12,14 @@
         >
         </a>
         <div class="slide-title-wrap position-absolute">
-          <span class="badge d-block font-s bg-secondary text-black mb-4"
+          <span class="badge font-s bg-secondary text-black mb-4"
             >藝術展覽</span
           >
           <h2 class="font-xl text-white">亞洲年度新媒體藝術節 2021</h2>
         </div>
       </div>
-      <div class="swiper-slide">Slide 2</div>
-      <div class="swiper-slide">Slide 3</div>
-      ...
+      <!-- <div class="swiper-slide">Slide 2</div>
+      <div class="swiper-slide">Slide 3</div> -->
     </div>
     <!-- If we need pagination -->
     <div class="swiper-pagination"></div>
@@ -41,6 +40,15 @@ import Swiper, {
 Swiper.use([Autoplay, Navigation, Pagination])
 
 export default {
+  props: {
+    hotEvents: {
+      type: Array,
+      default() {
+        return []
+      },
+      require: true,
+    },
+  },
   data() {
     return {
       swiper: {},
