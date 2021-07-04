@@ -188,6 +188,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/stylesheets/all';
+
 .top-banner {
   background-image: url('@/assets/images/brandon-erlinger-ford-wI2Hafqr_f4-unsplash.jpg');
   // background: center / cover no-repeat
@@ -213,8 +215,9 @@ export default {
 
 .card {
   &-img-top {
-    width: 300px;
-    height: 300px;
+    min-height: calc(
+      #{map-get($container-max-widths, 'xxl')} / 4 - #{$grid-gutter-width} * 3
+    );
   }
   &-body {
     padding: 0 4px;
