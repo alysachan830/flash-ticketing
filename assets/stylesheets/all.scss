@@ -9,6 +9,7 @@
 // Helpers
 @import './helpers/font';
 @import './helpers/image';
+@import './helpers/utilities';
+@import './helpers/rounded';
 
-// JS
-// @import '~bootstrap/js/dist/collapse';
+@import './components//badge';

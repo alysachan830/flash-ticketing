@@ -9,7 +9,7 @@
           d-flex
           justify-content-center
           align-items-center
-          img-filter--dark
+          banner-filter
         "
       ></div>
       <div class="position-absolute top-banner-title text-white text-center">
@@ -37,7 +37,7 @@
     </div>
 
     <!-- Quick search options -->
-    <div class="container pt-15 d-flex align-items-center">
+    <div class="container mb-18 pt-15 d-flex align-items-center">
       <p class="font-m text-info pe-12 text-nowrap">快速搜尋</p>
       <div class="d-flex w-100">
         <NuxtLink
@@ -105,6 +105,17 @@
           <span class="me-1 text-info align-top material-icons"> work </span>
           工作坊</NuxtLink
         >
+      </div>
+    </div>
+    <!-- Body -->
+    <div class="container">
+      <!-- Hot events -->
+      <div class="mb-19">
+        <div class="mb-14">
+          <h2 class="font-xl mb-4">熱門節目</h2>
+          <p>時刻緊貼潮流，為您帶來最豐富的節目體驗。</p>
+        </div>
+        <SwiperHotEvents></SwiperHotEvents>
       </div>
     </div>
   </div>

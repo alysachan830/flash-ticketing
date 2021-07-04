@@ -1,6 +1,6 @@
 /* Image filter */
 
-.img-filter--dark::before {
+.banner-filter::before {
   content: '';
   background: rgba(0, 0, 0, 0.5);
   position: absolute;
@@ -14,4 +14,13 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.hover {
+  &__filter--darken {
+    transition: filter 0.3s;
+    &:hover {
+      filter: brightness(60%) !important;
+    }
+  }
 }
