@@ -1,8 +1,8 @@
 <template>
   <div>
-    <nav class="bg-primary fixed-top w-100 py-6">
+    <nav class="nav-h bg-primary fixed-top w-100">
       <div class="container">
-        <div class="row w-100">
+        <div class="row w-100 align-items-center justify-content-center">
           <div class="col-2">
             <NuxtLink to="/" class="d-flex align-items-center me-10 text-white">
               <i class="material-icons font-xl me-2">offline_bolt</i>
@@ -282,6 +282,11 @@ export default {
 <style lang="scss" scoped>
 .container {
   min-height: 0;
+}
+
+.nav-h {
+  height: 64px;
+  line-height: 64px;
 }
 
 .offCanvas-img-size {
