@@ -4,18 +4,22 @@
     <!-- Additional required wrapper -->
     <div class="swiper-wrapper">
       <!-- Slides -->
-      <div v-for="n in 6" :key="n" class="swiper-slide position-relative">
+      <div
+        v-for="event in hotEvents"
+        :key="event.title"
+        class="swiper-slide position-relative"
+      >
         <a
           href="#"
           class="slide-img-bg hover__filter--darken rounded-4"
-          :style="img1"
+          :style="`background-image:url(${event.imageUrl})`"
         >
         </a>
         <div class="slide-title-wrap position-absolute">
-          <span class="badge font-s bg-secondary text-black mb-4"
-            >藝術展覽</span
-          >
-          <h2 class="font-xl text-white">亞洲年度新媒體藝術節 2021</h2>
+          <span class="badge font-s bg-secondary text-black mb-4">
+            {{ event.category }}
+          </span>
+          <h2 class="font-xl text-white">{{ event.title }}</h2>
         </div>
       </div>
       <!-- <div class="swiper-slide">Slide 2</div>
