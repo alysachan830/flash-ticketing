@@ -222,17 +222,49 @@
           </div>
         </div>
         <div class="text-center">
-          <button class="btn btn-lg btn-outline-primary px-16">更多節目</button>
+          <button class="btn btn-lg btn-outline-primary">更多節目</button>
         </div>
       </div>
     </div>
     <!-- Recommendation -->
-    <div class="mb-14 container">
+    <div class="mb-23 container">
       <div class="mb-19">
         <h2 class="font-xl mb-4">獨家推薦</h2>
         <p>各界知名藝評人為您推薦最高質的節目。</p>
       </div>
-      <articleCard></articleCard>
+      <articleCard class="mb-10" v-for="n in 4" :key="n"></articleCard>
+      <div class="text-center mt-8">
+        <button class="btn btn-lg btn-outline-primary px-16">更多評論</button>
+      </div>
+    </div>
+    <!-- Footer banner -->
+    <div class="footer-banner d-flex justify-content-center align-items-center">
+      <div class="row justify-content-center">
+        <h3 class="text-white font-2xl text-center mb-10 fw-normal lh-base">
+          訂閱最新消息 <br />
+          率先享受最新節目
+        </h3>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="input-group input-group-lg mb-3">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="您的電郵"
+                aria-label="您的電郵"
+                aria-describedby="button-addon2"
+              />
+              <button
+                id="subscribe"
+                class="btn btn-outline-secondary"
+                type="button"
+              >
+                訂閱
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -318,5 +350,15 @@ export default {
   left: 118px;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.footer-banner {
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)),
+    center / cover no-repeat
+      url('@/assets/images/alexander-popov-endMHm-S3d8-unsplash.jpg');
+  // center / contain no-repeat url("../../media/examples/firefox-logo.svg"),
+  //           #eee 35% url("../../media/examples/lizard.png");
+  height: 520px;
+  // filter: brightness(0.8);
 }
 </style>
