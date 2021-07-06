@@ -1,0 +1,19 @@
+/* Make responsive width 100% */
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    .w#{$infix}-100 {
+      width: 100% !important;
+    }
+  }
+}
+
+/* Make responsive width auto */
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    .w#{$infix}-auto {
+      width: auto !important;
+    }
+  }
+}
