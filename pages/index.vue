@@ -131,9 +131,15 @@
         <h2 class="font-xl mb-4">獨家推薦</h2>
         <p>各界知名藝評人為您推薦最高質的節目。</p>
       </div>
-      <articleCard v-for="n in 4" :key="n" class="mb-10"></articleCard>
-      <div class="text-center mt-8">
-        <button class="btn btn-lg btn-outline-primary px-16">更多評論</button>
+      <div class="mb-16">
+        <articleCard v-for="n in 4" :key="n" class="mb-10"></articleCard>
+      </div>
+      <div class="text-center">
+        <button
+          class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
+        >
+          更多評論
+        </button>
       </div>
     </div>
     <!-- Footer banner -->
@@ -144,7 +150,7 @@
           率先享受最新節目
         </h3>
         <div class="row justify-content-center">
-          <div class="col-8">
+          <div class="col-md-8 col-10">
             <div class="input-group input-group-lg mb-3">
               <input
                 type="text"
@@ -207,8 +213,6 @@ export default {
 
 .top-banner {
   background-image: url('@/assets/images/brandon-erlinger-ford-wI2Hafqr_f4-unsplash.jpg');
-  // background: center / cover no-repeat
-  //   url('@/assets/images/brandon-erlinger-ford-wI2Hafqr_f4-unsplash.jpg');
   height: 388px;
 }
 
@@ -217,27 +221,6 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
-// .quick-search {
-//   flex-basis: 160px;
-//   // background: #f7f7f7;
-//   transition: background 0.3s;
-
-//   &:hover {
-//     background: darken(#f7f7f7, 5%);
-//   }
-// }
-
-// .card {
-//   &-img-top {
-//     min-height: calc(
-//       #{map-get($container-max-widths, 'xxl')} / 4 - #{$grid-gutter-width} * 3
-//     );
-//   }
-//   &-body {
-//     padding: 0 4px;
-//   }
-// }
 
 .latest-event-banner {
   background-image: url('@/assets/images/arindam-mahanta-VEOk8qUl9DU-unsplash.jpg');
@@ -249,23 +232,13 @@ export default {
 .latest-event-title {
   top: 50%;
   left: 50%;
-  // margin: 0 auto;
-  // top: 50%;
   transform: translate(-50%, -50%);
-
-  // @include media-breakpoint-up(lg) {
-  //   left: 118px;
-  //   transform: translate(-50%, 0);
-  // }
 }
 
 .footer-banner {
   background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)),
     center / cover no-repeat
       url('@/assets/images/alexander-popov-endMHm-S3d8-unsplash.jpg');
-  // center / contain no-repeat url("../../media/examples/firefox-logo.svg"),
-  //           #eee 35% url("../../media/examples/lizard.png");
   height: 520px;
-  // filter: brightness(0.8);
 }
 </style>
