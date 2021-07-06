@@ -63,7 +63,7 @@ export default {
     this.swiper = new Swiper('.swiper-container', {
       observer: true,
       observeParents: true,
-      slidesPerView: 1.5,
+      // slidesPerView: 1.5,
       // loop: true,
       // loopedSlides: 8,
       spaceBetween: 30,
@@ -79,6 +79,15 @@ export default {
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: 1,
+        },
+
+        992: {
+          slidesPerView: 1.5,
+        },
       },
       // on: {
       //   autoplay() {
@@ -105,5 +114,19 @@ export default {
 .slide-title-wrap {
   left: 40px;
   top: 40px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #fff;
+  font-size: 20px;
+}
+
+.swiper-button-next {
+  margin-right: 20px;
+}
+
+.swiper-button-prev {
+  margin-left: 20px;
 }
 </style>
