@@ -41,6 +41,7 @@ export default {
   components: {
     dirs: [
       '~/components',
+      '~/components/common',
       '~/components/admin',
       '~/components/user',
       '~/components/user/layout',
