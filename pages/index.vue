@@ -39,7 +39,8 @@
     <!-- Quick search options -->
     <div class="container mb-18 pt-15 d-flex align-items-center">
       <p class="font-m text-info pe-12 text-nowrap">快速搜尋</p>
-      <div class="d-flex w-100">
+      <Categories></Categories>
+      <!-- <div class="d-flex w-100">
         <NuxtLink
           to="/events"
           class="
@@ -105,7 +106,7 @@
           <span class="me-1 text-info align-top material-icons"> work </span>
           工作坊</NuxtLink
         >
-      </div>
+      </div> -->
     </div>
     <!-- Body -->
     <div class="container">
@@ -296,15 +297,15 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.quick-search {
-  flex-basis: 160px;
-  // background: #f7f7f7;
-  transition: background 0.3s;
+// .quick-search {
+//   flex-basis: 160px;
+//   // background: #f7f7f7;
+//   transition: background 0.3s;
 
-  &:hover {
-    background: darken(#f7f7f7, 5%);
-  }
-}
+//   &:hover {
+//     background: darken(#f7f7f7, 5%);
+//   }
+// }
 
 // .card {
 //   &-img-top {
