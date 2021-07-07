@@ -1,35 +1,132 @@
 <template>
   <div class="pt-18">
-    <div class="position-relative mb-14">
-      <div class="filter--dark top-banner bg-img"></div>
-      <div class="position-absolute top-banner-title text-white text-center">
-        <h2 class="mb-8 font-2xl">機械人與數碼龐克</h2>
-        <div class="mb-12 d-flex justify-content-center">
-          <p class="me-3">
-            <span
-              class="material-icons align-text-top me-1 text-white font-base"
-            >
-              calendar_today
-            </span>
-            2021-07-31 — 2021-08-31
-          </p>
-          <p>
-            <span
-              class="material-icons align-text-top me-1 text-white font-base"
-            >
-              location_on
-            </span>
-            香港動漫電競中心展覽廳
-          </p>
+    <div class="position-relative">
+      <div class="top-banner-wrap position-relative">
+        <div class="filter--dark top-banner bg-img"></div>
+        <div class="position-absolute top-banner-title text-white text-center">
+          <h2 class="mb-8 font-2xl">機械人與數碼龐克</h2>
+          <div class="mb-12 d-flex justify-content-center">
+            <p class="me-3">
+              <span
+                class="material-icons align-text-top me-1 text-white font-base"
+              >
+                calendar_today
+              </span>
+              2021-07-31 — 2021-08-31
+            </p>
+            <p>
+              <span
+                class="material-icons align-text-top me-1 text-white font-base"
+              >
+                location_on
+              </span>
+              香港動漫電競中心展覽廳
+            </p>
+          </div>
+          <button class="btn btn-primary btn-lg px-10">搶先購票</button>
         </div>
-        <button class="btn btn-primary btn-lg px-10">搶先購票</button>
+      </div>
+
+      <div class="advanced-search-bg mb-16 py-6 shadow-sm" ref="advancedSearch">
+        <div class="container">
+          <button
+            class="advanced-search-btn btn text-info font-s px-0 py-0"
+            data-bs-toggle="collapse"
+            data-bs-target="#advancedSearch"
+            @click="searchIsActive = !searchIsActive"
+          >
+            進階搜尋
+            <span class="material-icons">
+              {{ searchIsActive ? 'expand_less' : 'expand_more' }}
+            </span>
+          </button>
+
+          <!-- Collapse body -->
+          <div id="advancedSearch" class="collapse mt-4">
+            <div class="row">
+              <div class="col-4">
+                <select class="form-select" aria-label="Default select example">
+                  <option value="free">免費</option>
+                  <option value="under100">$100以內</option>
+                  <option value="100to500">$100 - $500</option>
+                  <option value="500up">$500以上</option>
+                </select>
+              </div>
+              <div class="col-4">
+                <select class="form-select" aria-label="Default select example">
+                  <option value="hottest">最熱門節目</option>
+                  <option value="newest">最新節目</option>
+                  <option value="recommended">獨家推薦</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <button class="btn btn-primary">搜尋</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <!-- <div
+      id="advancedSearch"
+      class="
+        advanced-search
+        bg-primary
+        w-100
+        shadow-sm
+        collapse
+      "
+    ></div> -->
+    <!-- <div class="position-relative pt-16"> -->
+    <!-- <div
+        id="advancedSearch"
+        class="advanced-search py-6 position-absolute w-100 shadow-sm collapse"
+      >
+        <div class="container">
+          <div class="row justify-content-end">
+            <div class="col-2">
+              <select class="form-select" aria-label="Default select example">
+                <option value="free">免費</option>
+                <option value="under100">$100以內</option>
+                <option value="100to500">$100 - $500</option>
+                <option value="500up">$500以上</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    <!-- <div class="advanced-search-btn-wrap position-absolute w-100">
+        <div class="container">
+          <button
+            class="advanced-search-btn btn text-info font-s py-5 px-0"
+            data-bs-toggle="collapse"
+            data-bs-target="#advancedSearch"
+            @click="searchIsActive = !searchIsActive"
+          >
+            進階搜尋
+            <span class="material-icons">
+              {{ searchIsActive ? 'expand_less' : 'expand_more' }}
+            </span>
+          </button>
+        </div>
+      </div> -->
+    <!-- </div> -->
+    <!-- <div
+      id="advancedSearch"
+      class="advanced-search py-6 position-absolute w-100 shadow-sm collapse"
+    >
+      <div class="row justify-content-end">
+        <div class="col-2">
+          <select class="form-select" aria-label="Default select example">
+            <option value="free">免費</option>
+            <option value="under100">$100以內</option>
+            <option value="100to500">$100 - $500</option>
+            <option value="500up">$500以上</option>
+          </select>
+        </div>
+      </div>
+    </div> -->
     <div class="container">
-      <a href="#" class="text-info mb-16">
-        進階搜尋
-        <span class="material-icons"> expand_more </span>
-      </a>
       <div class="row align-items-start mb-19">
         <!-- Categories -->
         <div class="col-8">
@@ -75,10 +172,41 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      searchIsActive: false,
+    }
+  },
+  mounted() {
+    window.addEventListener('scroll', this.advancedSearchStyle)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.advancedSearchStyle)
+  },
+  methods: {
+    advancedSearchStyle() {
+      if (window.scrollY > 388) {
+        this.$refs.advancedSearch.style.position = 'fixed'
+        this.$refs.advancedSearch.style.top = '64px'
+        this.$refs.advancedSearch.style.width = '100%'
+        this.$refs.advancedSearch.style['z-index'] = 2
+      } else {
+        this.$refs.advancedSearch.style.position = 'relative'
+        this.$refs.advancedSearch.style.top = '0px'
+        this.$refs.advancedSearch.style.width = 'auto'
+        this.$refs.advancedSearch.style['z-index'] = 1
+      }
+    },
+  },
+}
 </script>
 
 <style class="scss" scoped>
+.top-banner-wrap {
+  height: 388px;
+}
+
 .top-banner {
   background-image: url('@/assets/images/c-robynne-hu-HOrhCnQsxnQ-unsplash.jpg');
   height: 388px;
@@ -88,5 +216,22 @@ export default {}
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.advanced-search-bg {
+  /* height: 54px;
+  top: 452px; */
+  /* z-index: 1; */
+  background: #fafafa;
+}
+
+.advanced-search-btn-wrap {
+  top: 0;
+  z-index: 2;
+}
+
+.advanced-search-btn:focus {
+  /* background: #fafafa; */
+  box-shadow: none !important;
 }
 </style>
