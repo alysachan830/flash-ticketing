@@ -44,7 +44,7 @@
           <!-- Collapse body -->
           <div id="advancedSearch" class="collapse mt-4">
             <div class="row">
-              <div class="col-4">
+              <div class="col-lg-4 col-md-5 col-4">
                 <select class="form-select" aria-label="Default select example">
                   <option value="free">免費</option>
                   <option value="under100">$100以內</option>
@@ -52,88 +52,25 @@
                   <option value="500up">$500以上</option>
                 </select>
               </div>
-              <div class="col-4">
+              <div class="col-lg-4 col-md-5 col-4">
                 <select class="form-select" aria-label="Default select example">
                   <option value="hottest">最熱門節目</option>
                   <option value="newest">最新節目</option>
                   <option value="recommended">獨家推薦</option>
                 </select>
               </div>
-              <div class="col-2">
-                <button class="btn btn-primary">搜尋</button>
+              <div class="col-md-2 col-4 offset-lg-2">
+                <button class="btn btn-primary w-100">搜尋</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- <div
-      id="advancedSearch"
-      class="
-        advanced-search
-        bg-primary
-        w-100
-        shadow-sm
-        collapse
-      "
-    ></div> -->
-    <!-- <div class="position-relative pt-16"> -->
-    <!-- <div
-        id="advancedSearch"
-        class="advanced-search py-6 position-absolute w-100 shadow-sm collapse"
-      >
-        <div class="container">
-          <div class="row justify-content-end">
-            <div class="col-2">
-              <select class="form-select" aria-label="Default select example">
-                <option value="free">免費</option>
-                <option value="under100">$100以內</option>
-                <option value="100to500">$100 - $500</option>
-                <option value="500up">$500以上</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div> -->
-    <!-- <div class="advanced-search-btn-wrap position-absolute w-100">
-        <div class="container">
-          <button
-            class="advanced-search-btn btn text-info font-s py-5 px-0"
-            data-bs-toggle="collapse"
-            data-bs-target="#advancedSearch"
-            @click="searchIsActive = !searchIsActive"
-          >
-            進階搜尋
-            <span class="material-icons">
-              {{ searchIsActive ? 'expand_less' : 'expand_more' }}
-            </span>
-          </button>
-        </div>
-      </div> -->
-    <!-- </div> -->
-    <!-- <div
-      id="advancedSearch"
-      class="advanced-search py-6 position-absolute w-100 shadow-sm collapse"
-    >
-      <div class="row justify-content-end">
-        <div class="col-2">
-          <select class="form-select" aria-label="Default select example">
-            <option value="free">免費</option>
-            <option value="under100">$100以內</option>
-            <option value="100to500">$100 - $500</option>
-            <option value="500up">$500以上</option>
-          </select>
-        </div>
-      </div>
-    </div> -->
     <div class="container">
-      <div class="row align-items-start mb-19">
-        <!-- Categories -->
-        <div class="col-8">
-          <Categories></Categories>
-        </div>
-        <!-- Search bar -->
-        <div class="col-4">
+      <Categories class="mb-19"></Categories>
+      <div class="row">
+        <div class="col-lg-6 col-md-4 col-12">
           <div class="input-group mb-10">
             <span
               id="basic-addon1"
