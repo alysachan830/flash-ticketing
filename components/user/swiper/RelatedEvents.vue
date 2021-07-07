@@ -48,7 +48,7 @@ export default {
     this.swiper = new Swiper('.swiper-container', {
       observer: true,
       observeParents: true,
-      // slidesPerView: 1.5,
+      slidesPerView: 1.5,
       // loop: true,
       // loopedSlides: 8,
       spaceBetween: 30,
@@ -88,6 +88,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/node_modules/swiper/swiper-bundle.css';
+@import '@/assets/stylesheets/all';
 
 .slide-img-bg {
   //   height: 382px;
@@ -105,6 +106,21 @@ export default {
 .swiper-button-prev {
   color: #fff;
   font-size: 20px;
+  top: 146px;
+  // padding: 10px;
+  // border-radius: 4px;
+  // background: rgba(#000, 0.5);
+  @include media-breakpoint-up(md) {
+    top: 106px;
+  }
+
+  // @include media-breakpoint-up(lg) {
+  //   top: 146px;
+  // }
+
+  @include media-breakpoint-up(xl) {
+    top: 146px;
+  }
 }
 
 .swiper-button-next {

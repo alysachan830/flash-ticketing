@@ -202,6 +202,14 @@ export default {
       editor: ClassicEditor,
       editorData: '',
       editorConfig: {
+        ckfinder: {
+          uploadUrl: `https://vue3-course-api.hexschool.io/api/vuepractice/admin/upload`,
+          // 後端的上傳圖片 API 路徑
+          options: {
+            resourceType: 'Images',
+            // 限定類型為圖片
+          },
+        },
         // The configuration of the editor.
       },
       coverImage: '',
@@ -212,6 +220,7 @@ export default {
   },
   methods: {
     addImage(e) {
+      console.log(e.target.files[0])
       switch (e.target.id) {
         case 'coverImageInput':
           this.coverImage = e.target.files[0]
