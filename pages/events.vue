@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <div class="advanced-search-bg mb-16 py-6 shadow-sm" ref="advancedSearch">
+      <div ref="advancedSearch" class="advanced-search-bg mb-16 py-6 shadow-sm">
         <div class="container">
           <button
             class="advanced-search-btn btn text-info font-s px-0 py-0"
@@ -87,8 +87,7 @@
             <input
               type="text"
               class="form-control border-start-0"
-              placeholder="作業 / 課程 / 課堂名稱"
-              aria-label="作業 / 課程 / 課堂名稱"
+              placeholder="活動名稱"
               aria-describedby="basic-addon1"
             />
           </div>
