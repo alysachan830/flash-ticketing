@@ -44,8 +44,8 @@
           <input
             type="text"
             class="form-control border-start-0"
-            placeholder="作業 / 課程 / 課堂名稱"
-            aria-label="作業 / 課程 / 課堂名稱"
+            placeholder="文章名稱"
+            aria-label="文章名稱"
             aria-describedby="basic-addon1"
           />
         </div>

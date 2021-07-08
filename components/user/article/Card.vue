@@ -32,9 +32,14 @@
                 </div>
               </div>
               <div>
-                <span class="badge font-s bg-secondary text-black mb-4">
-                  藝術展覽
-                </span>
+                <div class="mb-4 d-flex align-items-center">
+                  <span
+                    class="badge font-xs bg-secondary text-black me-2 lh-base"
+                  >
+                    藝術展覽
+                  </span>
+                  <p>機械人與數碼龐克</p>
+                </div>
                 <h2 class="font-xl-xl font-md-l lh-base">
                   VR x 數碼龐克展 — 科幻世界與藝術表現
                 </h2>
