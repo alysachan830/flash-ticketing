@@ -106,10 +106,8 @@
           <p class="font-l">總計</p>
           <p class="font-l fw-bold text-primary">$1,803</p>
         </div>
-        <div class="col-md-2">
-          <div class="d-flex justify-content-end">
-            <button class="btn btn-primary w-auto w-md-100">確認</button>
-          </div>
+        <div class="col-md-2 col-4 offset-8 offset-md-0">
+          <a href="/checkout/form" class="btn btn-primary w-100">確認</a>
         </div>
       </div>
     </div>
