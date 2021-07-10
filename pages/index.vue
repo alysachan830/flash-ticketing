@@ -121,9 +121,18 @@
       <!-- New events cards -->
       <div class="container">
         <div class="row mb-16">
-          <!-- <div v-for="n in 8" :key="n" class="col-lg-3 col-6">
-            <EventCard></EventCard>
-          </div> -->
+          <div
+            v-for="event in newEventsCards"
+            :key="event.id"
+            class="col-lg-3 col-6"
+          >
+            <EventCard
+              :title="event.title"
+              :image="event.imageUrl"
+              :date-time="event.dateTime"
+              :tag="event.tag"
+            ></EventCard>
+          </div>
         </div>
         <div class="text-center">
           <button
@@ -203,9 +212,11 @@ export default {
       const allEventsRes = await apiClientGetAllProducts()
       const events = allEventsRes.data.products
       const hotEvents = events.filter((event) => event.tag === 'hottest')
+      const newEvents = events.filter((event) => event.tag === 'newest')
       return {
         events,
         hotEvents,
+        newEvents,
       }
     } catch (err) {
       console.log(err)
@@ -215,16 +226,14 @@ export default {
     }
   },
   computed: {
-    // hotEvents() {
-    //   // const hotEvents = this.events.filter((event) => event.tag === 'hottest')
-    //   return hotEvents
-    // },
-
     hotEventsSlides() {
       return this.hotEvents.slice(0, 4)
     },
     hotEventsCards() {
       return this.hotEvents.slice(5, this.hotEvents.length + 1)
+    },
+    newEventsCards() {
+      return this.newEvents.slice(0, Math.floor(this.newEvents.length / 4) * 4)
     },
   },
   mounted() {
