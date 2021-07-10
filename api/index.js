@@ -66,6 +66,7 @@ adminRequest.interceptors.request.use(
 // Forestage API
 // export const apiClientGetProduct = clientGetProduct()
 export const apiClientGetProduct = clientGetProduct
+export const apiClientGetAllProducts = () => clientRequest.get('/products/all')
 // export const apiClientGetProduct = (pageNum) =>
 //   clientRequest.get(`/products?page=${pageNum}`)
 

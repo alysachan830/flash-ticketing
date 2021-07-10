@@ -52,12 +52,20 @@
             <h2 class="font-xl mb-4">熱門節目</h2>
             <p>時刻緊貼潮流，為您帶來最豐富的節目體驗。</p>
           </div>
-          <SwiperHotEvents :hot-events="hotEvents"></SwiperHotEvents>
+          <SwiperHotEvents :hot-events="hotEventsSlides"></SwiperHotEvents>
         </div>
         <!-- Hot events cards -->
         <div class="row mb-16">
-          <div v-for="n in 8" :key="n" class="col-lg-3 col-6">
-            <EventCard></EventCard>
+          <div
+            v-for="event in hotEventsCards"
+            :key="event.id"
+            class="col-lg-3 col-6"
+          >
+            <EventCard
+              :title="event.title"
+              :image="event.imageUrl"
+              :tag="event.tag"
+            ></EventCard>
           </div>
         </div>
         <div class="text-center">
@@ -112,9 +120,9 @@
       <!-- New events cards -->
       <div class="container">
         <div class="row mb-16">
-          <div v-for="n in 8" :key="n" class="col-lg-3 col-6">
+          <!-- <div v-for="n in 8" :key="n" class="col-lg-3 col-6">
             <EventCard></EventCard>
-          </div>
+          </div> -->
         </div>
         <div class="text-center">
           <button
@@ -176,14 +184,23 @@
 
 <script>
 // import axios from 'axios'
-import { apiClientGetProduct } from '../api/index'
+import EventCard from '../components/user/EventCard.vue'
+import SwiperHotEvents from '../components/user/swiper/HotEvents.vue'
+import { apiClientGetAllProducts } from '../api/index'
+
 export default {
+  components: {
+    EventCard,
+    SwiperHotEvents,
+  },
   async asyncData({ env }) {
     try {
-      const eventsRes = await apiClientGetProduct()
-      const events = eventsRes.data.products
+      const allEventsRes = await apiClientGetAllProducts()
+      const events = allEventsRes.data.products
+      const hotEvents = events.filter((event) => event.tag === 'hottest')
       return {
         events,
+        hotEvents,
       }
     } catch (err) {
       console.log(err)
@@ -193,9 +210,16 @@ export default {
     }
   },
   computed: {
-    hotEvents() {
-      const hotEvents = this.events.filter((event) => event.tag === 'hottest')
-      return hotEvents
+    // hotEvents() {
+    //   // const hotEvents = this.events.filter((event) => event.tag === 'hottest')
+    //   return hotEvents
+    // },
+
+    hotEventsSlides() {
+      return this.hotEvents.slice(0, 4)
+    },
+    hotEventsCards() {
+      return this.hotEvents.slice(5, this.hotEvents.length + 1)
     },
   },
   mounted() {
