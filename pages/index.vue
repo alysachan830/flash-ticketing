@@ -23,7 +23,7 @@
             >
               calendar_today
             </span>
-            2021-06-15 — 2021-07-15
+            2021-08-08 — 2021-08-22
           </p>
           <p>
             <span
@@ -92,21 +92,19 @@
               text-center text-lg-start
             "
           >
-            <h2 class="mb-8 font-2xl text-white">
-              夏日狂想曲 —— 莫扎特的交響樂
-            </h2>
+            <h2 class="mb-8 font-2xl text-white">夏日序曲 — 莫扎特的交響樂</h2>
             <div class="mb-12">
               <p class="me-3 text-white font-l">
                 <span class="material-icons align-text-top me-1 font-l me-3">
                   calendar_today
                 </span>
-                2021-09-15
+                2021-08-11 - 2021-08-13
               </p>
               <p class="text-white font-l">
                 <span class="material-icons align-text-top me-1 font-l me-3">
                   location_on
                 </span>
-                文化與藝術協會中心音樂廳
+                香港表演藝術大學三樓演奏廳
               </p>
             </div>
             <button class="btn btn-primary btn-lg px-10">搶先購票</button>
@@ -263,6 +261,7 @@ export default {
 .latest-event-banner {
   background-image: url('@/assets/images/arindam-mahanta-VEOk8qUl9DU-unsplash.jpg');
   background-position: bottom;
+  background-attachment: fixed;
   height: 720px;
   filter: brightness(0.6);
 }
