@@ -184,12 +184,14 @@
 
 <script>
 // import axios from 'axios'
-import EventCard from '../components/user/EventCard.vue'
-import SwiperHotEvents from '../components/user/swiper/HotEvents.vue'
-import { apiClientGetAllProducts } from '../api/index'
+import Categories from '@/components/user/Categories.vue'
+import EventCard from '@/components/user/EventCard.vue'
+import SwiperHotEvents from '@/components/user/swiper/HotEvents.vue'
+import { apiClientGetAllProducts } from '@/api/index'
 
 export default {
   components: {
+    Categories,
     EventCard,
     SwiperHotEvents,
   },
