@@ -17,7 +17,7 @@
             <span class="font-base material-icons align-text-top me-2">
               calendar_today
             </span>
-            2021.06.08 — 2021.11.09
+            {{ dateTimeTemplate }}
           </p>
         </div>
         <a href="#"
@@ -55,6 +55,24 @@ export default {
       type: String,
       required: true,
     },
+    dateTime: {
+      type: [Object, Array],
+      required: true,
+    },
+  },
+  data() {
+    return {
+      dateTimeTemplate: '',
+    }
+  },
+  mounted() {
+    if (Array.isArray(this.dateTime)) {
+      this.dateTimeTemplate = `${this.dateTime[0].date} - ${
+        this.dateTime[this.dateTime.length - 1].date
+      }`
+    } else {
+      this.dateTimeTemplate = `${this.dateTime.start} - ${this.dateTime.end}`
+    }
   },
 }
 </script>

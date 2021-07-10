@@ -64,6 +64,7 @@
             <EventCard
               :title="event.title"
               :image="event.imageUrl"
+              :date-time="event.dateTime"
               :tag="event.tag"
             ></EventCard>
           </div>
@@ -140,7 +141,7 @@
         <p>各界知名藝評人為您推薦最高質的節目。</p>
       </div>
       <div class="mb-16">
-        <articleCard v-for="n in 4" :key="n" class="mb-10"></articleCard>
+        <ArticleCard v-for="n in 4" :key="n" class="mb-10"></ArticleCard>
       </div>
       <div class="text-center">
         <button
@@ -187,6 +188,7 @@
 import Categories from '@/components/user/Categories.vue'
 import EventCard from '@/components/user/EventCard.vue'
 import SwiperHotEvents from '@/components/user/swiper/HotEvents.vue'
+import ArticleCard from '@/components/user/article/ArticleCard.vue'
 import { apiClientGetAllProducts } from '@/api/index'
 
 export default {
@@ -194,6 +196,7 @@ export default {
     Categories,
     EventCard,
     SwiperHotEvents,
+    ArticleCard,
   },
   async asyncData({ env }) {
     try {
