@@ -196,7 +196,7 @@ import Categories from '@/components/user/Categories.vue'
 import EventCard from '@/components/user/EventCard.vue'
 import SwiperHotEvents from '@/components/user/swiper/HotEvents.vue'
 import ArticleCard from '@/components/user/article/ArticleCard.vue'
-import { apiClientGetAllProducts } from '@/api/index'
+// import { apiClientGetAllEvents } from '@/api/index'
 
 export default {
   components: {
@@ -205,33 +205,39 @@ export default {
     SwiperHotEvents,
     ArticleCard,
   },
-  async asyncData({ env }) {
+  async asyncData(context) {
     try {
-      const allEventsRes = await apiClientGetAllProducts()
-      const events = allEventsRes.data.products
-      const hotEvents = events.filter((event) => event.tag === 'hottest')
-      const newEvents = events.filter((event) => event.tag === 'newest')
+      // console.log(context.app)
+      // context.app.store.actions.AllEvents()
+      await context.store.dispatch('getAllEvents')
+      // console.log('----GETTER from VUEX: -----')
+      // console.log(context.store.getters.AllEvents)
+      // const events = context.store.getters.AllEvents
+      // const hotEvents = context.store.getters.HotEvents
+      // const newEvents = context.store.getters.NewEvents
+      const { hotEvents, newEvents } = context.store.getters
+      // console.log('----COUNT----')
+      console.log(newEvents.length)
       return {
-        events,
         hotEvents,
         newEvents,
       }
-    } catch (err) {
-      console.log(err)
+    } catch (error) {
+      console.log(error)
       return {
-        err,
+        error,
       }
     }
   },
   computed: {
     hotEventsSlides() {
-      return this.hotEvents.slice(0, 4)
+      return this.hotEvents?.slice(0, 4)
     },
     hotEventsCards() {
-      return this.hotEvents.slice(5, this.hotEvents.length + 1)
+      return this.hotEvents?.slice(5, this.hotEvents.length + 1)
     },
     newEventsCards() {
-      return this.newEvents.slice(0, Math.floor(this.newEvents.length / 4) * 4)
+      return this.newEvents?.slice(0, Math.floor(this.newEvents.length / 4) * 4)
     },
   },
   mounted() {
@@ -239,7 +245,6 @@ export default {
     if (this.err) {
       alert('載入資料失敗')
     }
-    console.log(this.events)
   },
 }
 </script>
