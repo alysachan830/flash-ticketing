@@ -37,16 +37,16 @@ export default {
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  // components: true,
-  components: {
-    dirs: [
-      '~/components',
-      '~/components/common',
-      '~/components/admin',
-      '~/components/user',
-      '~/components/user/layout',
-    ],
-  },
+  components: false,
+  // components: {
+  //   dirs: [
+  //     '~/components',
+  //     '~/components/common',
+  //     '~/components/admin',
+  //     '~/components/user',
+  //     '~/components/user/layout',
+  //   ],
+  // },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
