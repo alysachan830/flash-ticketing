@@ -195,7 +195,7 @@ import Categories from '@/components/user/Categories.vue'
 import EventCard from '@/components/user/EventCard.vue'
 import SwiperHotEvents from '@/components/user/swiper/HotEvents.vue'
 import ArticleCard from '@/components/user/article/ArticleCard.vue'
-import Swal from 'sweetalert2'
+// import Swal from 'sweetalert2'
 
 export default {
   components: {
@@ -233,14 +233,8 @@ export default {
   mounted() {
     // Error handling
     if (this.err) {
-      alert('載入資料失敗')
+      this.$showError('載入資料失敗')
     }
-    Swal.fire({
-      title: 'Error!',
-      text: 'Do you want to continue',
-      icon: 'error',
-      confirmButtonText: 'Cool',
-    })
   },
 }
 </script>
