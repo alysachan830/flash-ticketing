@@ -191,12 +191,11 @@
 </template>
 
 <script>
-// import axios from 'axios'
 import Categories from '@/components/user/Categories.vue'
 import EventCard from '@/components/user/EventCard.vue'
 import SwiperHotEvents from '@/components/user/swiper/HotEvents.vue'
 import ArticleCard from '@/components/user/article/ArticleCard.vue'
-// import { apiClientGetAllEvents } from '@/api/index'
+// import Swal from 'sweetalert2'
 
 export default {
   components: {
@@ -207,17 +206,8 @@ export default {
   },
   async asyncData(context) {
     try {
-      // console.log(context.app)
-      // context.app.store.actions.AllEvents()
       await context.store.dispatch('getAllEvents')
-      // console.log('----GETTER from VUEX: -----')
-      // console.log(context.store.getters.AllEvents)
-      // const events = context.store.getters.AllEvents
-      // const hotEvents = context.store.getters.HotEvents
-      // const newEvents = context.store.getters.NewEvents
       const { hotEvents, newEvents } = context.store.getters
-      // console.log('----COUNT----')
-      console.log(newEvents.length)
       return {
         hotEvents,
         newEvents,
@@ -243,7 +233,7 @@ export default {
   mounted() {
     // Error handling
     if (this.err) {
-      alert('載入資料失敗')
+      this.$showError('載入資料失敗')
     }
   },
 }
