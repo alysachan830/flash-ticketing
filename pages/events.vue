@@ -106,8 +106,6 @@ import Categories from '@/components/user/Categories.vue'
 export default {
   components: {
     Categories,
-    // EventCard,
-    // Pagination,
   },
   async asyncData(context) {
     try {
@@ -136,51 +134,6 @@ export default {
       // eslint-disable-next-line no-console
       console.error(this.errorMsg)
     }
-    // const { category } = this.$route.params
-    // console.log('should run once!')
-    // if( category === 'all'){
-    //   this.filterEvents = this.allEvents
-    // }else{
-    //   this.filterEvents = this.allEvents.filter( event => event.category === )
-    // }
-    // allEvents.filter
-    // console.log(this.$route.path)
-
-    // switch (category) {
-    //   case 'all': {
-    //     const allList = this.allEvents
-    //     this.filterEvents = [...allList]
-    //     break
-    //   }
-    //   case 'art': {
-    //     const artList = this.allEvents.filter(
-    //       (event) => event.category === '藝術展覽'
-    //     )
-    //     this.filterEvents = [...artList]
-    //     break
-    //   }
-    //   case 'dance': {
-    //     const danceList = this.allEvents.filter(
-    //       (event) => event.category === '舞蹈'
-    //     )
-    //     this.filterEvents = [...danceList]
-    //     break
-    //   }
-    //   case 'music': {
-    //     const musicList = this.allEvents.filter(
-    //       (event) => event.category === '音樂'
-    //     )
-    //     this.filterEvents = [...musicList]
-    //     break
-    //   }
-    //   case 'workshop': {
-    //     const workshopList = this.allEvents.filter(
-    //       (event) => event.category === '工作坊'
-    //     )
-    //     this.filterEvents = [...workshopList]
-    //     break
-    //   }
-    // }
 
     window.addEventListener('scroll', this.advancedSearchStyle)
   },
@@ -202,13 +155,6 @@ export default {
       }
     },
   },
-  // watch: {
-  //   $route(to, from) {
-  //     // react to route changes...
-  //     console.log(to)
-  //     console.log(from)
-  //   },
-  // },
 }
 </script>
 
@@ -229,9 +175,6 @@ export default {
 }
 
 .advanced-search-bg {
-  /* height: 54px;
-  top: 452px; */
-  /* z-index: 1; */
   background: #fafafa;
 }
 
@@ -241,7 +184,6 @@ export default {
 }
 
 .advanced-search-btn:focus {
-  /* background: #fafafa; */
   box-shadow: none !important;
 }
 </style>
