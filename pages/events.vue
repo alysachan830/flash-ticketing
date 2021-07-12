@@ -53,11 +53,7 @@
           </button>
 
           <!-- Collapse body -->
-          <div
-            id="advancedSearch"
-            class="collapse mt-4 pb-6"
-            @click="stopPropagation"
-          >
+          <div id="advancedSearch" class="collapse mt-4 pb-6">
             <div class="row">
               <div class="col-lg-4 col-md-5 col-4">
                 <select v-model="searchPrice" class="form-select">
@@ -87,11 +83,11 @@
     </div>
     <div class="container">
       <Categories class="mb-19"></Categories>
+      <!-- Search bar -->
       <div class="row">
         <div class="col-lg-6 col-md-4 col-12">
           <div class="input-group mb-10">
             <span
-              id="basic-addon1"
               class="
                 bg-transparent
                 input-group-text
@@ -107,6 +103,7 @@
               class="form-control border-start-0"
               placeholder="活動名稱"
               aria-describedby="basic-addon1"
+              v-model.trim="searchKeyword"
             />
           </div>
         </div>
@@ -142,9 +139,11 @@ export default {
   data() {
     return {
       searchIsActive: false,
+      searchKeyword: '',
       searchPrice: 'all',
       searchTag: 'all',
       filterList: [],
+      cacheFilterList: null,
     }
   },
   watch: {
@@ -152,6 +151,18 @@ export default {
       this.searchPrice = 'all'
       this.searchTag = 'all'
       this.filterList = this.allEvents
+    },
+    searchKeyword() {
+      // cacheFilterList is list of events filtered with advance search
+      // We have to search keyword based on cacheFilterList,
+      // by caching the advance search result
+      if (this.cacheFilterList === null) {
+        this.cacheFilterList = [...this.filterList]
+      }
+      this.filterList = this.cacheFilterList.filter((event) => {
+        const regex = new RegExp(this.searchKeyword, 'i')
+        return regex.test(event.title)
+      })
     },
   },
   mounted() {
@@ -183,11 +194,10 @@ export default {
         this.$refs.advancedSearch.style['z-index'] = 1
       }
     },
-    stopPropagation(e) {
-      console.log('o')
-      e.stopPropagation()
-    },
     filterResult() {
+      // Clear cacheFilterList
+      this.cacheFilterList = null
+
       const checkPriceType = (event) => {
         if (typeof event.ticketPrice !== 'number') {
           const priceList = Object.values(event.ticketPrice)
