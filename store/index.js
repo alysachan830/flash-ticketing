@@ -21,7 +21,6 @@ export const mutations = {
   AddAllEvents(state, payload) {
     // For objects, Vue cannot detect property addition or deletion. Need to use spread operator for updating object
     // see https://vuex.vuejs.org/zh/guide/mutations.html
-    // state.events = [...state.events, ...payload.list]
     state.events = [...payload.list]
   },
 }
