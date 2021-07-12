@@ -7,7 +7,7 @@
         alt="hot event"
       />
     </div>
-    <span class="card-body d-block">
+    <div class="card-body">
       <div class="d-flex justify-content-between mb-lg-6 mb-2">
         <div>
           <h5 class="card-title font-lg-m font-base">
@@ -36,7 +36,7 @@
       <span class="badge font-lg-s font-xs bg-secondary text-black mb-4">
         {{ tag }}
       </span>
-    </span>
+    </div>
   </NuxtLink>
 </template>
 
