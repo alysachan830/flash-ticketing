@@ -84,11 +84,14 @@ export default {}
 <style lang="scss" scoped>
 .category {
   flex-basis: 160px;
-  // background: #f7f7f7;
   transition: background 0.3s;
 
   &:hover {
     background: darken(#f7f7f7, 5%);
   }
+}
+
+.nuxt-link-exact-active.nuxt-link-active {
+  background: darken(#f7f7f7, 5%);
 }
 </style>

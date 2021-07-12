@@ -45,7 +45,8 @@
           <div id="advancedSearch" class="collapse mt-4">
             <div class="row">
               <div class="col-lg-4 col-md-5 col-4">
-                <select class="form-select" aria-label="Default select example">
+                <select v-model="searchPrice" class="form-select">
+                  <option value="all">全部</option>
                   <option value="free">免費</option>
                   <option value="under100">$100以內</option>
                   <option value="100to500">$100 - $500</option>
@@ -53,14 +54,16 @@
                 </select>
               </div>
               <div class="col-lg-4 col-md-5 col-4">
-                <select class="form-select" aria-label="Default select example">
+                <select v-model="searchTag" class="form-select">
+                  <option value="all">全部</option>
                   <option value="hottest">最熱門節目</option>
                   <option value="newest">最新節目</option>
-                  <option value="recommended">獨家推薦</option>
                 </select>
               </div>
               <div class="col-md-2 col-4 offset-lg-2">
-                <button class="btn btn-primary w-100">搜尋</button>
+                <button class="btn btn-primary w-100" @click="filterResult">
+                  搜尋
+                </button>
               </div>
             </div>
           </div>
@@ -93,7 +96,7 @@
           </div>
         </div>
       </div>
-      <NuxtChild :all-events="allEvents" />
+      <NuxtChild :all-events="filterList" />
     </div>
   </div>
 </template>
@@ -124,8 +127,17 @@ export default {
   data() {
     return {
       searchIsActive: false,
-      filterEvents: [],
+      searchPrice: 'all',
+      searchTag: 'all',
+      filterList: [],
     }
+  },
+  watch: {
+    $route() {
+      this.searchPrice = 'all'
+      this.searchTag = 'all'
+      this.filterList = this.allEvents
+    },
   },
   mounted() {
     // Error handling
@@ -135,6 +147,8 @@ export default {
       console.error(this.errorMsg)
     }
 
+    // this.filterList = [...this.allEvents]
+    this.filterList = this.allEvents
     window.addEventListener('scroll', this.advancedSearchStyle)
   },
   beforeDestroy() {
@@ -152,6 +166,46 @@ export default {
         this.$refs.advancedSearch.style.top = '0px'
         this.$refs.advancedSearch.style.width = 'auto'
         this.$refs.advancedSearch.style['z-index'] = 1
+      }
+    },
+    filterResult() {
+      const checkPriceType = (event) => {
+        if (typeof event.ticketPrice !== 'number') {
+          const priceList = Object.values(event.ticketPrice)
+          return priceList.some((price) => checkPrice(price))
+        }
+        return checkPrice(event.ticketPrice)
+      }
+
+      const checkPrice = (price) => {
+        switch (this.searchPrice) {
+          case 'free':
+            return price === 0
+          case 'under100':
+            return price < 100
+          case '100to500':
+            return price >= 100 && price <= 500
+          case '500up':
+            return price >= 500
+        }
+      }
+
+      if (this.searchPrice === 'all' && this.searchTag === 'all') {
+        // return (this.filterList = [...this.allEvents])
+        return (this.filterList = this.allEvents)
+      } else if (this.searchPrice === 'all') {
+        const result = this.allEvents.filter(
+          (event) => event.tag === this.searchTag
+        )
+        return (this.filterList = result)
+      } else if (this.searchTag === 'all') {
+        const result = (this.filterList = this.allEvents.filter(checkPriceType))
+        return (this.filterList = result)
+      } else {
+        const result = this.allEvents
+          .filter((event) => event.tag === this.searchTag)
+          .filter(checkPriceType)
+        return (this.filterList = result)
       }
     },
   },
