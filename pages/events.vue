@@ -27,10 +27,21 @@
         </div>
       </div>
 
-      <div ref="advancedSearch" class="advanced-search-bg mb-16 py-6 shadow-sm">
+      <!-- Advance search -->
+      <div ref="advancedSearch" class="advanced-search mb-16 shadow-sm">
         <div class="container">
           <button
-            class="advanced-search-btn btn text-info font-s px-0 py-0"
+            class="
+              advanced-search-btn
+              btn
+              text-info
+              font-s
+              px-0
+              py-6
+              d-block
+              w-100
+              text-start
+            "
             data-bs-toggle="collapse"
             data-bs-target="#advancedSearch"
             @click="searchIsActive = !searchIsActive"
@@ -42,7 +53,11 @@
           </button>
 
           <!-- Collapse body -->
-          <div id="advancedSearch" class="collapse mt-4">
+          <div
+            id="advancedSearch"
+            class="collapse mt-4 pb-6"
+            @click="stopPropagation"
+          >
             <div class="row">
               <div class="col-lg-4 col-md-5 col-4">
                 <select v-model="searchPrice" class="form-select">
@@ -168,6 +183,10 @@ export default {
         this.$refs.advancedSearch.style['z-index'] = 1
       }
     },
+    stopPropagation(e) {
+      console.log('o')
+      e.stopPropagation()
+    },
     filterResult() {
       const checkPriceType = (event) => {
         if (typeof event.ticketPrice !== 'number') {
@@ -228,7 +247,7 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.advanced-search-bg {
+.advanced-search {
   background: #fafafa;
 }
 
