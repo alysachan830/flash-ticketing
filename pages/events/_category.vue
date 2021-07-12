@@ -95,8 +95,17 @@
       </div>
       <!-- Event cards -->
       <div class="row mb-19">
-        <div v-for="n in 12" :key="n" class="col-lg-3 col-md-4 col-6">
-          <EventCard></EventCard>
+        <div
+          v-for="event in filterEvents"
+          :key="event.id"
+          class="col-lg-3 col-md-4 col-6"
+        >
+          <EventCard
+            :title="event.title"
+            :image="event.imageUrl"
+            :date-time="event.dateTime"
+            :tag="event.tag"
+          ></EventCard>
         </div>
       </div>
       <!-- Pagination -->
@@ -108,13 +117,77 @@
 </template>
 
 <script>
+import Categories from '@/components/user/Categories.vue'
+import EventCard from '@/components/user/EventCard.vue'
+import Pagination from '@/components/common/Pagination.vue'
+
 export default {
+  components: {
+    Categories,
+    EventCard,
+    Pagination,
+  },
+  async asyncData(context) {
+    try {
+      await context.store.dispatch('getAllEvents')
+      const { allEvents } = context.store.getters
+      return {
+        allEvents,
+      }
+    } catch (error) {
+      const errorMsg = error.message
+      return {
+        errorMsg,
+      }
+    }
+  },
   data() {
     return {
       searchIsActive: false,
+      filterEvents: [],
     }
   },
   mounted() {
+    // Error handling
+    if (this.errorMsg) {
+      this.$showError('載入資料失敗')
+      // eslint-disable-next-line no-console
+      console.error(this.errorMsg)
+    }
+    const { category } = this.$route.params
+    // if( category === 'all'){
+    //   this.filterEvents = this.allEvents
+    // }else{
+    //   this.filterEvents = this.allEvents.filter( event => event.category === )
+    // }
+    // allEvents.filter
+    // console.log(this.$route.path)
+    switch (category) {
+      case 'all':
+        this.filterEvents = this.allEvents
+        break
+      case 'art':
+        this.filterEvents = this.allEvents.filter(
+          (event) => event.category === '藝術展覽'
+        )
+        break
+      case 'dance':
+        this.filterEvents = this.allEvents.filter(
+          (event) => event.category === '舞蹈'
+        )
+        break
+      case 'music':
+        this.filterEvents = this.allEvents.filter(
+          (event) => event.category === '音樂'
+        )
+        break
+      case 'workshop':
+        this.filterEvents = this.allEvents.filter(
+          (event) => event.category === '工作坊'
+        )
+        break
+    }
+
     window.addEventListener('scroll', this.advancedSearchStyle)
   },
   beforeDestroy() {
@@ -133,6 +206,13 @@ export default {
         this.$refs.advancedSearch.style.width = 'auto'
         this.$refs.advancedSearch.style['z-index'] = 1
       }
+    },
+  },
+  watch: {
+    $route(to, from) {
+      // react to route changes...
+      console.log(to)
+      console.log(from)
     },
   },
 }

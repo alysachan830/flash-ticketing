@@ -11,7 +11,9 @@ export const actions = {
     try {
       const allEventsRes = await apiClientGetAllEvents()
       commit({ type: 'AddAllEvents', list: allEventsRes.data.products })
-    } catch (error) {}
+    } catch (error) {
+      throw new Error(error)
+    }
   },
 }
 

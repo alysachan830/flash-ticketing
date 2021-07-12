@@ -2,7 +2,7 @@
   <div class="row g-0 w-100">
     <div class="col-lg-3 col-6 mb-4 mb-lg-0">
       <NuxtLink
-        to="/events"
+        to="/events/art"
         class="
           category
           text-center text-info
@@ -20,7 +20,7 @@
     </div>
     <div class="col-lg-3 col-6 mb-4 mb-lg-0">
       <NuxtLink
-        to="/events"
+        to="/events/music"
         class="
           category
           text-center text-info
@@ -39,7 +39,7 @@
 
     <div class="col-lg-3 col-6">
       <NuxtLink
-        to="/events"
+        to="/events/dance"
         class="
           category
           text-center text-info
@@ -58,7 +58,7 @@
 
     <div class="col-lg-3 col-6">
       <NuxtLink
-        to="/events"
+        to="/events/workshop"
         class="
           category
           text-center text-info

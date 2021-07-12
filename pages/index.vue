@@ -195,7 +195,6 @@ import Categories from '@/components/user/Categories.vue'
 import EventCard from '@/components/user/EventCard.vue'
 import SwiperHotEvents from '@/components/user/swiper/HotEvents.vue'
 import ArticleCard from '@/components/user/article/ArticleCard.vue'
-// import Swal from 'sweetalert2'
 
 export default {
   components: {
@@ -213,9 +212,9 @@ export default {
         newEvents,
       }
     } catch (error) {
-      console.log(error)
+      const errorMsg = error.message
       return {
-        error,
+        errorMsg,
       }
     }
   },
@@ -232,8 +231,10 @@ export default {
   },
   mounted() {
     // Error handling
-    if (this.err) {
+    if (this.errorMsg) {
       this.$showError('載入資料失敗')
+      // eslint-disable-next-line no-console
+      console.error(this.errorMsg)
     }
   },
 }
