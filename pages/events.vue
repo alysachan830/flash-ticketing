@@ -121,6 +121,7 @@ import Categories from '@/components/user/Categories.vue'
 export default {
   components: {
     Categories,
+    // Pagination,
   },
   async asyncData(context) {
     try {
