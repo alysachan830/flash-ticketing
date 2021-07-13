@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import EventCard from '@/components/user/EventCard.vue'
+
 import Swiper, {
   Autoplay,
   Navigation,
@@ -38,6 +40,9 @@ export default {
   //       require: true,
   //     },
   //   },
+  components: {
+    EventCard,
+  },
   data() {
     return {
       swiper: {},

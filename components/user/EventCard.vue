@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink to="/" class="card border-0 mb-10">
+  <NuxtLink :to="`/event/${id}`" class="card border-0 mb-10">
     <div class="img-wrap rounded-4 mb-4">
       <img
         :src="image"
@@ -43,6 +43,10 @@
 <script>
 export default {
   props: {
+    id: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,

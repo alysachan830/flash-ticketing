@@ -7,19 +7,25 @@
           <div class="col-lg-6 col-12">
             <div
               class="main-image bg-img rounded-4 mb-7"
-              :style="`background-image: url(${img1});`"
+              :style="`background-image: url(${eventInfo.imageUrl});`"
             ></div>
             <div class="row">
+              <!-- <div v-for="url in eventInfo.imagesUrl" :key="url" class="col-6">
+                <div
+                  class="sub-image bg-img rounded-4 mb-7"
+                  :style="`background-image: url(${url});`"
+                ></div>
+              </div> -->
               <div class="col-6">
                 <div
                   class="sub-image bg-img rounded-4 mb-7"
-                  :style="`background-image: url(${img1});`"
+                  :style="`background-image: url(${eventInfo.imagesUrl[0]});`"
                 ></div>
               </div>
               <div class="col-6">
                 <div
                   class="sub-image bg-img rounded-4 mb-7"
-                  :style="`background-image: url(${img1});`"
+                  :style="`background-image: url(${eventInfo.imagesUrl[1]});`"
                 ></div>
               </div>
             </div>
@@ -30,7 +36,7 @@
                 <span
                   class="badge font-lg-s font-xs bg-secondary text-black mb-4"
                 >
-                  藝術展覽
+                  {{ eventInfo.category }}
                 </span>
                 <ul class="d-flex">
                   <li>
@@ -48,8 +54,8 @@
                 </ul>
               </div>
               <div class="mb-15">
-                <h2 class="mb-6">胡桃夾子與他的王國</h2>
-                <p>香港芭蕾舞劇團</p>
+                <h2 class="mb-6">{{ eventInfo.title }}</h2>
+                <p>{{ eventInfo.organizer }}</p>
               </div>
               <ul class="mb-15">
                 <li class="d-flex mb-6">
@@ -57,21 +63,30 @@
                     calendar_today
                   </span>
                   <ul>
-                    <li>2021-06-06 - 2021-07-07</li>
-                    <li>8:00 p.m</li>
+                    <li>{{ dateTimeFormat }}</li>
+                    <li v-if="!Array.isArray(eventInfo.dateTime)">
+                      {{ this.eventInfo.dateTime.startTime }} -
+                      {{ this.eventInfo.dateTime.endTime }}
+                    </li>
                   </ul>
                 </li>
                 <li class="d-flex mb-6">
                   <span class="text-primary material-icons font-m me-4">
                     location_on
                   </span>
-                  <p>世紀廣場一號展覽廳</p>
+                  <p>{{ eventInfo.venue }}</p>
                 </li>
                 <li class="d-flex mb-6">
                   <span class="text-primary material-icons font-m me-4">
                     paid
                   </span>
-                  <p>$240 (學生票) / $480 (成人票)</p>
+                  <!-- <p>$240 (學生票) / $480 (成人票)</p> -->
+                  <!-- <ul>
+                    <li></li>
+                    <li></li>
+                  </ul> -->
+                  <ul v-html="ticketPriceFormat"></ul>
+                  <!-- <p>{{ ticketPriceFormat }}</p> -->
                 </li>
               </ul>
               <button class="btn btn-primary w-100 py-4">立即購票</button>
@@ -107,29 +122,83 @@
       <!-- Article -->
       <div>
         <h2 class="font-xl mb-14">獨家點評</h2>
-        <articleCard></articleCard>
+        <!-- <articleCard></articleCard> -->
       </div>
     </div>
     <!-- Related events -->
     <div class="bg-light py-18">
       <div class="container">
         <h2 class="font-xl mb-14">更多相關節目</h2>
-        <SwiperRelatedEvents></SwiperRelatedEvents>
+        <!-- <SwiperRelatedEvents></SwiperRelatedEvents> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { apiClientGetEvent } from '@/api/index'
+// import SwiperRelatedEvents from '@/components/user/swiper/RelatedEvents.vue'
+
 export default {
-  asyncData({ params }) {
-    const event = params.event
-    return { event }
+  async asyncData({ params }) {
+    try {
+      const eventId = params.event
+      const eventRes = await apiClientGetEvent(eventId)
+      const eventInfo = eventRes.data.product
+      return { eventId, eventInfo }
+    } catch (error) {
+      const errorMsg = error.message
+      return {
+        errorMsg,
+      }
+    }
+  },
+  components: {
+    // SwiperRelatedEvents,
   },
   data() {
     return {
-      img1: `https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/1625172152483.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=A6g2dOim3jb8EcodT4ceEsWkJ70%2FxnSUcM9kBmsVYu6D7N4yJ2gRrmnuD6qzBA4N7CvKczPW5%2FXRQ4R%2FobN5EKw9bLMY7cLEFvQ0EC1bmi%2Bsopo%2FuQj5PeflPgo3DudOUV4qyAl4d3y4J5fVJQJzTPwP70L4vp094v8A%2BbRtgNQ15LpPo2%2FMK39FQcgZEgkJej1BYd4syzhcdsP3Oftq45wfGw27LlOgjEQmUAvTQVj%2B9cPE43LAUGRGL4sHU%2Fi8Iecx7sSM0n6J6%2B7tXx3%2Fcn1BWKE%2Bf2lY5eBIt4Ln1JyN3rFvCEbmMGRcTHvZrBKCLnIAHAeTxE3UEKStXr8p3A%3D%3D`,
+      // img1: `https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/1625172152483.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=A6g2dOim3jb8EcodT4ceEsWkJ70%2FxnSUcM9kBmsVYu6D7N4yJ2gRrmnuD6qzBA4N7CvKczPW5%2FXRQ4R%2FobN5EKw9bLMY7cLEFvQ0EC1bmi%2Bsopo%2FuQj5PeflPgo3DudOUV4qyAl4d3y4J5fVJQJzTPwP70L4vp094v8A%2BbRtgNQ15LpPo2%2FMK39FQcgZEgkJej1BYd4syzhcdsP3Oftq45wfGw27LlOgjEQmUAvTQVj%2B9cPE43LAUGRGL4sHU%2Fi8Iecx7sSM0n6J6%2B7tXx3%2Fcn1BWKE%2Bf2lY5eBIt4Ln1JyN3rFvCEbmMGRcTHvZrBKCLnIAHAeTxE3UEKStXr8p3A%3D%3D`,
+      dateTimeTemplate: '',
     }
+  },
+  computed: {
+    dateTimeFormat() {
+      if (Array.isArray(this.eventInfo.dateTime)) {
+        return this.eventInfo.dateTime.map((item) => item.date).join(', ')
+      } else {
+        return `${this.eventInfo.dateTime.start} - ${this.eventInfo.dateTime.end}`
+      }
+    },
+    ticketPriceFormat() {
+      if (typeof this.eventInfo.ticketPrice === 'object') {
+        return Object.keys(this.eventInfo.ticketPrice).reduce(
+          (acc, curr) =>
+            `${acc}<li>${curr}區：$${this.eventInfo.ticketPrice[curr]}</li>`,
+          ``
+        )
+      } else {
+        return this.eventInfo.ticketPrice === 0
+          ? `<li>免費</li>`
+          : `<li>$${this.eventInfo.ticketPrice}</li>`
+      }
+    },
+  },
+  mounted() {
+    console.log(this.eventInfo)
+    // Error handling
+    if (this.errorMsg) {
+      this.$showError('載入資料失敗')
+      // eslint-disable-next-line no-console
+      console.error(this.errorMsg)
+    }
+    // if (Array.isArray(this.eventInfo.dateTime)) {
+    //   this.eventInfo.dateTimeTemplate = `${this.eventInfo.dateTime[0].date} - ${
+    //     this.eventInfo.dateTime[this.eventInfo.dateTime.length - 1].date
+    //   }`
+    // } else {
+    //   this.eventInfo.dateTimeTemplate = `${this.eventInfo.dateTime.start} - ${this.eventInfo.dateTime.end}`
+    // }
   },
 }
 </script>

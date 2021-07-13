@@ -9,6 +9,7 @@
           class="col-lg-3 col-md-4 col-6"
         >
           <EventCard
+            :id="event.id"
             :title="event.title"
             :image="event.imageUrl"
             :date-time="event.dateTime"
@@ -83,10 +84,8 @@ export default {
     this.$nuxt.$on('clickPageNum', (n) => {
       this.currentPage = n
     })
-    console.log(this.$bus)
     this.$bus.$on('clearPageNum', () => {
       this.currentPage = 1
-      console.log('clear pagenum, now:' + this.currentPage)
     })
   },
   methods: {
