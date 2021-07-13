@@ -10,12 +10,6 @@
               :style="`background-image: url(${eventInfo.imageUrl});`"
             ></div>
             <div class="row">
-              <!-- <div v-for="url in eventInfo.imagesUrl" :key="url" class="col-6">
-                <div
-                  class="sub-image bg-img rounded-4 mb-7"
-                  :style="`background-image: url(${url});`"
-                ></div>
-              </div> -->
               <div class="col-6">
                 <div
                   class="sub-image bg-img rounded-4 mb-7"
@@ -65,8 +59,8 @@
                   <ul>
                     <li>{{ dateTimeFormat }}</li>
                     <li v-if="!Array.isArray(eventInfo.dateTime)">
-                      {{ this.eventInfo.dateTime.startTime }} -
-                      {{ this.eventInfo.dateTime.endTime }}
+                      {{ eventInfo.dateTime.startTime }} -
+                      {{ eventInfo.dateTime.endTime }}
                     </li>
                   </ul>
                 </li>
@@ -80,22 +74,19 @@
                   <span class="text-primary material-icons font-m me-4">
                     paid
                   </span>
-                  <!-- <p>$240 (學生票) / $480 (成人票)</p> -->
-                  <!-- <ul>
-                    <li></li>
-                    <li></li>
-                  </ul> -->
                   <ul v-html="ticketPriceFormat"></ul>
-                  <!-- <p>{{ ticketPriceFormat }}</p> -->
+                  <p
+                    v-if="eventInfo.discount > 0 && eventInfo.ticketPrice !== 0"
+                  >
+                    優惠票可減 {{ eventInfo.discount }}
+                  </p>
                 </li>
               </ul>
               <button class="btn btn-primary w-100 py-4">立即購票</button>
             </div>
             <div class="mb-15">
               <p class="mb-8 fw-bold">節目介紹</p>
-              <p>
-                不以招地源天公；的又型、衣位中他名且分系象展不價、式看舉兒離時操、說持於公、中後以海：有見海感。思進說話怎子沒！如野果動眾。年建變如我深個千維支沒配大表起心多就長明致且數球感住有點草或家，完說長？認日用不起們傳計我停時火月路本內燈形生他散，來商萬金心當！何看因難知寶談助；是情是次來不里多便復親過文由多基育雜，其相如用二？西來許前。
-              </p>
+              <p>{{ eventInfo.description }}</p>
             </div>
             <div class="text-info mb-15 font-s">
               <p class="mb-8 fw-bold">入場須知</p>
@@ -113,7 +104,9 @@
               <ol>
                 <li>購票交易成功後，將不能退款。</li>
                 <li>切勿轉售在此平台購買的票卷。</li>
-                <li>如購買學生票，需要在入場時向工作人員展示學生證件。</li>
+                <li>
+                  如購買優惠票（包括學生和長者票），需要在入場時向工作人員展示學生或身分證件。
+                </li>
               </ol>
             </div>
           </div>
@@ -129,7 +122,11 @@
     <div class="bg-light py-18">
       <div class="container">
         <h2 class="font-xl mb-14">更多相關節目</h2>
-        <!-- <SwiperRelatedEvents></SwiperRelatedEvents> -->
+        <client-only>
+          <SwiperRelatedEvents
+            :related-events="relatedEvents"
+          ></SwiperRelatedEvents>
+        </client-only>
       </div>
     </div>
   </div>
@@ -137,15 +134,18 @@
 
 <script>
 import { apiClientGetEvent } from '@/api/index'
-// import SwiperRelatedEvents from '@/components/user/swiper/RelatedEvents.vue'
+import SwiperRelatedEvents from '@/components/user/swiper/RelatedEvents.vue'
+import EventCard from '@/components/user/EventCard.vue'
 
 export default {
-  async asyncData({ params }) {
+  async asyncData({ params, store }) {
     try {
       const eventId = params.event
       const eventRes = await apiClientGetEvent(eventId)
       const eventInfo = eventRes.data.product
-      return { eventId, eventInfo }
+      await store.dispatch('getAllEvents')
+      const { allEvents } = store.getters
+      return { eventId, eventInfo, allEvents }
     } catch (error) {
       const errorMsg = error.message
       return {
@@ -154,7 +154,8 @@ export default {
     }
   },
   components: {
-    // SwiperRelatedEvents,
+    // EventCard
+    SwiperRelatedEvents,
   },
   data() {
     return {
@@ -183,6 +184,11 @@ export default {
           : `<li>$${this.eventInfo.ticketPrice}</li>`
       }
     },
+    relatedEvents() {
+      return this.allEvents.filter(
+        (event) => event.category === this.eventInfo.category
+      )
+    },
   },
   mounted() {
     console.log(this.eventInfo)
@@ -192,13 +198,6 @@ export default {
       // eslint-disable-next-line no-console
       console.error(this.errorMsg)
     }
-    // if (Array.isArray(this.eventInfo.dateTime)) {
-    //   this.eventInfo.dateTimeTemplate = `${this.eventInfo.dateTime[0].date} - ${
-    //     this.eventInfo.dateTime[this.eventInfo.dateTime.length - 1].date
-    //   }`
-    // } else {
-    //   this.eventInfo.dateTimeTemplate = `${this.eventInfo.dateTime.start} - ${this.eventInfo.dateTime.end}`
-    // }
   },
 }
 </script>
