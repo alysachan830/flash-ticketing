@@ -20,7 +20,7 @@
     </client-only>
     <!-- Pagination -->
     <div class="d-flex justify-content-center mb-19">
-      <Pagination></Pagination>
+      <Pagination :total-pages="Math.ceil(totalEvents / 12)"></Pagination>
     </div>
   </div>
 </template>
@@ -40,11 +40,21 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      currentPage: 1,
+      totalEvents: 0,
+    }
+  },
   computed: {
     filterList() {
       const currentRoute = this.$route.params.category
       let list
       switch (currentRoute) {
+        case 'all': {
+          list = this.allEvents
+          break
+        }
         case 'art': {
           list = this.allEvents.filter((event) => event.category === '藝術展覽')
           break
@@ -62,7 +72,26 @@ export default {
           break
         }
       }
-      return list
+      this.updatePageNum(list.length)
+      return list.slice(
+        (this.currentPage - 1) * 12,
+        (this.currentPage - 1) * 12 + 12
+      )
+    },
+  },
+  created() {
+    this.$nuxt.$on('clickPageNum', (n) => {
+      this.currentPage = n
+    })
+    console.log(this.$bus)
+    this.$bus.$on('clearPageNum', () => {
+      this.currentPage = 1
+      console.log('clear pagenum, now:' + this.currentPage)
+    })
+  },
+  methods: {
+    updatePageNum(n) {
+      this.$nextTick().then(() => (this.totalEvents = n))
     },
   },
 }

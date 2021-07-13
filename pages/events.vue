@@ -152,6 +152,7 @@ export default {
       this.searchPrice = 'all'
       this.searchTag = 'all'
       this.filterList = this.allEvents
+      this.$bus.$emit('clearPageNum')
     },
     searchKeyword() {
       // cacheFilterList is list of events filtered with advance search

@@ -72,6 +72,7 @@ export default {
       console.log('-----from parent----')
       console.log(n)
     })
+    console.log(this.$route.params)
   },
 }
 </script>
