@@ -75,14 +75,23 @@
                     paid
                   </span>
                   <ul v-html="ticketPriceFormat"></ul>
-                  <p
-                    v-if="eventInfo.discount > 0 && eventInfo.ticketPrice !== 0"
-                  >
-                    優惠票可減 {{ eventInfo.discount }}
-                  </p>
+                </li>
+                <li
+                  v-if="eventInfo.discount > 0 && eventInfo.ticketPrice !== 0"
+                  class="d-flex"
+                >
+                  <span class="text-primary material-icons font-m me-4">
+                    local_offer
+                  </span>
+
+                  優惠票可享有 {{ eventInfo.discount }}% 折扣
                 </li>
               </ul>
-              <button class="btn btn-primary w-100 py-4">立即購票</button>
+              <NuxtLink
+                :to="`/event/${eventId}/ticket`"
+                class="btn btn-primary w-100 py-4"
+                >立即購票
+              </NuxtLink>
             </div>
             <div class="mb-15">
               <p class="mb-8 fw-bold">節目介紹</p>
@@ -135,12 +144,15 @@
 <script>
 import { apiClientGetEvent } from '@/api/index'
 import SwiperRelatedEvents from '@/components/user/swiper/RelatedEvents.vue'
-import EventCard from '@/components/user/EventCard.vue'
 
 export default {
+  components: {
+    // EventCard
+    SwiperRelatedEvents,
+  },
   async asyncData({ params, store }) {
     try {
-      const eventId = params.event
+      const eventId = params.eventId
       const eventRes = await apiClientGetEvent(eventId)
       const eventInfo = eventRes.data.product
       await store.dispatch('getAllEvents')
@@ -152,10 +164,6 @@ export default {
         errorMsg,
       }
     }
-  },
-  components: {
-    // EventCard
-    SwiperRelatedEvents,
   },
   data() {
     return {
