@@ -15,6 +15,24 @@ export const actions = {
       throw new Error(error)
     }
   },
+
+  // async getEvent({ commit }) {
+  //   try {
+  //     const eventRes = await apiClientGetEvent()
+  //     commit({ type: 'AddAllEvents', list: allEventsRes.data.products })
+  //   } catch (error) {
+  //     throw new Error(error)
+  //   }
+  // },
+
+  // async getEvent({ commit }) {
+  //   try {
+  //     const allEventsRes = await apiClientGetAllEvents()
+  //     commit({ type: 'AddAllEvents', list: allEventsRes.data.products })
+  //   } catch (error) {
+  //     throw new Error(error)
+  //   }
+  // },
 }
 
 export const mutations = {

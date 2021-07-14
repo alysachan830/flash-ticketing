@@ -4,8 +4,19 @@
     <!-- Additional required wrapper -->
     <div class="swiper-wrapper">
       <!-- Slides -->
-      <div v-for="n in 8" :key="n" class="swiper-slide position-relative">
-        <EventCard class="bg-transparent"></EventCard>
+      <div
+        v-for="event in relatedEvents"
+        :key="event.id"
+        class="swiper-slide position-relative"
+      >
+        <EventCard
+          :id="event.id"
+          :title="event.title"
+          :image="event.imageUrl"
+          :date-time="event.dateTime"
+          :tag="event.tag"
+          class="bg-transparent"
+        ></EventCard>
       </div>
       <!-- <div class="swiper-slide">Slide 2</div>
       <div class="swiper-slide">Slide 3</div> -->
@@ -20,6 +31,8 @@
 </template>
 
 <script>
+import EventCard from '@/components/user/EventCard.vue'
+
 import Swiper, {
   Autoplay,
   Navigation,
@@ -29,15 +42,15 @@ import Swiper, {
 Swiper.use([Autoplay, Navigation, Pagination])
 
 export default {
-  //   props: {
-  //     hotEvents: {
-  //       type: Array,
-  //       default() {
-  //         return []
-  //       },
-  //       require: true,
-  //     },
-  //   },
+  props: {
+    relatedEvents: {
+      type: Array,
+      require: true,
+    },
+  },
+  components: {
+    EventCard,
+  },
   data() {
     return {
       swiper: {},
