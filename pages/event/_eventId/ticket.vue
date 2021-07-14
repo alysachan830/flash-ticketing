@@ -53,9 +53,16 @@
                 paid
               </span>
               <ul v-html="ticketPriceFormat"></ul>
-              <p v-if="eventInfo.discount > 0 && eventInfo.ticketPrice !== 0">
-                優惠票可減 {{ eventInfo.discount }}
-              </p>
+            </li>
+            <li
+              v-if="eventInfo.discount > 0 && eventInfo.ticketPrice !== 0"
+              class="d-flex"
+            >
+              <span class="text-primary material-icons font-m me-4">
+                local_offer
+              </span>
+
+              優惠票可享有 {{ eventInfo.discount }}% 折扣
             </li>
           </ul>
         </div>
@@ -86,7 +93,7 @@
               </option>
             </select>
           </div>
-          <!-- <div class="col-lg-3 col-md-6 mb-lg-0 mb-4">
+          <div class="col-lg-3 col-md-6 mb-lg-0 mb-4">
             <label for="ticketType" class="mb-2">票種</label>
             <select
               id="ticketType"
@@ -98,8 +105,8 @@
                 優惠票
               </option>
             </select>
-          </div> -->
-          <div class="col-lg-3 mb-lg-0 mb-4">
+          </div>
+          <div class="col-lg-3 col-md-6 mb-lg-0 mb-4">
             <label for="seating" class="mb-2">座位區域</label>
             <select
               id="seating"
@@ -254,6 +261,7 @@ export default {
   data() {
     return {
       inputDateTime: '',
+      inputTicketType: '正價票',
       inputSeat: 'A區',
       tempCart: {},
       ticketInfoFormat: [],
@@ -296,19 +304,33 @@ export default {
     // },
   },
   created() {
-    this.ticketInfoFormat = Object.keys(this.eventInfo.ticketPrice)
+    let allTickets = Object.keys(this.eventInfo.ticketPrice)
       .map((zone) => {
         return this.eventInfo.dateTime.map((dateTime) => {
           return {
             zone: `${zone}區`,
             price: this.eventInfo.ticketPrice[zone],
+            ticketType: '正價票',
             ...dateTime,
           }
         })
       })
       .flat()
 
+    if (this.eventInfo.discount > 0) {
+      // const allDiscountTickets = JSON.parse(JSON.stringify(allTickets))
+      const allDiscountTickets = JSON.parse(JSON.stringify(allTickets)).map(
+        (ticket) => {
+          ticket.price = ticket.price * (this.eventInfo.discount / 100)
+          ticket.ticketType = '優惠票'
+          return ticket
+        }
+      )
+      allTickets = [...allTickets, ...allDiscountTickets]
+    }
+
     // Copy the result since it will be reused in searching function
+    this.ticketInfoFormat = allTickets
     this.allTicketInfoFormat = [...this.ticketInfoFormat]
 
     // Set default of inputDateTime
