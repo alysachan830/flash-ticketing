@@ -153,7 +153,13 @@
       <!-- Add to cart -->
       <div class="row justify-content-center mb-21">
         <div class="col-4">
-          <button class="btn btn-primary w-100 py-4">加入購物車</button>
+          <button
+            class="btn btn-primary w-100 py-4"
+            :disabled="Object.keys(tempCart).length === 0"
+            @click="addCart"
+          >
+            加入購物車
+          </button>
         </div>
       </div>
     </div>
@@ -304,6 +310,9 @@ export default {
       this.inputDateTime = `${this.allTicketInfoFormat[0].date} ${this.allTicketInfoFormat[0].startTime}-${this.allTicketInfoFormat[0].endTime}`
       this.inputSeat = 'A區'
       this.ticketInfoFormat = [...this.allTicketInfoFormat]
+    },
+    addCart() {
+      // Othis.tempCart
     },
   },
 }
