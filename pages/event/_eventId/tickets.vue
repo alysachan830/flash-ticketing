@@ -240,7 +240,8 @@ export default {
               zone: `${zone}區`,
               price: this.eventInfo.ticketPrice[zone],
               ticketType: '正價票',
-              id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime},${zone}區,正價票`,
+              // id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime},${zone}區,正價票`,
+              id: `${dateTime.timestamp},${zone}區,正價票`,
               ...dateTime,
             }
           })
@@ -252,7 +253,7 @@ export default {
           (ticket) => {
             ticket.price = ticket.price * (this.eventInfo.discount / 100)
             ticket.ticketType = '優惠票'
-            ticket.id = `${ticket.id.split(',').slice(0, 3).join(',')},優惠票`
+            ticket.id = `${ticket.id.split(',').slice(0, 2).join(',')},優惠票`
             return ticket
           }
         )
