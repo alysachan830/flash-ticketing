@@ -82,7 +82,6 @@
               v-model="inputDateTime"
               class="form-select form-select-lg"
             >
-              <option selected>請選擇時段</option>
               <option
                 v-for="dateTime in eventInfo.dateTime"
                 :key="dateTime.timestamp"
@@ -380,7 +379,8 @@ export default {
           ticketInfo.date === searchDate &&
           ticketInfo.startTime === searchStart &&
           ticketInfo.endTime === searchEnd &&
-          ticketInfo.zone === this.inputSeat
+          ticketInfo.zone === this.inputSeat &&
+          ticketInfo.ticketType === this.inputTicketType
       )
       this.$nextTick().then(() => (this.ticketInfoFormat = searchResult))
     },

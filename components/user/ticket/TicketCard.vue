@@ -2,8 +2,12 @@
   <div>
     <ul class="bg-light p-8 rounded-top">
       <li class="d-flex justify-content-between pb-6">
-        <p>{{ item.zone }}</p>
+        <p>{{ item.ticketType }}</p>
         <p class="font-lg-xl font-l">${{ item.price }}</p>
+      </li>
+      <li class="pb-6">
+        <p class="text-info font-s mb-1">座位區域</p>
+        <p>{{ item.zone }}</p>
       </li>
       <li class="pb-6">
         <p class="text-info font-s mb-1">節目時段</p>
