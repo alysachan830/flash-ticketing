@@ -8,7 +8,7 @@
         <div class="col-lg-3 offset-lg-1">
           <div class="d-flex justify-content-between mb-6">
             <span class="badge font-lg-s font-xs bg-secondary text-black mb-4">
-              藝術展覽
+              {{ eventInfo.category }}
             </span>
             <ul class="d-flex">
               <li>
