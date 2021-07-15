@@ -35,7 +35,6 @@
                 calendar_today
               </span>
               <ul>
-                <!-- <li>{{ dateTimeFormat }}</li> -->
                 <li>
                   {{ eventInfo.dateTime.startTime }} -
                   {{ eventInfo.dateTime.endTime }}
@@ -67,79 +66,10 @@
           </ul>
         </div>
       </div>
-      <!-- <div class="d-flex justify-content-between mb-15">
-        <h3 class="font-l">選擇時段、座位與票種</h3>
-        <button class="btn btn-outline-primary">查看座位區域劃分</button>
-      </div> -->
       <div class="mb-15">
         <h3 class="font-l mb-6">選擇時段、座位與票種</h3>
         <p class="text-muted mb-2 font-s">*優惠票適用於學生、長者、殘疾人士</p>
       </div>
-      <!-- Selects -->
-      <!-- <div class="bg-secondary p-12 rounded-4 mb-md-21 mb-16">
-        <div class="row align-items-end">
-          <div class="col-lg-3 mb-lg-0 mb-4">
-            <label for="dateTime" class="mb-2">節目時段</label>
-            <select
-              id="dateTime"
-              v-model="inputDateTime"
-              class="form-select form-select-lg"
-            >
-              <option
-                v-for="dateTime in eventInfo.dateTime"
-                :key="dateTime.timestamp"
-                :value="`${dateTime.date} ${dateTime.startTime}-${dateTime.endTime}`"
-              >
-                {{ dateTime.date }} {{ dateTime.startTime }} -
-                {{ dateTime.endTime }}
-              </option>
-            </select>
-          </div>
-          <div class="col-lg-3 col-md-6 mb-lg-0 mb-4">
-            <label for="ticketType" class="mb-2">票種</label>
-            <select
-              id="ticketType"
-              v-model="inputTicketType"
-              class="form-select form-select-lg"
-            >
-              <option value="正價票">正價票</option>
-              <option v-if="eventInfo.discount > 0" value="優惠票">
-                優惠票
-              </option>
-            </select>
-          </div>
-          <div class="col-lg-3 col-md-6 mb-lg-0 mb-4">
-            <label for="seating" class="mb-2">座位區域</label>
-            <select
-              id="seating"
-              v-model="inputSeat"
-              class="form-select form-select-lg"
-            >
-              <option
-                v-for="zone in Object.keys(eventInfo.ticketPrice)"
-                :key="zone"
-                :value="`${zone}區`"
-              >
-                {{ zone }}區
-              </option>
-            </select>
-          </div>
-          <div class="col-3 w-md-auto w-100">
-            <button
-              class="btn btn-lg btn-primary mt-8 w-md-auto w-100 me-6"
-              @click="searchTicket"
-            >
-              搜尋
-            </button>
-            <button
-              class="btn btn-lg btn-outline-primary mt-8 w-md-auto w-100"
-              @click="clearSearch"
-            >
-              清除搜尋
-            </button>
-          </div>
-        </div>
-      </div> -->
 
       <div class="row">
         <div
@@ -177,10 +107,6 @@ export default {
       const eventId = params.eventId
       const eventRes = await apiClientGetEvent(eventId)
       const eventInfo = eventRes.data.product
-      // const hasSingleDate = !Array.isArray(eventInfo.dateTime)
-      // if (hasSingleDate) {
-      //   redirect(`/event/${eventId}/ticketSingleDate`)
-      // }
       return { eventId, eventInfo }
     } catch (error) {
       const errorMsg = error.message
@@ -219,10 +145,6 @@ export default {
   },
   created() {
     let allTickets
-    // // If differnet seat zones are provided
-    // if(!Array.isArray(this.eventInfo.ticketPrice)){
-
-    // }
     if (this.eventInfo.ticketPrice !== 0) {
       allTickets = Object.keys(this.eventInfo.ticketPrice).map((zone) => {
         if (Array.isArray(this.eventInfo.dateTime)) {
@@ -249,7 +171,6 @@ export default {
       })
 
       if (this.eventInfo.discount > 0) {
-        // const allDiscountTickets = JSON.parse(JSON.stringify(allTickets))
         const allDiscountTickets = JSON.parse(JSON.stringify(allTickets)).map(
           (ticket) => {
             ticket.price = ticket.price * (this.eventInfo.discount / 100)
@@ -296,33 +217,6 @@ export default {
         delete this.tempCart[id]
       }
     })
-  },
-  methods: {
-    // Search function
-    // searchTicket() {
-    //   if (this.inputDateTime === '') {
-    //     alert('請選擇時段')
-    //     return
-    //   }
-    //   const searchdateTime = this.inputDateTime.split(' ')
-    //   const searchDate = searchdateTime[0]
-    //   const searchStart = searchdateTime[1].split('-')[0]
-    //   const searchEnd = searchdateTime[1].split('-')[1]
-    //   const searchResult = this.allTicketInfoFormat.filter(
-    //     (ticketInfo) =>
-    //       ticketInfo.date === searchDate &&
-    //       ticketInfo.startTime === searchStart &&
-    //       ticketInfo.endTime === searchEnd &&
-    //       ticketInfo.zone === this.inputSeat &&
-    //       ticketInfo.ticketType === this.inputTicketType
-    //   )
-    //   this.$nextTick().then(() => (this.ticketInfoFormat = searchResult))
-    // },
-    // clearSearch() {
-    //   this.inputDateTime = `${this.allTicketInfoFormat[0].date} ${this.allTicketInfoFormat[0].startTime}-${this.allTicketInfoFormat[0].endTime}`
-    //   this.inputSeat = 'A區'
-    //   this.ticketInfoFormat = [...this.allTicketInfoFormat]
-    // },
   },
 }
 </script>

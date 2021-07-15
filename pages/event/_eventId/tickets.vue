@@ -138,37 +138,6 @@
         </div>
       </div>
 
-      <!-- Table -->
-      <!-- <table class="table mb-6 table-hover">
-        <thead>
-          <tr>
-            <th scope="col">節目時段</th>
-            <th scope="col">座位區域</th>
-            <th scope="col">票種</th>
-            <th scope="col">價錢</th>
-            <th scope="col">數量</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="n in 5" :key="n">
-            <td>2021-06-06 8:00 p.m</td>
-            <td>A區</td>
-            <td>正價票</td>
-            <td>HKD 120</td>
-            <td>
-              <div class="d-flex">
-                <a href="#"
-                  ><span class="font-base material-icons"> add </span></a
-                >
-                <span class="mx-6">1</span>
-                <a href="#"
-                  ><span class="font-base material-icons"> remove </span></a
-                >
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table> -->
       <div class="row">
         <div
           v-for="(item, i) in ticketInfoFormat"
@@ -176,56 +145,6 @@
           class="ticket rounded-3 col-6 col-md-4 col-lg-3 mb-6"
         >
           <TicketCard :item="item"></TicketCard>
-          <!-- <ul class="bg-light p-8 rounded-top">
-            <li class="d-flex justify-content-between pb-6">
-              <p>{{ item.zone }}</p>
-              <p class="font-lg-xl font-l">${{ item.price }}</p>
-            </li>
-            <li class="pb-6">
-              <p class="text-info font-s mb-1">節目時段</p>
-              <p>{{ item.date }}</p>
-              <p>{{ item.startTime }} - {{ item.endTime }}</p>
-            </li>
-          </ul>
-          <div
-            class="
-              ticket-quantity
-              px-8
-              py-4
-              d-flex
-              justify-content-between
-              rounded-bottom
-            "
-          >
-            <a
-              href="#"
-              :class="`${item.date}${item.price}${item.zone}`"
-              @click.prevent="addCart"
-            >
-              <span
-                :class="[
-                  `${item.date}${item.price}${item.zone}`,
-                  'material-icons',
-                ]"
-              >
-                add
-              </span>
-            </a>
-            <span :id="`${item.date}${item.price}${item.zone}`">0</span>
-            <a
-              href="#"
-              :class="`${item.date}${item.price}${item.zone}`"
-              @click.prevent="removeCart"
-              ><span
-                :class="[
-                  `${item.date}${item.price}${item.zone}`,
-                  'material-icons',
-                ]"
-              >
-                remove
-              </span></a
-            >
-          </div> -->
         </div>
       </div>
       <div class="d-flex justify-content-end">
@@ -255,10 +174,6 @@ export default {
       const eventId = params.eventId
       const eventRes = await apiClientGetEvent(eventId)
       const eventInfo = eventRes.data.product
-      // const hasSingleDate = !Array.isArray(eventInfo.dateTime)
-      // if (hasSingleDate) {
-      //   redirect(`/event/${eventId}/ticketSingleDate`)
-      // }
       return { eventId, eventInfo }
     } catch (error) {
       const errorMsg = error.message
@@ -298,34 +213,10 @@ export default {
           : `<li>$${this.eventInfo.ticketPrice}</li>`
       }
     },
-    // ticketInfoFormat() {
-    //   return Object.keys(this.eventInfo.ticketPrice)
-    //     .map((zone) => {
-    //       return this.eventInfo.dateTime.map((dateTime) => {
-    //         return {
-    //           zone,
-    //           price: this.eventInfo.ticketPrice[zone],
-    //           ...dateTime,
-    //         }
-    //       })
-    //     })
-    //     .flat()
-    // },
   },
   created() {
     let allTickets
     if (this.eventInfo.ticketPrice === 0) {
-      // allTickets = [
-      //   {
-      //     zone: '不適用',
-      //     price: '免費',
-      //     ticketType: '不適用',
-      //     id: `${dateTime.date},${dateTime.startTime}-${
-      //       dateTime.endTime
-      //     },${'正價票'}`,
-      //     ...dateTime,
-      //   },
-      // ]
       allTickets = this.eventInfo.dateTime.map((dateTime) => ({
         zone: '不適用',
         price: '免費',
@@ -351,7 +242,6 @@ export default {
         .flat()
 
       if (this.eventInfo.discount > 0) {
-        // const allDiscountTickets = JSON.parse(JSON.stringify(allTickets))
         const allDiscountTickets = JSON.parse(JSON.stringify(allTickets)).map(
           (ticket) => {
             ticket.price = ticket.price * (this.eventInfo.discount / 100)
@@ -415,43 +305,6 @@ export default {
       this.inputSeat = 'A區'
       this.ticketInfoFormat = [...this.allTicketInfoFormat]
     },
-    // addCart(item) {
-    //   console.log('add cart:')
-    //   console.log(item)
-    //   //       if (this.tempCart[ticket] === undefined) {
-    //   //   this.tempCart[ticket] = 1
-    //   // } else {
-    //   //   this.tempCart[ticket] += 1
-    //   // }
-    // },
-    // addCart(e) {
-    //   const ticket = e.target.classList[0]
-    //   const quantityDOM = document.getElementById(ticket)
-    //   const currentQuantity = Number(quantityDOM.textContent)
-    //   quantityDOM.textContent = currentQuantity + 1
-
-    //   // Update temp cart
-    //   if (this.tempCart[ticket] === undefined) {
-    //     this.tempCart[ticket] = 1
-    //   } else {
-    //     this.tempCart[ticket] += 1
-    //   }
-    // },
-    // removeCart(e) {
-    //   const ticket = e.target.classList[0]
-    //   const quantityDOM = document.getElementById(ticket)
-    //   const currentQuantity = Number(quantityDOM.textContent)
-
-    //   // Update temp cart
-    //   if (this.tempCart[ticket] === undefined) return
-    //   quantityDOM.textContent = currentQuantity - 1
-    //   this.tempCart[ticket] -= 1
-
-    //   // Delete empty item in temp cart
-    //   if (this.tempCart[ticket] === 0) {
-    //     delete this.tempCart[ticket]
-    //   }
-    // },
   },
 }
 </script>
