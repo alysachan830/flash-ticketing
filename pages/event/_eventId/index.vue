@@ -87,9 +87,7 @@
                   優惠票可享有 {{ eventInfo.discount }}% 折扣
                 </li>
               </ul>
-              <NuxtLink
-                :to="`/event/${eventId}/ticket`"
-                class="btn btn-primary w-100 py-4"
+              <NuxtLink :to="isMultipleDates" class="btn btn-primary w-100 py-4"
                 >立即購票
               </NuxtLink>
             </div>
@@ -172,6 +170,13 @@ export default {
     }
   },
   computed: {
+    isMultipleDates() {
+      if (Array.isArray(this.eventInfo.dateTime)) {
+        return `/event/${this.eventId}/tickets`
+      } else {
+        return `/event/${this.eventId}/ticket`
+      }
+    },
     dateTimeFormat() {
       if (Array.isArray(this.eventInfo.dateTime)) {
         return this.eventInfo.dateTime.map((item) => item.date).join(', ')

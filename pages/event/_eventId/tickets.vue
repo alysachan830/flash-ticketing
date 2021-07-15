@@ -35,8 +35,8 @@
                 calendar_today
               </span>
               <ul>
-                <!-- <li>{{ dateTimeFormat }}</li> -->
-                <li>
+                <li>{{ dateTimeFormat }}</li>
+                <li v-if="!Array.isArray(eventInfo.dateTime)">
                   {{ eventInfo.dateTime.startTime }} -
                   {{ eventInfo.dateTime.endTime }}
                 </li>
@@ -67,16 +67,13 @@
           </ul>
         </div>
       </div>
-      <!-- <div class="d-flex justify-content-between mb-15">
+      <div class="d-flex justify-content-between mb-15">
         <h3 class="font-l">選擇時段、座位與票種</h3>
         <button class="btn btn-outline-primary">查看座位區域劃分</button>
-      </div> -->
-      <div class="mb-15">
-        <h3 class="font-l mb-6">選擇時段、座位與票種</h3>
-        <p class="text-muted mb-2 font-s">*優惠票適用於學生、長者、殘疾人士</p>
       </div>
+      <p class="text-muted mb-2 font-s">*優惠票適用於學生、長者、殘疾人士</p>
       <!-- Selects -->
-      <!-- <div class="bg-secondary p-12 rounded-4 mb-md-21 mb-16">
+      <div class="bg-secondary p-12 rounded-4 mb-md-21 mb-16">
         <div class="row align-items-end">
           <div class="col-lg-3 mb-lg-0 mb-4">
             <label for="dateTime" class="mb-2">節目時段</label>
@@ -139,8 +136,39 @@
             </button>
           </div>
         </div>
-      </div> -->
+      </div>
 
+      <!-- Table -->
+      <!-- <table class="table mb-6 table-hover">
+        <thead>
+          <tr>
+            <th scope="col">節目時段</th>
+            <th scope="col">座位區域</th>
+            <th scope="col">票種</th>
+            <th scope="col">價錢</th>
+            <th scope="col">數量</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="n in 5" :key="n">
+            <td>2021-06-06 8:00 p.m</td>
+            <td>A區</td>
+            <td>正價票</td>
+            <td>HKD 120</td>
+            <td>
+              <div class="d-flex">
+                <a href="#"
+                  ><span class="font-base material-icons"> add </span></a
+                >
+                <span class="mx-6">1</span>
+                <a href="#"
+                  ><span class="font-base material-icons"> remove </span></a
+                >
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table> -->
       <div class="row">
         <div
           v-for="(item, i) in ticketInfoFormat"
@@ -148,6 +176,56 @@
           class="ticket rounded-3 col-6 col-md-4 col-lg-3 mb-6"
         >
           <TicketCard :item="item"></TicketCard>
+          <!-- <ul class="bg-light p-8 rounded-top">
+            <li class="d-flex justify-content-between pb-6">
+              <p>{{ item.zone }}</p>
+              <p class="font-lg-xl font-l">${{ item.price }}</p>
+            </li>
+            <li class="pb-6">
+              <p class="text-info font-s mb-1">節目時段</p>
+              <p>{{ item.date }}</p>
+              <p>{{ item.startTime }} - {{ item.endTime }}</p>
+            </li>
+          </ul>
+          <div
+            class="
+              ticket-quantity
+              px-8
+              py-4
+              d-flex
+              justify-content-between
+              rounded-bottom
+            "
+          >
+            <a
+              href="#"
+              :class="`${item.date}${item.price}${item.zone}`"
+              @click.prevent="addCart"
+            >
+              <span
+                :class="[
+                  `${item.date}${item.price}${item.zone}`,
+                  'material-icons',
+                ]"
+              >
+                add
+              </span>
+            </a>
+            <span :id="`${item.date}${item.price}${item.zone}`">0</span>
+            <a
+              href="#"
+              :class="`${item.date}${item.price}${item.zone}`"
+              @click.prevent="removeCart"
+              ><span
+                :class="[
+                  `${item.date}${item.price}${item.zone}`,
+                  'material-icons',
+                ]"
+              >
+                remove
+              </span></a
+            >
+          </div> -->
         </div>
       </div>
       <div class="d-flex justify-content-end">
@@ -201,7 +279,11 @@ export default {
   },
   computed: {
     dateTimeFormat() {
-      return `${this.eventInfo.dateTime.start} - ${this.eventInfo.dateTime.end}`
+      if (Array.isArray(this.eventInfo.dateTime)) {
+        return this.eventInfo.dateTime.map((item) => item.date).join(', ')
+      } else {
+        return `${this.eventInfo.dateTime.start} - ${this.eventInfo.dateTime.end}`
+      }
     },
     ticketPriceFormat() {
       if (typeof this.eventInfo.ticketPrice === 'object') {
@@ -216,37 +298,57 @@ export default {
           : `<li>$${this.eventInfo.ticketPrice}</li>`
       }
     },
+    // ticketInfoFormat() {
+    //   return Object.keys(this.eventInfo.ticketPrice)
+    //     .map((zone) => {
+    //       return this.eventInfo.dateTime.map((dateTime) => {
+    //         return {
+    //           zone,
+    //           price: this.eventInfo.ticketPrice[zone],
+    //           ...dateTime,
+    //         }
+    //       })
+    //     })
+    //     .flat()
+    // },
   },
   created() {
     let allTickets
-    // // If differnet seat zones are provided
-    // if(!Array.isArray(this.eventInfo.ticketPrice)){
-
-    // }
-    if (this.eventInfo.ticketPrice !== 0) {
-      allTickets = Object.keys(this.eventInfo.ticketPrice).map((zone) => {
-        if (Array.isArray(this.eventInfo.dateTime)) {
-          return this.eventInfo.dateTime
-            .map((dateTime) => {
-              return {
-                zone: `${zone}區`,
-                price: this.eventInfo.ticketPrice[zone],
-                ticketType: '正價票',
-                id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime},${zone}區,正價票`,
-                ...dateTime,
-              }
-            })
-            .flat()
-        } else {
-          return {
-            zone: `${zone}區`,
-            price: this.eventInfo.ticketPrice[zone],
-            ticketType: '正價票',
-            id: `${this.eventInfo.dateTime.start}-${this.eventInfo.dateTime.end},${this.eventInfo.dateTime.startTime}-${this.eventInfo.dateTime.endTime},${zone}區,正價票`,
-            ...this.eventInfo.dateTime,
-          }
-        }
-      })
+    if (this.eventInfo.ticketPrice === 0) {
+      // allTickets = [
+      //   {
+      //     zone: '不適用',
+      //     price: '免費',
+      //     ticketType: '不適用',
+      //     id: `${dateTime.date},${dateTime.startTime}-${
+      //       dateTime.endTime
+      //     },${'正價票'}`,
+      //     ...dateTime,
+      //   },
+      // ]
+      allTickets = this.eventInfo.dateTime.map((dateTime) => ({
+        zone: '不適用',
+        price: '免費',
+        ticketType: '不適用',
+        id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime}`,
+        ...dateTime,
+      }))
+      console.log('----this is ticket price free')
+      console.log(allTickets)
+    } else {
+      allTickets = Object.keys(this.eventInfo.ticketPrice)
+        .map((zone) => {
+          return this.eventInfo.dateTime.map((dateTime) => {
+            return {
+              zone: `${zone}區`,
+              price: this.eventInfo.ticketPrice[zone],
+              ticketType: '正價票',
+              id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime},${zone}區,正價票`,
+              ...dateTime,
+            }
+          })
+        })
+        .flat()
 
       if (this.eventInfo.discount > 0) {
         // const allDiscountTickets = JSON.parse(JSON.stringify(allTickets))
@@ -260,16 +362,6 @@ export default {
         )
         allTickets = [...allTickets, ...allDiscountTickets]
       }
-    } else {
-      allTickets = [
-        {
-          zone: '不適用',
-          price: '免費',
-          ticketType: '不適用',
-          id: this.eventId,
-          ...this.eventInfo.dateTime,
-        },
-      ]
     }
 
     // Copy the result since it will be reused in searching function
@@ -277,7 +369,7 @@ export default {
     this.allTicketInfoFormat = [...this.ticketInfoFormat]
 
     // Set default of inputDateTime
-    // this.inputDateTime = `${this.allTicketInfoFormat[0].date} ${this.allTicketInfoFormat[0].startTime}-${this.allTicketInfoFormat[0].endTime}`
+    this.inputDateTime = `${this.allTicketInfoFormat[0].date} ${this.allTicketInfoFormat[0].startTime}-${this.allTicketInfoFormat[0].endTime}`
 
     // Listen for emit
     this.$nuxt.$on('clickAdd', (id) => {
@@ -299,29 +391,66 @@ export default {
   },
   methods: {
     // Search function
-    // searchTicket() {
-    //   if (this.inputDateTime === '') {
-    //     alert('請選擇時段')
-    //     return
-    //   }
-    //   const searchdateTime = this.inputDateTime.split(' ')
-    //   const searchDate = searchdateTime[0]
-    //   const searchStart = searchdateTime[1].split('-')[0]
-    //   const searchEnd = searchdateTime[1].split('-')[1]
-    //   const searchResult = this.allTicketInfoFormat.filter(
-    //     (ticketInfo) =>
-    //       ticketInfo.date === searchDate &&
-    //       ticketInfo.startTime === searchStart &&
-    //       ticketInfo.endTime === searchEnd &&
-    //       ticketInfo.zone === this.inputSeat &&
-    //       ticketInfo.ticketType === this.inputTicketType
-    //   )
-    //   this.$nextTick().then(() => (this.ticketInfoFormat = searchResult))
+    searchTicket() {
+      if (this.inputDateTime === '') {
+        alert('請選擇時段')
+        return
+      }
+      const searchdateTime = this.inputDateTime.split(' ')
+      const searchDate = searchdateTime[0]
+      const searchStart = searchdateTime[1].split('-')[0]
+      const searchEnd = searchdateTime[1].split('-')[1]
+      const searchResult = this.allTicketInfoFormat.filter(
+        (ticketInfo) =>
+          ticketInfo.date === searchDate &&
+          ticketInfo.startTime === searchStart &&
+          ticketInfo.endTime === searchEnd &&
+          ticketInfo.zone === this.inputSeat &&
+          ticketInfo.ticketType === this.inputTicketType
+      )
+      this.$nextTick().then(() => (this.ticketInfoFormat = searchResult))
+    },
+    clearSearch() {
+      this.inputDateTime = `${this.allTicketInfoFormat[0].date} ${this.allTicketInfoFormat[0].startTime}-${this.allTicketInfoFormat[0].endTime}`
+      this.inputSeat = 'A區'
+      this.ticketInfoFormat = [...this.allTicketInfoFormat]
+    },
+    // addCart(item) {
+    //   console.log('add cart:')
+    //   console.log(item)
+    //   //       if (this.tempCart[ticket] === undefined) {
+    //   //   this.tempCart[ticket] = 1
+    //   // } else {
+    //   //   this.tempCart[ticket] += 1
+    //   // }
     // },
-    // clearSearch() {
-    //   this.inputDateTime = `${this.allTicketInfoFormat[0].date} ${this.allTicketInfoFormat[0].startTime}-${this.allTicketInfoFormat[0].endTime}`
-    //   this.inputSeat = 'A區'
-    //   this.ticketInfoFormat = [...this.allTicketInfoFormat]
+    // addCart(e) {
+    //   const ticket = e.target.classList[0]
+    //   const quantityDOM = document.getElementById(ticket)
+    //   const currentQuantity = Number(quantityDOM.textContent)
+    //   quantityDOM.textContent = currentQuantity + 1
+
+    //   // Update temp cart
+    //   if (this.tempCart[ticket] === undefined) {
+    //     this.tempCart[ticket] = 1
+    //   } else {
+    //     this.tempCart[ticket] += 1
+    //   }
+    // },
+    // removeCart(e) {
+    //   const ticket = e.target.classList[0]
+    //   const quantityDOM = document.getElementById(ticket)
+    //   const currentQuantity = Number(quantityDOM.textContent)
+
+    //   // Update temp cart
+    //   if (this.tempCart[ticket] === undefined) return
+    //   quantityDOM.textContent = currentQuantity - 1
+    //   this.tempCart[ticket] -= 1
+
+    //   // Delete empty item in temp cart
+    //   if (this.tempCart[ticket] === 0) {
+    //     delete this.tempCart[ticket]
+    //   }
     // },
   },
 }

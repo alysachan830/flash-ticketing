@@ -2,12 +2,22 @@
   <div>
     <ul class="bg-light p-8 rounded-top">
       <li class="d-flex justify-content-between pb-6">
-        <p>{{ item.ticketType }}</p>
-        <p class="font-lg-xl font-l">${{ item.price }}</p>
+        <div>
+          <p class="text-info font-s mb-1">票種</p>
+          <p>{{ item.ticketType }}</p>
+        </div>
+        <p v-if="item.price !== '免費'" class="font-lg-xl font-l">
+          ${{ item.price }}
+        </p>
+        <p v-else class="font-lg-xl font-l">{{ item.price }}</p>
       </li>
       <li class="pb-6">
         <p class="text-info font-s mb-1">座位區域</p>
         <p>{{ item.zone }}</p>
+      </li>
+      <li class="pb-6" v-if="item.end && item.start">
+        <p class="text-info font-s mb-1">節目日期</p>
+        <p>{{ item.start }} - {{ item.end }}</p>
       </li>
       <li class="pb-6">
         <p class="text-info font-s mb-1">節目時段</p>
