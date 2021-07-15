@@ -176,7 +176,8 @@
           :key="i"
           class="ticket rounded-3 col-6 col-md-4 col-lg-3 mb-6"
         >
-          <ul class="bg-light p-8 rounded-top">
+          <TicketCard :item="item"></TicketCard>
+          <!-- <ul class="bg-light p-8 rounded-top">
             <li class="d-flex justify-content-between pb-6">
               <p>{{ item.zone }}</p>
               <p class="font-lg-xl font-l">${{ item.price }}</p>
@@ -225,7 +226,7 @@
                 remove
               </span></a
             >
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="d-flex justify-content-end">
@@ -243,8 +244,13 @@
 
 <script>
 import { apiClientGetEvent } from '@/api/index'
+import TicketCard from '@/components/user/ticket/TicketCard.vue'
 
 export default {
+  components: {
+    TicketCard,
+  },
+  middleware: 'ticket',
   async asyncData({ params, store }) {
     try {
       const eventId = params.eventId
@@ -304,6 +310,11 @@ export default {
     // },
   },
   created() {
+    this.$router.beforeEach((to, from, next) => {
+      console.log(to)
+      console.log(from)
+      console.log(next)
+    })
     let allTickets = Object.keys(this.eventInfo.ticketPrice)
       .map((zone) => {
         return this.eventInfo.dateTime.map((dateTime) => {
@@ -335,6 +346,13 @@ export default {
 
     // Set default of inputDateTime
     this.inputDateTime = `${this.allTicketInfoFormat[0].date} ${this.allTicketInfoFormat[0].startTime}-${this.allTicketInfoFormat[0].endTime}`
+
+    // Listen for emit
+    this.$bus.$on('clickAdd', (info) => {
+      if (process.server) return
+      console.log('--- in created ---')
+      console.log(info)
+    })
   },
   methods: {
     // Search function
@@ -361,34 +379,43 @@ export default {
       this.inputSeat = 'A區'
       this.ticketInfoFormat = [...this.allTicketInfoFormat]
     },
-    addCart(e) {
-      const ticket = e.target.classList[0]
-      const quantityDOM = document.getElementById(ticket)
-      const currentQuantity = Number(quantityDOM.textContent)
-      quantityDOM.textContent = currentQuantity + 1
+    // addCart(item) {
+    //   console.log('add cart:')
+    //   console.log(item)
+    //   //       if (this.tempCart[ticket] === undefined) {
+    //   //   this.tempCart[ticket] = 1
+    //   // } else {
+    //   //   this.tempCart[ticket] += 1
+    //   // }
+    // },
+    // addCart(e) {
+    //   const ticket = e.target.classList[0]
+    //   const quantityDOM = document.getElementById(ticket)
+    //   const currentQuantity = Number(quantityDOM.textContent)
+    //   quantityDOM.textContent = currentQuantity + 1
 
-      // Update temp cart
-      if (this.tempCart[ticket] === undefined) {
-        this.tempCart[ticket] = 1
-      } else {
-        this.tempCart[ticket] += 1
-      }
-    },
-    removeCart(e) {
-      const ticket = e.target.classList[0]
-      const quantityDOM = document.getElementById(ticket)
-      const currentQuantity = Number(quantityDOM.textContent)
+    //   // Update temp cart
+    //   if (this.tempCart[ticket] === undefined) {
+    //     this.tempCart[ticket] = 1
+    //   } else {
+    //     this.tempCart[ticket] += 1
+    //   }
+    // },
+    // removeCart(e) {
+    //   const ticket = e.target.classList[0]
+    //   const quantityDOM = document.getElementById(ticket)
+    //   const currentQuantity = Number(quantityDOM.textContent)
 
-      // Update temp cart
-      if (this.tempCart[ticket] === undefined) return
-      quantityDOM.textContent = currentQuantity - 1
-      this.tempCart[ticket] -= 1
+    //   // Update temp cart
+    //   if (this.tempCart[ticket] === undefined) return
+    //   quantityDOM.textContent = currentQuantity - 1
+    //   this.tempCart[ticket] -= 1
 
-      // Delete empty item in temp cart
-      if (this.tempCart[ticket] === 0) {
-        delete this.tempCart[ticket]
-      }
-    },
+    //   // Delete empty item in temp cart
+    //   if (this.tempCart[ticket] === 0) {
+    //     delete this.tempCart[ticket]
+    //   }
+    // },
   },
 }
 </script>
@@ -399,9 +426,5 @@ export default {
   &:hover {
     filter: drop-shadow(2px 4px 3px #e0e0e0);
   }
-}
-
-.ticket-quantity {
-  background: #ededed;
 }
 </style>
