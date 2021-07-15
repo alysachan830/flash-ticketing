@@ -22,12 +22,9 @@
       "
     >
       <a href="#" :class="`${item.date}${item.price}${item.zone}`">
-        <span class="material-icons"> add </span>
+        <span class="material-icons" @click.prevent="addCart"> add </span>
       </a>
-      <span
-        :id="`${item.date}${item.price}${item.zone}`"
-        @click.prevent="addCart"
-      >
+      <span :id="`${item.date}${item.price}${item.zone}`">
         {{ quantity }}
       </span>
       <a href="#" :class="`${item.date}${item.price}${item.zone}`"
@@ -58,10 +55,13 @@ export default {
   methods: {
     addCart() {
       this.quantity += 1
-      console.log('emit will happen:')
-      if (process.server) return
-      //   this.$nuxt.$emit('clickAdd')
-      this.$bus.$emit('clickAdd', [this.quantity, this.item])
+      //   if (process.server) return
+      this.$nuxt.$emit('clickAdd', this.item.id)
+    },
+    removeCart() {
+      if (this.quantity === 0) return
+      this.quantity -= 1
+      this.$nuxt.$emit('clickRemove', this.item.id)
     },
   },
 }

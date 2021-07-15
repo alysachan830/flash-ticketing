@@ -310,11 +310,6 @@ export default {
     // },
   },
   created() {
-    this.$router.beforeEach((to, from, next) => {
-      console.log(to)
-      console.log(from)
-      console.log(next)
-    })
     let allTickets = Object.keys(this.eventInfo.ticketPrice)
       .map((zone) => {
         return this.eventInfo.dateTime.map((dateTime) => {
@@ -322,6 +317,9 @@ export default {
             zone: `${zone}區`,
             price: this.eventInfo.ticketPrice[zone],
             ticketType: '正價票',
+            id: `${dateTime.date},${dateTime.startTime}-${
+              dateTime.endTime
+            },${'正價票'}`,
             ...dateTime,
           }
         })
@@ -334,6 +332,7 @@ export default {
         (ticket) => {
           ticket.price = ticket.price * (this.eventInfo.discount / 100)
           ticket.ticketType = '優惠票'
+          ticket.id = `${ticket.id.split(',').slice(0, 2).join(',')},優惠票`
           return ticket
         }
       )
@@ -348,10 +347,21 @@ export default {
     this.inputDateTime = `${this.allTicketInfoFormat[0].date} ${this.allTicketInfoFormat[0].startTime}-${this.allTicketInfoFormat[0].endTime}`
 
     // Listen for emit
-    this.$bus.$on('clickAdd', (info) => {
-      if (process.server) return
-      console.log('--- in created ---')
-      console.log(info)
+    this.$nuxt.$on('clickAdd', (id) => {
+      // if (process.server) return
+      if (this.tempCart[id] === undefined) {
+        this.tempCart[id] = 1
+      } else {
+        this.tempCart[id] += 1
+      }
+    })
+
+    this.$nuxt.$on('clickRemove', (id) => {
+      // if (process.server) return
+      this.tempCart[id] -= 1
+      if (this.tempCart[id] === 0) {
+        delete this.tempCart[id]
+      }
     })
   },
   methods: {
