@@ -419,6 +419,9 @@ export default {
           })
           console.log(allData)
           const addCartRes = await apiClientAddCart(allData)
+          // Clear tempCart and all input quantity
+          this.tempCart = {}
+          this.$bus.$emit('clearInputQuantity')
           console.log(addCartRes.data)
           this.$showError('已加入購物車')
         } else {
@@ -454,6 +457,10 @@ export default {
             existingCartItem.id,
             allData
           )
+
+          // Clear tempCart and all input quantity
+          this.tempCart = {}
+          this.$bus.$emit('clearInputQuantity')
           console.log(updateCartRes.data)
         }
 

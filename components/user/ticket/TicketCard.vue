@@ -66,6 +66,12 @@ export default {
       quantity: 0,
     }
   },
+  created() {
+    this.$bus.$on('clearInputQuantity', () => {
+      console.log('clear input quantity!')
+      this.quantity = 0
+    })
+  },
   methods: {
     addCart() {
       this.quantity += 1
