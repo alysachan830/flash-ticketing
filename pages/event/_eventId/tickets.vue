@@ -423,7 +423,7 @@ export default {
           this.tempCart = {}
           this.$bus.$emit('clearInputQuantity')
           console.log(addCartRes.data)
-          this.$showError('已加入購物車')
+          this.$showSuccess('已加入購物車')
         } else {
           console.log('之前已有加這 event !')
           // User has added this event before
@@ -462,6 +462,7 @@ export default {
           this.tempCart = {}
           this.$bus.$emit('clearInputQuantity')
           console.log(updateCartRes.data)
+          this.$showSuccess('已加入購物車')
         }
 
         // const addCartRes = await apiClientAddCart(data)
