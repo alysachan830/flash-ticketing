@@ -312,13 +312,37 @@ export default {
       this.inputSeat = 'A區'
       this.ticketInfoFormat = [...this.allTicketInfoFormat]
     },
-    countQty(accumulatedItems) {
+    countQty(accumulatedItems, originalItem) {
       if (this.eventInfo.ticketPrice === 0) {
         return 0
       } else {
-        const ids = accumulatedItems
-          ? Object.keys(accumulatedItems)
-          : Object.keys(this.tempCart)
+        let ids
+        let updatedItems
+        if (accumulatedItems) {
+          console.log('----accmulated items----')
+          console.log(accumulatedItems)
+          const newIds = Object.keys(accumulatedItems)
+          // Filter out the replaced items
+          const exisitingIds = Object.keys(originalItem)
+            .filter((key) => !newIds.includes(key))
+            .filter((item) => item.includes('票'))
+          const exisitingItems = {}
+          exisitingIds.forEach((id) => (exisitingItems[id] = originalItem[id]))
+          // console.log('----exisiting ids----')
+          // console.log(exisitingIds)
+          // key.includes('票')
+          // The updated id list
+          // console.log('----new ids----')
+          // console.log(newIds)
+          // ids = [...newIds, ...exisitingIds]
+          // console.log(ids)
+          console.log('updateItems')
+          updatedItems = { ...accumulatedItems, ...exisitingItems }
+          ids = Object.keys(updatedItems)
+          console.log(updatedItems)
+        } else {
+          ids = Object.keys(this.tempCart)
+        }
         // const ids = Object.keys(this.tempCart)
         const totalPrice = ids.reduce((acc, id) => {
           const [zone, ticketType] = id.split(',').slice(1, 3)
@@ -332,7 +356,7 @@ export default {
           // console.log(perTicketPrice)
           let subTotal
           if (accumulatedItems) {
-            subTotal = perTicketPrice * accumulatedItems[id]
+            subTotal = perTicketPrice * updatedItems[id]
           } else {
             subTotal = perTicketPrice * this.tempCart[id]
           }
@@ -343,7 +367,12 @@ export default {
         }, 0)
         console.log(totalPrice)
         const qty = totalPrice / this.eventInfo.price
-        console.log()
+        // if (accumulatedItems) {
+        //   // To accumulate qty, we have to add the original qty and deduct the replaced ticket qty
+        //   // calculate the old qty
+        //   originalItem[]
+        //   // qty = qty + originalItem.qty - originalItem[]
+        // }
         return qty
       }
     },
@@ -424,7 +453,7 @@ export default {
               allData.data[id] = this.tempCart[id]
             }
           })
-          allData.qty = this.countQty(allData.data)
+          allData.qty = this.countQty(allData.data, existingCartItem)
           allData.product_id = this.eventId
           // Qty will be accumulated if that event is already added in the cart before
           // To avoid accumulation, use update cart API
