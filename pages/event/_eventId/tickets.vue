@@ -166,8 +166,8 @@
 <script>
 import {
   apiClientGetEvent,
-  // apiClientAddCart,
-  // apiClientUpdateCart,
+  apiClientAddCart,
+  apiClientUpdateCart,
 } from '@/api/index'
 // import { apiClientGetEvent } from '@/api/index'
 import TicketCard from '@/components/user/ticket/TicketCard.vue'
@@ -328,14 +328,6 @@ export default {
             .filter((item) => item.includes('票'))
           const exisitingItems = {}
           exisitingIds.forEach((id) => (exisitingItems[id] = originalItem[id]))
-          // console.log('----exisiting ids----')
-          // console.log(exisitingIds)
-          // key.includes('票')
-          // The updated id list
-          // console.log('----new ids----')
-          // console.log(newIds)
-          // ids = [...newIds, ...exisitingIds]
-          // console.log(ids)
           console.log('updateItems')
           updatedItems = { ...accumulatedItems, ...exisitingItems }
           ids = Object.keys(updatedItems)
@@ -346,14 +338,12 @@ export default {
         // const ids = Object.keys(this.tempCart)
         const totalPrice = ids.reduce((acc, id) => {
           const [zone, ticketType] = id.split(',').slice(1, 3)
-          // console.log(zone, ticketType)
           let perTicketPrice = this.eventInfo.ticketPrice[zone[0]]
-          // console.log(perTicketPrice)
           if (ticketType === '優惠票') {
             perTicketPrice = perTicketPrice * (this.eventInfo.discount / 100)
           }
-          // console.log('----perTicketPrice---')
-          // console.log(perTicketPrice)
+          console.log('----perTicketPrice---')
+          console.log(perTicketPrice)
           let subTotal
           if (accumulatedItems) {
             subTotal = perTicketPrice * updatedItems[id]
@@ -415,6 +405,7 @@ export default {
         console.log(carts)
         // User has not added this event before
         if (!existingCartItem) {
+          console.log('還沒有此活動!')
           const allData = {
             data: {
               product_id: this.eventId,
@@ -426,10 +417,10 @@ export default {
           tempCartIds.forEach((id) => {
             allData.data[id] = this.tempCart[id]
           })
-          // console.log(allData)
-          // const addCartRes = await apiClientAddCart(allData)
-          // console.log(addCartRes.data.data)
-          // this.$showError('已加入購物車')
+          console.log(allData)
+          const addCartRes = await apiClientAddCart(allData)
+          console.log(addCartRes.data)
+          this.$showError('已加入購物車')
         } else {
           console.log('之前已有加這 event !')
           // User has added this event before
@@ -453,13 +444,17 @@ export default {
               allData.data[id] = this.tempCart[id]
             }
           })
-          allData.qty = this.countQty(allData.data, existingCartItem)
-          allData.product_id = this.eventId
+          allData.data.qty = this.countQty(allData.data, existingCartItem)
+          allData.data.product_id = this.eventId
           // Qty will be accumulated if that event is already added in the cart before
           // To avoid accumulation, use update cart API
 
           console.log(allData)
-          // apiClientUpdateCart(this.eventId, allData)
+          const updateCartRes = await apiClientUpdateCart(
+            existingCartItem.id,
+            allData
+          )
+          console.log(updateCartRes.data)
         }
 
         // const addCartRes = await apiClientAddCart(data)
