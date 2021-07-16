@@ -74,6 +74,10 @@ adminRequest.interceptors.request.use(
 export const apiClientGetProduct = clientGetProduct
 export const apiClientGetAllEvents = () => clientRequest.get('/products/all')
 export const apiClientGetEvent = (id) => clientRequest.get(`/product/${id}`)
+export const apiClientGetCart = () => clientRequest.get('/cart')
+export const apiClientAddCart = (data) => clientRequest.post('/cart', data)
+export const apiClientUpdateCart = (id, data) =>
+  clientRequest.put(`/cart/${id}`, data)
 // export const apiClientGetProduct = (pageNum) =>
 //   clientRequest.get(`/products?page=${pageNum}`)
 

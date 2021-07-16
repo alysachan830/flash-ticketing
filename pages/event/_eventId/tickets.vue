@@ -153,11 +153,8 @@
       <!-- Add to cart -->
       <div class="row justify-content-center mb-21">
         <div class="col-4">
-          <button
-            class="btn btn-primary w-100 py-4"
-            :disabled="Object.keys(tempCart).length === 0"
-            @click="addCart"
-          >
+          <button class="btn btn-primary w-100 py-4" @click="addCart">
+            <!-- :disabled="Object.keys(tempCart).length === 0 ? true : false" -->
             加入購物車
           </button>
         </div>
@@ -167,7 +164,12 @@
 </template>
 
 <script>
-import { apiClientGetEvent } from '@/api/index'
+import {
+  apiClientGetEvent,
+  // apiClientAddCart,
+  // apiClientUpdateCart,
+} from '@/api/index'
+// import { apiClientGetEvent } from '@/api/index'
 import TicketCard from '@/components/user/ticket/TicketCard.vue'
 
 export default {
@@ -230,8 +232,6 @@ export default {
         id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime}`,
         ...dateTime,
       }))
-      console.log('----this is ticket price free')
-      console.log(allTickets)
     } else {
       allTickets = Object.keys(this.eventInfo.ticketPrice)
         .map((zone) => {
@@ -312,8 +312,138 @@ export default {
       this.inputSeat = 'A區'
       this.ticketInfoFormat = [...this.allTicketInfoFormat]
     },
-    addCart() {
-      // Othis.tempCart
+    countQty(accumulatedItems) {
+      if (this.eventInfo.ticketPrice === 0) {
+        return 0
+      } else {
+        const ids = accumulatedItems
+          ? Object.keys(accumulatedItems)
+          : Object.keys(this.tempCart)
+        // const ids = Object.keys(this.tempCart)
+        const totalPrice = ids.reduce((acc, id) => {
+          const [zone, ticketType] = id.split(',').slice(1, 3)
+          // console.log(zone, ticketType)
+          let perTicketPrice = this.eventInfo.ticketPrice[zone[0]]
+          // console.log(perTicketPrice)
+          if (ticketType === '優惠票') {
+            perTicketPrice = perTicketPrice * (this.eventInfo.discount / 100)
+          }
+          // console.log('----perTicketPrice---')
+          // console.log(perTicketPrice)
+          let subTotal
+          if (accumulatedItems) {
+            subTotal = perTicketPrice * accumulatedItems[id]
+          } else {
+            subTotal = perTicketPrice * this.tempCart[id]
+          }
+          // console.log('----subTotal---')
+          // console.log(subTotal)
+          // console.log(acc)
+          return acc + subTotal
+        }, 0)
+        console.log(totalPrice)
+        const qty = totalPrice / this.eventInfo.price
+        console.log()
+        return qty
+      }
+    },
+    async addCart() {
+      // const allTickets = Object.keys(this.tempCart).map((tempItem) => {
+      //   const [timestamp, zone, ticketType] = tempItem.split(',')
+      //   const dateTime = this.eventInfo.dateTime.find(
+      //     (item) => item.timestamp === timestamp
+      //   )
+      //   return {
+      //     zone,
+      //     ticketType,
+      //     dateTime,
+      //     product_id: this.eventId,
+      //     qty: this.tempCart[tempItem],
+      //   }
+      // })
+
+      // const data = {
+      //   data: {
+      //     product_id: '-MeBVWJEY7ntu4Cz0a1T',
+      //     qty: 4.75,
+      //     // '1625854073524,C區,優惠票': 1,
+      //     '1625854614761,A區,正價票': 1,
+      //     '1625854614761,B區,正價票': 2,
+      //   },
+      // }
+
+      try {
+        if (Object.keys(this.tempCart).length === 0) {
+          this.$showError('請選購票卷！')
+          return
+        }
+        const tempCartIds = Object.keys(this.tempCart)
+        await this.$store.dispatch('getCart')
+        const { carts } = this.$store.getters
+        const existingCartItem = carts.find(
+          (item) => item.product_id === this.eventId
+        )
+        console.log(carts)
+        // User has not added this event before
+        if (!existingCartItem) {
+          const allData = {
+            data: {
+              product_id: this.eventId,
+              qty: this.countQty(),
+            },
+          }
+          // console.log(allData)
+
+          tempCartIds.forEach((id) => {
+            allData.data[id] = this.tempCart[id]
+          })
+          // console.log(allData)
+          // const addCartRes = await apiClientAddCart(allData)
+          // console.log(addCartRes.data.data)
+          // this.$showError('已加入購物車')
+        } else {
+          console.log('之前已有加這 event !')
+          // User has added this event before
+          // Check if this event item contains the same event period
+          // If yes, We have to accumulate the quantity
+          // This approach avoids overwritting the same object key and value that is added in the cart time before
+          const allData = {
+            data: {
+              // product_id: this.eventId,
+              // qty: this.countQty(),
+            },
+          }
+          tempCartIds.forEach((id) => {
+            if (existingCartItem[id] !== undefined) {
+              console.log('有此時段，要累加！')
+              // Accumulate the quantity
+              allData.data[id] = existingCartItem[id] + this.tempCart[id]
+            } else {
+              console.log('沒有此時段，不用累加！')
+              // If not, add the key and value to allData
+              allData.data[id] = this.tempCart[id]
+            }
+          })
+          allData.qty = this.countQty(allData.data)
+          allData.product_id = this.eventId
+          // Qty will be accumulated if that event is already added in the cart before
+          // To avoid accumulation, use update cart API
+
+          console.log(allData)
+          // apiClientUpdateCart(this.eventId, allData)
+        }
+
+        // const addCartRes = await apiClientAddCart(data)
+        // console.log(addCartRes.data)
+        // this.$showError('已加入購物車')
+
+        // tempCartIds.forEach( tempCartId => {
+
+        // })
+      } catch (error) {
+        this.$showError('加入購物車失敗')
+        console.log(error)
+      }
     },
   },
 }
