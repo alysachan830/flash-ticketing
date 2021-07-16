@@ -147,31 +147,39 @@ export default {
     let allTickets
     const ticketPrice = this.eventInfo.ticketPrice
     if (ticketPrice !== 0) {
-      // If the event has different zones and prices
+      // If the event has different zones and prices, ticketPrice will be an object
       if (typeof ticketPrice === 'object') {
         allTickets = Object.keys(ticketPrice).map((zone) => {
-          if (Array.isArray(this.eventInfo.dateTime)) {
-            return this.eventInfo.dateTime
-              .map((dateTime) => {
-                return {
-                  zone: `${zone}區`,
-                  price: ticketPrice[zone],
-                  ticketType: '正價票',
-                  id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime},${zone}區,正價票`,
-                  ...dateTime,
-                }
-              })
-              .flat()
-          } else {
-            return {
-              zone: `${zone}區`,
-              price: ticketPrice[zone],
-              ticketType: '正價票',
-              id: `${this.eventInfo.dateTime.start}-${this.eventInfo.dateTime.end},${this.eventInfo.dateTime.startTime}-${this.eventInfo.dateTime.endTime},${zone}區,正價票`,
-              ...this.eventInfo.dateTime,
-            }
+          return {
+            zone: `${zone}區`,
+            price: ticketPrice[zone],
+            ticketType: '正價票',
+            id: `${this.eventInfo.dateTime.start}-${this.eventInfo.dateTime.end},${this.eventInfo.dateTime.startTime}-${this.eventInfo.dateTime.endTime},${zone}區,正價票`,
+            ...this.eventInfo.dateTime,
           }
+          // if (Array.isArray(this.eventInfo.dateTime)) {
+          //   return this.eventInfo.dateTime
+          //     .map((dateTime) => {
+          //       return {
+          //         zone: `${zone}區`,
+          //         price: ticketPrice[zone],
+          //         ticketType: '正價票',
+          //         id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime},${zone}區,正價票`,
+          //         ...dateTime,
+          //       }
+          //     })
+          //     .flat()
+          // } else {
+          //   return {
+          //     zone: `${zone}區`,
+          //     price: ticketPrice[zone],
+          //     ticketType: '正價票',
+          //     id: `${this.eventInfo.dateTime.start}-${this.eventInfo.dateTime.end},${this.eventInfo.dateTime.startTime}-${this.eventInfo.dateTime.endTime},${zone}區,正價票`,
+          //     ...this.eventInfo.dateTime,
+          //   }
+          // }
         })
+        // If this event has discount
         if (this.eventInfo.discount > 0) {
           const allDiscountTickets = JSON.parse(JSON.stringify(allTickets)).map(
             (ticket) => {
@@ -184,6 +192,7 @@ export default {
           allTickets = [...allTickets, ...allDiscountTickets]
         }
       } else {
+        // If the event has fixed ticket price, ticketPrice will be a number
         allTickets = [
           {
             zone: '不適用',
@@ -192,15 +201,27 @@ export default {
             id: this.eventId,
             ...this.eventInfo.dateTime,
           },
-          {
-            zone: '不適用',
-            price: ticketPrice * (this.eventInfo.discount / 100),
-            ticketType: '優惠票',
-            id: this.eventId,
-            ...this.eventInfo.dateTime,
-          },
+          // {
+          //   zone: '不適用',
+          //   price: ticketPrice * (this.eventInfo.discount / 100),
+          //   ticketType: '優惠票',
+          //   id: this.eventId,
+          //   ...this.eventInfo.dateTime,
+          // },
         ]
-        // allTickets = [...allTickets, ...]
+        // If this event has discount
+        if (this.eventInfo.discount > 0) {
+          allTickets = [
+            ...allTickets,
+            {
+              zone: '不適用',
+              price: ticketPrice * (this.eventInfo.discount / 100),
+              ticketType: '優惠票',
+              id: this.eventId,
+              ...this.eventInfo.dateTime,
+            },
+          ]
+        }
       }
     } else {
       allTickets = [
