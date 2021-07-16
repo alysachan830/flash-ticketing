@@ -92,7 +92,10 @@
               </option>
             </select>
           </div>
-          <div class="col-lg-3 col-md-6 mb-lg-0 mb-4">
+          <div
+            v-if="eventInfo.ticketPrice !== 0"
+            class="col-lg-3 col-md-6 mb-lg-0 mb-4"
+          >
             <label for="ticketType" class="mb-2">票種</label>
             <select
               id="ticketType"
@@ -105,7 +108,10 @@
               </option>
             </select>
           </div>
-          <div class="col-lg-3 col-md-6 mb-lg-0 mb-4">
+          <div
+            v-if="typeof eventInfo.ticketPrice === 'object'"
+            class="col-lg-3 col-md-6 mb-lg-0 mb-4"
+          >
             <label for="seating" class="mb-2">座位區域</label>
             <select
               id="seating"
@@ -223,6 +229,22 @@ export default {
     },
   },
   created() {
+    // // Set default inputSeat
+    // if (typeof this.ticketPrice === 'number') {
+    //   this.$nextTick().then(() => (this.inputSeat = ''))
+    // }
+
+    // // Set default input ticketType
+    // if (this.ticketPrice === 0) {
+    //   this.$nextTick().then(() => (this.inputTicketType = ''))
+    // }
+
+    // Set default input ticketType
+    // if (this.ticketPrice === 0) {
+    //   this.inputTicketType = '正價'
+    // }
+
+    // Display tickets
     let allTickets
     if (this.eventInfo.ticketPrice === 0) {
       allTickets = this.eventInfo.dateTime.map((dateTime) => ({
@@ -286,6 +308,17 @@ export default {
       }
     })
   },
+  // mounted() {
+  //   // Set default inputSeat
+  //   if (typeof this.ticketPrice === 'number') {
+  //     this.$nextTick().then(() => (this.inputSeat = ''))
+  //   }
+
+  //   // Set default input ticketType
+  //   if (this.ticketPrice === 0) {
+  //     this.$nextTick().then(() => (this.inputTicketType = ''))
+  //   }
+  // },
   methods: {
     // Search function
     searchTicket() {
@@ -297,19 +330,37 @@ export default {
       const searchDate = searchdateTime[0]
       const searchStart = searchdateTime[1].split('-')[0]
       const searchEnd = searchdateTime[1].split('-')[1]
-      const searchResult = this.allTicketInfoFormat.filter(
+      let searchResult = this.allTicketInfoFormat.filter(
         (ticketInfo) =>
           ticketInfo.date === searchDate &&
           ticketInfo.startTime === searchStart &&
-          ticketInfo.endTime === searchEnd &&
-          ticketInfo.zone === this.inputSeat &&
-          ticketInfo.ticketType === this.inputTicketType
+          ticketInfo.endTime === searchEnd
+        // ticketInfo.zone === this.inputSeat &&
+        // ticketInfo.ticketType === this.inputTicketType
       )
+
+      // If zones are provided and ticketPrice is not 0
+      if (typeof this.eventInfo.ticketPrice === 'object') {
+        searchResult = searchResult.filter(
+          (ticketInfo) => ticketInfo.zone === this.inputSeat
+        )
+      }
+      if (this.eventInfo.discount > 0) {
+        searchResult = searchResult.filter(
+          (ticketInfo) => ticketInfo.ticketType === this.inputTicketType
+        )
+      }
       this.$nextTick().then(() => (this.ticketInfoFormat = searchResult))
     },
     clearSearch() {
       this.inputDateTime = `${this.allTicketInfoFormat[0].date} ${this.allTicketInfoFormat[0].startTime}-${this.allTicketInfoFormat[0].endTime}`
-      this.inputSeat = 'A區'
+      // Set default inputSeat
+      if (typeof this.ticketPrice === 'object') {
+        this.inputSeat = 'A區'
+      } else {
+        this.inputSeat = ''
+      }
+      // this.inputSeat = 'A區'
       this.ticketInfoFormat = [...this.allTicketInfoFormat]
     },
     countQty(accumulatedItems, originalItem) {
