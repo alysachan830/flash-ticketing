@@ -30,12 +30,24 @@
           <td>{{ ticketType(id) }}</td>
           <td>
             <div class="d-flex align-items-center">
-              <a href="#"><span class="material-icons font-base">add</span></a>
+              <!-- <a href="#"><span class="material-icons font-base">add</span></a>
               <p class="text-primary mx-md-12 mx-6 font-m">
                 {{ cartItem[id] }}
               </p>
               <a href="#"
                 ><span class="material-icons font-base">remove</span></a
+              > -->
+              <input
+                v-if="id === editingId"
+                v-model="inputEdit"
+                type="number"
+                class="form-control w-25 me-6"
+              />
+              <p v-else class="text-primary me-6 font-m">
+                {{ cartItem[id] }}
+              </p>
+              <a href="#" @click.prevent="openEdit(id)"
+                ><span class="font-base material-icons"> edit </span></a
               >
             </div>
           </td>
@@ -75,12 +87,21 @@ export default {
   components: {
     // TicketCard,
   },
+  data() {
+    return {
+      editingId: '',
+      inputEdit: 0,
+    }
+  },
   props: {
     cartItem: {
       type: Object,
       required: true,
     },
   },
+  // created() {
+  //   this.inputEdit = this.cartItem
+  // },
   computed: {
     ticketIds() {
       return Object.keys(this.cartItem).filter(
@@ -137,6 +158,10 @@ export default {
       } else {
         return '優惠票'
       }
+    },
+    openEdit(ticketId) {
+      this.editingId = ticketId
+      this.inputEdit = this.cartItem[ticketId]
     },
   },
 }
