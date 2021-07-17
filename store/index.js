@@ -1,9 +1,10 @@
-import { apiClientGetAllEvents } from '@/api/index'
+import { apiClientGetAllEvents, apiClientGetCart } from '@/api/index'
 
 export const state = () => ({
   events: [],
   hotEvents: [],
   newEvents: [],
+  carts: [],
 })
 
 export const actions = {
@@ -15,13 +16,44 @@ export const actions = {
       throw new Error(error)
     }
   },
+  async getCart({ commit }) {
+    try {
+      const cartRes = await apiClientGetCart()
+      // console.log('---- in vuex----')
+      // console.log(cartRes.data.data.carts)
+      commit({ type: 'SetCart', list: cartRes.data.data.carts })
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  // async getEvent({ commit }) {
+  //   try {
+  //     const eventRes = await apiClientGetEvent()
+  //     commit({ type: 'AddAllEvents', list: allEventsRes.data.products })
+  //   } catch (error) {
+  //     throw new Error(error)
+  //   }
+  // },
+
+  // async getEvent({ commit }) {
+  //   try {
+  //     const allEventsRes = await apiClientGetAllEvents()
+  //     commit({ type: 'AddAllEvents', list: allEventsRes.data.products })
+  //   } catch (error) {
+  //     throw new Error(error)
+  //   }
+  // },
 }
 
 export const mutations = {
   AddAllEvents(state, payload) {
     // For objects, Vue cannot detect property addition or deletion. Need to use spread operator for updating object
     // see https://vuex.vuejs.org/zh/guide/mutations.html
-    state.events = [...state.events, ...payload.list]
+    state.events = [...payload.list]
+  },
+  SetCart(state, payload) {
+    state.carts = [...payload.list]
   },
 }
 
@@ -29,4 +61,5 @@ export const getters = {
   allEvents: (state) => state.events,
   hotEvents: (state) => state.events.filter((event) => event.tag === 'hottest'),
   newEvents: (state) => state.events.filter((event) => event.tag === 'newest'),
+  carts: (state) => state.carts,
 }

@@ -11,4 +11,14 @@ export default ({ app }, inject) => {
       confirmButtonText: '關閉',
     })
   })
+
+  inject('showSuccess', (msg) => {
+    Swal.fire({
+      title: msg,
+      // text: 'Do you want to continue',
+      icon: 'success',
+      // showConfirmButton: false,
+      confirmButtonText: '關閉',
+    })
+  })
 }

@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink to="/" class="card border-0 mb-10">
+  <NuxtLink :to="`/event/${id}`" class="card border-0 mb-10">
     <div class="img-wrap rounded-4 mb-4">
       <img
         :src="image"
@@ -7,7 +7,7 @@
         alt="hot event"
       />
     </div>
-    <span class="card-body d-block">
+    <div class="card-body">
       <div class="d-flex justify-content-between mb-lg-6 mb-2">
         <div>
           <h5 class="card-title font-lg-m font-base">
@@ -36,13 +36,17 @@
       <span class="badge font-lg-s font-xs bg-secondary text-black mb-4">
         {{ tag }}
       </span>
-    </span>
+    </div>
   </NuxtLink>
 </template>
 
 <script>
 export default {
   props: {
+    id: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,

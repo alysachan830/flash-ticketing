@@ -42,17 +42,17 @@ const adminRequest = axios.create({
   baseURL: `${apiBaseUrl}/api/${apiPath}/admin/`,
 })
 
-// clientRequest.interceptors.request.use(
-//   function (config) {
-//     return config
-//   },
-//   function (error) {
-//     // Do something with request error
-//     console.log('it has error:')
-//     console.log(error)
-//     return Promise.reject(error)
-//   }
-// )
+clientRequest.interceptors.request.use(
+  function (config) {
+    return config
+  },
+  function (error) {
+    // Do something with request error
+    // console.log('it has error:')
+    // console.log(error)
+    return Promise.reject(error)
+  }
+)
 
 adminRequest.interceptors.request.use(
   function (config) {
@@ -73,6 +73,11 @@ adminRequest.interceptors.request.use(
 // export const apiClientGetProduct = clientGetProduct()
 export const apiClientGetProduct = clientGetProduct
 export const apiClientGetAllEvents = () => clientRequest.get('/products/all')
+export const apiClientGetEvent = (id) => clientRequest.get(`/product/${id}`)
+export const apiClientGetCart = () => clientRequest.get('/cart')
+export const apiClientAddCart = (data) => clientRequest.post('/cart', data)
+export const apiClientUpdateCart = (id, data) =>
+  clientRequest.put(`/cart/${id}`, data)
 // export const apiClientGetProduct = (pageNum) =>
 //   clientRequest.get(`/products?page=${pageNum}`)
 
