@@ -23,7 +23,7 @@
             >
               calendar_today
             </span>
-            2021-06-15 — 2021-07-15
+            2021-08-08 — 2021-08-22
           </p>
           <p>
             <span
@@ -46,94 +46,118 @@
     <!-- Body -->
     <div class="container">
       <!-- Hot events -->
-      <div class="mb-23">
-        <div class="mb-lg-22 mb-18">
-          <div class="mb-14">
-            <h2 class="font-xl mb-4">熱門節目</h2>
-            <p>時刻緊貼潮流，為您帶來最豐富的節目體驗。</p>
+      <client-only>
+        <div class="mb-23">
+          <div class="mb-lg-22 mb-18">
+            <div class="mb-14">
+              <h2 class="font-xl mb-4">熱門節目</h2>
+              <p>時刻緊貼潮流，為您帶來最豐富的節目體驗。</p>
+            </div>
+            <SwiperHotEvents :hot-events="hotEventsSlides"></SwiperHotEvents>
           </div>
-          <SwiperHotEvents :hot-events="hotEvents"></SwiperHotEvents>
-        </div>
-        <!-- Hot events cards -->
-        <div class="row mb-16">
-          <div v-for="n in 8" :key="n" class="col-lg-3 col-6">
-            <EventCard></EventCard>
+          <!-- Hot events cards -->
+          <div class="row mb-16">
+            <div
+              v-for="event in hotEventsCards"
+              :key="event.id"
+              class="col-lg-3 col-6"
+            >
+              <EventCard
+                :title="event.title"
+                :image="event.imageUrl"
+                :date-time="event.dateTime"
+                :tag="event.tag"
+              ></EventCard>
+            </div>
+          </div>
+          <div class="text-center">
+            <button
+              class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
+            >
+              更多節目
+            </button>
           </div>
         </div>
-        <div class="text-center">
-          <button
-            class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
-          >
-            更多節目
-          </button>
-        </div>
-      </div>
+      </client-only>
     </div>
     <!-- New events -->
-    <div class="mb-23">
-      <!-- New event banner -->
-      <a href="#" class="position-relative mb-19">
-        <span class="d-block">
-          <div class="latest-event-banner bg-img"></div>
-          <div
-            class="
-              position-absolute
-              latest-event-title
-              container
-              text-center text-lg-start
-            "
-          >
-            <h2 class="mb-8 font-2xl text-white">
-              夏日狂想曲 —— 莫扎特的交響樂
-            </h2>
-            <div class="mb-12">
-              <p class="me-3 text-white font-l">
-                <span class="material-icons align-text-top me-1 font-l me-3">
-                  calendar_today
-                </span>
-                2021-09-15
-              </p>
-              <p class="text-white font-l">
-                <span class="material-icons align-text-top me-1 font-l me-3">
-                  location_on
-                </span>
-                文化與藝術協會中心音樂廳
-              </p>
+    <client-only>
+      <div class="mb-23">
+        <!-- New event banner -->
+        <a href="#" class="position-relative mb-19">
+          <span class="d-block">
+            <div class="latest-event-banner bg-img"></div>
+            <div
+              class="
+                position-absolute
+                latest-event-title
+                container
+                text-center text-lg-start
+              "
+            >
+              <h2 class="mb-8 font-2xl text-white">
+                夏日序曲 — 莫扎特的交響樂
+              </h2>
+              <div class="mb-12">
+                <p class="me-3 text-white font-l">
+                  <span class="material-icons align-text-top me-1 font-l me-3">
+                    calendar_today
+                  </span>
+                  2021-08-11 - 2021-08-13
+                </p>
+                <p class="text-white font-l">
+                  <span class="material-icons align-text-top me-1 font-l me-3">
+                    location_on
+                  </span>
+                  香港表演藝術大學三樓演奏廳
+                </p>
+              </div>
+              <button class="btn btn-primary btn-lg px-10">搶先購票</button>
             </div>
-            <button class="btn btn-primary btn-lg px-10">搶先購票</button>
+          </span>
+        </a>
+        <!-- New event title -->
+        <div class="mb-14 container">
+          <h2 class="font-xl mb-4">最新節目</h2>
+          <p>搶先體驗最新節目活動。</p>
+        </div>
+        <!-- New events cards -->
+        <div class="container">
+          <div class="row mb-16">
+            <div
+              v-for="event in newEventsCards"
+              :key="event.id"
+              class="col-lg-3 col-6"
+            >
+              <EventCard
+                :title="event.title"
+                :image="event.imageUrl"
+                :date-time="event.dateTime"
+                :tag="event.tag"
+              ></EventCard>
+            </div>
           </div>
-        </span>
-      </a>
-      <!-- New event title -->
-      <div class="mb-14 container">
-        <h2 class="font-xl mb-4">最新節目</h2>
-        <p>搶先體驗最新節目活動。</p>
-      </div>
-      <!-- New events cards -->
-      <div class="container">
-        <div class="row mb-16">
-          <div v-for="n in 8" :key="n" class="col-lg-3 col-6">
-            <EventCard></EventCard>
+          <div class="text-center">
+            <button
+              class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
+            >
+              更多節目
+            </button>
           </div>
         </div>
-        <div class="text-center">
-          <button
-            class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
-          >
-            更多節目
-          </button>
-        </div>
       </div>
-    </div>
+    </client-only>
     <!-- Recommendation -->
     <div class="mb-23 container">
       <div class="mb-19">
         <h2 class="font-xl mb-4">獨家推薦</h2>
         <p>各界知名藝評人為您推薦最高質的節目。</p>
       </div>
-      <div class="mb-16">
-        <articleCard v-for="n in 4" :key="n" class="mb-10"></articleCard>
-      </div>
+      <client-only>
+        <div class="mb-16">
+          <ArticleCard v-for="n in 4" :key="n" class="mb-10"></ArticleCard>
+        </div>
+      </client-only>
       <div class="text-center">
         <button
           class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
@@ -175,35 +199,51 @@
 </template>
 
 <script>
-// import axios from 'axios'
-import { apiClientGetProduct } from '../api/index'
+import Categories from '@/components/user/Categories.vue'
+import EventCard from '@/components/user/EventCard.vue'
+import SwiperHotEvents from '@/components/user/swiper/HotEvents.vue'
+import ArticleCard from '@/components/user/article/ArticleCard.vue'
+
 export default {
-  async asyncData({ env }) {
+  components: {
+    Categories,
+    EventCard,
+    SwiperHotEvents,
+    ArticleCard,
+  },
+  async asyncData(context) {
     try {
-      const eventsRes = await apiClientGetProduct()
-      const events = eventsRes.data.products
+      await context.store.dispatch('getAllEvents')
+      const { hotEvents, newEvents } = context.store.getters
       return {
-        events,
+        hotEvents,
+        newEvents,
       }
-    } catch (err) {
-      console.log(err)
+    } catch (error) {
+      const errorMsg = error.message
       return {
-        err,
+        errorMsg,
       }
     }
   },
   computed: {
-    hotEvents() {
-      const hotEvents = this.events.filter((event) => event.tag === 'hottest')
-      return hotEvents
+    hotEventsSlides() {
+      return this.hotEvents?.slice(0, 4)
+    },
+    hotEventsCards() {
+      return this.hotEvents?.slice(5, this.hotEvents.length + 1)
+    },
+    newEventsCards() {
+      return this.newEvents?.slice(0, Math.floor(this.newEvents.length / 4) * 4)
     },
   },
   mounted() {
     // Error handling
-    if (this.err) {
-      alert('載入資料失敗')
+    if (this.errorMsg) {
+      this.$showError('載入資料失敗')
+      // eslint-disable-next-line no-console
+      console.error(this.errorMsg)
     }
-    console.log(this.events)
   },
 }
 </script>
@@ -225,6 +265,7 @@ export default {
 .latest-event-banner {
   background-image: url('@/assets/images/arindam-mahanta-VEOk8qUl9DU-unsplash.jpg');
   background-position: bottom;
+  background-attachment: fixed;
   height: 720px;
   filter: brightness(0.6);
 }

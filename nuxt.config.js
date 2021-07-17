@@ -32,21 +32,23 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '~plugins/bus.js' },
     { src: '~plugins/v-calendar.js', ssr: false },
     { src: '~plugins/ckeditor.js', ssr: false },
+    { src: '~plugins/sweetAlert.js', ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  // components: true,
-  components: {
-    dirs: [
-      '~/components',
-      '~/components/common',
-      '~/components/admin',
-      '~/components/user',
-      '~/components/user/layout',
-    ],
-  },
+  components: false,
+  // components: {
+  //   dirs: [
+  //     '~/components',
+  //     '~/components/common',
+  //     '~/components/admin',
+  //     '~/components/user',
+  //     '~/components/user/layout',
+  //   ],
+  // },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [

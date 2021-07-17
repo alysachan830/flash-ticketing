@@ -1,15 +1,29 @@
 <template>
   <nav aria-label="Page navigation example">
     <ul class="pagination">
-      <li class="page-item">
+      <li
+        class="page-item"
+        :class="{ disabled: currentPage === 1 }"
+        @click.prevent="turnPage(currentPage - 1)"
+      >
         <a class="page-link" href="#" aria-label="Previous">
           <span class="material-icons font-m"> chevron_left </span>
         </a>
       </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item active"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
+      <li
+        v-for="n in totalPages"
+        :key="n"
+        class="page-item"
+        :class="{ active: n === currentPage }"
+        @click.prevent="turnPage(n)"
+      >
+        <a class="page-link" href="#"> {{ n }} </a>
+      </li>
+      <li
+        class="page-item"
+        :class="{ disabled: currentPage === totalPages }"
+        @click.prevent="turnPage(currentPage + 1)"
+      >
         <a class="page-link" href="#" aria-label="Next">
           <span class="material-icons font-m"> chevron_right </span>
         </a>
@@ -19,7 +33,27 @@
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    totalPages: {
+      type: Number,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      currentPage: 1,
+    }
+  },
+  methods: {
+    turnPage(pageNum) {
+      if (pageNum > this.totalPages || pageNum < 1) return
+      this.currentPage = pageNum
+      window.scrollTo(0, 500)
+      this.$nuxt.$emit('clickPageNum', pageNum)
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
