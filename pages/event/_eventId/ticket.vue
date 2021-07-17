@@ -96,7 +96,11 @@
 </template>
 
 <script>
-import { apiClientGetEvent, apiClientAddCart } from '@/api/index'
+import {
+  apiClientGetEvent,
+  apiClientAddCart,
+  apiClientUpdateCart,
+} from '@/api/index'
 import TicketCard from '@/components/user/ticket/TicketCard.vue'
 
 export default {
@@ -264,8 +268,22 @@ export default {
     })
   },
   methods: {
-    countQty() {
-      const ids = Object.keys(this.tempCart)
+    countQty(accumulatedItems, originalItem) {
+      let ids
+      let updatedItems
+      if ((accumulatedItems, originalItem)) {
+        const newIds = Object.keys(accumulatedItems)
+        // Filter out the replaced items
+        const exisitingIds = Object.keys(originalItem)
+          .filter((key) => !newIds.includes(key))
+          .filter((item) => item.includes('票'))
+        const exisitingItems = {}
+        exisitingIds.forEach((id) => (exisitingItems[id] = originalItem[id]))
+        updatedItems = { ...accumulatedItems, ...exisitingItems }
+        ids = Object.keys(updatedItems)
+      } else {
+        ids = Object.keys(this.tempCart)
+      }
       const totalPrice = ids.reduce((acc, id) => {
         let zone
         let ticketType
@@ -279,26 +297,17 @@ export default {
           ;[zone, ticketType] = id.split(',')
           perTicketPrice = this.eventInfo.ticketPrice
         }
-        console.log(zone, ticketType)
         if (ticketType === '優惠票') {
           perTicketPrice = perTicketPrice * (this.eventInfo.discount / 100)
         }
-        const subTotal = perTicketPrice * this.tempCart[id]
-        // console.log('----perTicketPrice---')
-        // console.log(perTicketPrice)
-        // let subTotal
-        // if (accumulatedItems) {
-        //   subTotal = perTicketPrice * updatedItems[id]
-        // } else {
-        //   subTotal = perTicketPrice * this.tempCart[id]
-        // }
-        console.log('----subTotal---')
-        console.log(subTotal)
-        // console.log(acc)
+        let subTotal
+        if (accumulatedItems) {
+          subTotal = perTicketPrice * updatedItems[id]
+        } else {
+          subTotal = perTicketPrice * this.tempCart[id]
+        }
         return acc + subTotal
       }, 0)
-      console.log('----total price---')
-      console.log(totalPrice)
       const qty = totalPrice / this.eventInfo.price
       return qty
     },
@@ -330,6 +339,7 @@ export default {
           return
         }
         // Check if items in temp cart are already existed in cart
+        const tempCartIds = Object.keys(this.tempCart)
         await this.$store.dispatch('getCart')
         const { carts } = this.$store.getters
         const existingCartItem = carts.find(
@@ -345,7 +355,6 @@ export default {
               qty: this.countQty(),
             },
           }
-          const tempCartIds = Object.keys(this.tempCart)
           tempCartIds.forEach((id) => {
             allData.data[id] = this.tempCart[id]
           })
@@ -356,8 +365,50 @@ export default {
           this.$bus.$emit('clearInputQuantity')
           console.log(addCartRes.data)
           this.$showSuccess('已加入購物車')
+        } else {
+          console.log('之前已有加這 event !')
+          // User has added this event before
+          // Check if this event item contains the same event period
+          // If yes, We have to accumulate the quantity
+          // This approach avoids overwritting the same object key and value that are added in the cart before
+          const allData = {
+            data: {},
+          }
+          tempCartIds.forEach((id) => {
+            if (existingCartItem[id] !== undefined && id !== this.eventId) {
+              console.log('有此時段，要累加！')
+              // This ticket is already in the current cart or it is a free event
+              // If it is a free event, the id will be equal to eventId
+              // Accumulate the quantity
+              allData.data[id] = existingCartItem[id] + this.tempCart[id]
+            } else {
+              console.log('沒有此時段，不用累加！ / 免費活動')
+              // This ticket is new to the current cart or this event is free
+              // Add the key and value to allData
+              allData.data[id] = this.tempCart[id]
+            }
+          })
+          allData.data.qty = this.countQty(allData.data, existingCartItem)
+          allData.data.product_id = this.eventId
+
+          console.log('----all data----')
+          console.log(allData)
+          const updateCartRes = await apiClientUpdateCart(
+            existingCartItem.id,
+            allData
+          )
+
+          // Clear tempCart and all input quantity
+          this.tempCart = {}
+          this.$bus.$emit('clearInputQuantity')
+          console.log(updateCartRes.data)
+          this.$showSuccess('已加入購物車')
         }
-      } catch (error) {}
+      } catch (error) {
+        this.$showError('加入購物車失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
     },
   },
 }

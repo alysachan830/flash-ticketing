@@ -480,7 +480,7 @@ export default {
           // User has added this event before
           // Check if this event item contains the same event period
           // If yes, We have to accumulate the quantity
-          // This approach avoids overwritting the same object key and value that is added in the cart time before
+          // This approach avoids overwritting the same object key and value that are added in the cart before
           const allData = {
             data: {
               // product_id: this.eventId,
