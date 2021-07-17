@@ -67,10 +67,13 @@
           </ul>
         </div>
       </div>
-      <div class="d-flex justify-content-between mb-15">
-        <h3 class="font-l">選擇時段、座位與票種</h3>
-        <button class="btn btn-outline-primary">查看座位區域劃分</button>
+      <!-- <div class="d-flex justify-content-between mb-15"> -->
+      <div class="mb-15">
+        <h3 class="font-l mb-2">選擇時段、座位與票種</h3>
+        <p class="text-muted mb-2 font-s">請到主辦方官方網站查看座位劃分</p>
       </div>
+      <!-- <button class="btn btn-outline-primary">查看座位區域劃分</button> -->
+      <!-- </div> -->
       <p class="text-muted mb-2 font-s">*優惠票適用於學生、長者、殘疾人士</p>
       <!-- Selects -->
       <div class="bg-secondary p-12 rounded-4 mb-md-21 mb-16">
@@ -229,22 +232,12 @@ export default {
     },
   },
   created() {
-    // // Set default inputSeat
-    // if (typeof this.ticketPrice === 'number') {
-    //   this.$nextTick().then(() => (this.inputSeat = ''))
-    // }
-
-    // // Set default input ticketType
-    // if (this.ticketPrice === 0) {
-    //   this.$nextTick().then(() => (this.inputTicketType = ''))
-    // }
-
-    // Set default input ticketType
-    // if (this.ticketPrice === 0) {
-    //   this.inputTicketType = '正價'
-    // }
-
     // Display tickets
+
+    // 3 situations:
+    // - 1. Free event
+    // - 2. Event with fixed price
+    // - 3. Event with different zones and prices
     let allTickets
     if (this.eventInfo.ticketPrice === 0) {
       allTickets = this.eventInfo.dateTime.map((dateTime) => ({
@@ -254,6 +247,32 @@ export default {
         id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime}`,
         ...dateTime,
       }))
+    } else if (typeof this.eventInfo.ticketPrice === 'number') {
+      // if (typeof this.eventInfo.ticketPrice === 'number') {
+      allTickets = this.eventInfo.dateTime
+        .map((dateTime) => {
+          return {
+            zone: '不適用',
+            price: this.eventInfo.ticketPrice,
+            ticketType: '正價票',
+            // id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime},${zone}區,正價票`,
+            id: `${dateTime.timestamp},正價票`,
+            ...dateTime,
+          }
+        })
+        .flat()
+
+      if (this.eventInfo.discount > 0) {
+        const allDiscountTickets = JSON.parse(JSON.stringify(allTickets)).map(
+          (ticket) => {
+            ticket.price = ticket.price * (this.eventInfo.discount / 100)
+            ticket.ticketType = '優惠票'
+            ticket.id = `${ticket.id.split(',')[0]},優惠票`
+            return ticket
+          }
+        )
+        allTickets = [...allTickets, ...allDiscountTickets]
+      }
     } else {
       allTickets = Object.keys(this.eventInfo.ticketPrice)
         .map((zone) => {
@@ -282,6 +301,32 @@ export default {
         allTickets = [...allTickets, ...allDiscountTickets]
       }
     }
+    // allTickets = Object.keys(this.eventInfo.ticketPrice)
+    //   .map((zone) => {
+    //     return this.eventInfo.dateTime.map((dateTime) => {
+    //       return {
+    //         zone: `${zone}區`,
+    //         price: this.eventInfo.ticketPrice[zone],
+    //         ticketType: '正價票',
+    //         // id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime},${zone}區,正價票`,
+    //         id: `${dateTime.timestamp},${zone}區,正價票`,
+    //         ...dateTime,
+    //       }
+    //     })
+    //   })
+    //   .flat()
+
+    // if (this.eventInfo.discount > 0) {
+    //   const allDiscountTickets = JSON.parse(JSON.stringify(allTickets)).map(
+    //     (ticket) => {
+    //       ticket.price = ticket.price * (this.eventInfo.discount / 100)
+    //       ticket.ticketType = '優惠票'
+    //       ticket.id = `${ticket.id.split(',').slice(0, 2).join(',')},優惠票`
+    //       return ticket
+    //     }
+    //   )
+    //   allTickets = [...allTickets, ...allDiscountTickets]
+    // }
 
     // Copy the result since it will be reused in searching function
     this.ticketInfoFormat = allTickets
@@ -388,8 +433,16 @@ export default {
         }
         // const ids = Object.keys(this.tempCart)
         const totalPrice = ids.reduce((acc, id) => {
-          const [zone, ticketType] = id.split(',').slice(1, 3)
-          let perTicketPrice = this.eventInfo.ticketPrice[zone[0]]
+          let perTicketPrice
+          let zone
+          let ticketType
+          if (typeof this.eventInfo.ticketPrice === 'number') {
+            ticketType = id.split(',')[1]
+            perTicketPrice = this.eventInfo.ticketPrice
+          } else {
+            ;[zone, ticketType] = id.split(',').slice(1, 3)
+            perTicketPrice = this.eventInfo.ticketPrice[zone[0]]
+          }
           if (ticketType === '優惠票') {
             perTicketPrice = perTicketPrice * (this.eventInfo.discount / 100)
           }
@@ -473,6 +526,9 @@ export default {
           // Clear tempCart and all input quantity
           this.tempCart = {}
           this.$bus.$emit('clearInputQuantity')
+          if (!addCartRes.data.success) {
+            throw addCartRes.data.message.join()
+          }
           console.log(addCartRes.data)
           this.$showSuccess('已加入購物車')
         } else {
@@ -512,6 +568,9 @@ export default {
           // Clear tempCart and all input quantity
           this.tempCart = {}
           this.$bus.$emit('clearInputQuantity')
+          if (!updateCartRes.data.success) {
+            throw updateCartRes.data.message.join()
+          }
           console.log(updateCartRes.data)
           this.$showSuccess('已加入購物車')
         }

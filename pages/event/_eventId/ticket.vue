@@ -334,6 +334,9 @@ export default {
           // Clear tempCart and all input quantity
           this.tempCart = {}
           this.$bus.$emit('clearInputQuantity')
+          if (!addCartRes.data.success) {
+            throw addCartRes.data.message.join()
+          }
           // console.log(addCartRes.data)
           this.$showSuccess('已加入購物車')
           return
@@ -364,6 +367,9 @@ export default {
           this.tempCart = {}
           this.$bus.$emit('clearInputQuantity')
           console.log(addCartRes.data)
+          if (!addCartRes.data.success) {
+            throw addCartRes.data.message.join()
+          }
           this.$showSuccess('已加入購物車')
         } else {
           console.log('之前已有加這 event !')
@@ -402,6 +408,9 @@ export default {
           this.tempCart = {}
           this.$bus.$emit('clearInputQuantity')
           console.log(updateCartRes.data)
+          if (!updateCartRes.data.success) {
+            throw updateCartRes.data.message.join()
+          }
           this.$showSuccess('已加入購物車')
         }
       } catch (error) {

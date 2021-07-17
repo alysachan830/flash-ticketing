@@ -44,7 +44,9 @@
             <div class="d-flex justify-content-end align-items-center">
               <!-- Nuxt links -->
               <div class="d-lg-flex d-none me-5">
-                <NuxtLink class="font-s text-nowrap text-white me-8" to="events"
+                <NuxtLink
+                  class="font-s text-nowrap text-white me-8"
+                  to="/events/all"
                   >所有節目</NuxtLink
                 >
                 <NuxtLink
