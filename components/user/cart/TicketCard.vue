@@ -10,15 +10,14 @@
     "
   >
     <ul>
-      <li>2021-06-06</li>
-      <li>20:00 - 21:00</li>
+      <li>{{ dateTimeFormat.date }}</li>
+      <li>{{ dateTimeFormat.startTime }} - {{ dateTimeFormat.endTime }}</li>
     </ul>
     <div>Zone A</div>
     <ul>
       <li>成人票</li>
       <li>$320</li>
     </ul>
-    <!-- <p class="ticket-price">成人票 $320</p> -->
     <div class="d-flex justify-content-between align-items-center">
       <a href="#"><span class="material-icons font-base">add</span></a>
       <p class="text-primary mx-md-12 mx-6 font-m">{{ cartItem[ticketId] }}</p>
@@ -46,11 +45,27 @@ export default {
   },
   computed: {
     dateTimeFormat() {
-      //   if (Array.isArray(this.eventInfo.dateTime)) {
-      //     return this.eventInfo.dateTime.map((item) => item.date).join(', ')
-      //   } else {
-      //     return `${this.eventInfo.dateTime.start} - ${this.eventInfo.dateTime.end}`
-      //   }
+      const dateInfo = this.cartItem.product.dateTime
+      if (Array.isArray(dateInfo)) {
+        // 3 types of data if it is an array
+        // e.g:
+        // 1, 1625854073524,A區,正價票
+        // 2. 1625894762703,優惠票
+        // 3. 1625898341971
+        const selectedDateTimestamp = this.ticketId.split(',')[0]
+        const selectedDateObj = dateInfo.find(
+          (item) => `${item.timestamp}` === selectedDateTimestamp
+        )
+        return selectedDateObj
+        // const selectedDate = selectedDateObj.date
+        // const selectedTime = `${selectedDateObj.startTime} - ${selectedDateObj.endTime}`
+      } else {
+        return {
+          startTime: dateInfo.startTime,
+          endTime: dateInfo.endTime,
+          date: `${dateInfo.start} - ${dateInfo.end}`,
+        }
+      }
     },
   },
 }

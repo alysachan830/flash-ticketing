@@ -8,22 +8,72 @@
       ><span class="material-icons"> close </span></a
     > -->
     <h2 class="font-m mb-6">{{ cartItem.product.title }}</h2>
-    <TicketCard
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">日期</th>
+          <th scope="col">時間</th>
+          <th scope="col">座位區域</th>
+          <th scope="col">票種</th>
+          <th scope="col">數量</th>
+          <th scope="col">刪除</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="id in ticketIds" :key="id">
+          <td>{{ dateTimeFormat(id).date }}</td>
+          <td>
+            {{ dateTimeFormat(id).startTime }} -
+            {{ dateTimeFormat(id).endTime }}
+          </td>
+          <td>{{ zone(id) }}</td>
+          <td>{{ ticketType(id) }}</td>
+          <td>
+            <div class="d-flex align-items-center">
+              <a href="#"><span class="material-icons font-base">add</span></a>
+              <p class="text-primary mx-md-12 mx-6 font-m">
+                {{ cartItem[id] }}
+              </p>
+              <a href="#"
+                ><span class="material-icons font-base">remove</span></a
+              >
+            </div>
+          </td>
+          <td>
+            <a href="#">
+              <span class="material-icons font-base">clear</span>
+            </a>
+          </td>
+        </tr>
+        <!-- <tr>
+          <th scope="row">2</th>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td colspan="2">Larry the Bird</td>
+          <td>@twitter</td>
+        </tr> -->
+      </tbody>
+    </table>
+    <!-- <TicketCard
       v-for="id in ticketIds"
       :key="id"
       :ticket-id="id"
       :cart-item="cartItem"
       :ticket-qty="cartItem[id]"
-    ></TicketCard>
+    ></TicketCard> -->
   </div>
 </template>
 
 <script>
-import TicketCard from '@/components/user/cart/TicketCard.vue'
+// import TicketCard from '@/components/user/cart/TicketCard.vue'
 
 export default {
   components: {
-    TicketCard,
+    // TicketCard,
   },
   props: {
     cartItem: {
@@ -43,6 +93,50 @@ export default {
           item !== 'total'
       )
       // return ticketKeys.map( key => this.cartItem[key])
+    },
+  },
+  methods: {
+    dateTimeFormat(ticketId) {
+      const dateInfo = this.cartItem.product.dateTime
+      if (Array.isArray(dateInfo)) {
+        // 3 types of data if it is an array
+        // e.g:
+        // 1, 1625854073524,A區,正價票
+        // 2. 1625894762703,優惠票
+        // 3. 1625898341971
+        const selectedDateTimestamp = ticketId.split(',')[0]
+        const selectedDateObj = dateInfo.find(
+          (item) => `${item.timestamp}` === selectedDateTimestamp
+        )
+        return selectedDateObj
+        // const selectedDate = selectedDateObj.date
+        // const selectedTime = `${selectedDateObj.startTime} - ${selectedDateObj.endTime}`
+      } else {
+        return {
+          startTime: dateInfo.startTime,
+          endTime: dateInfo.endTime,
+          date: `${dateInfo.start} - ${dateInfo.end}`,
+        }
+      }
+    },
+    zone(ticketId) {
+      if (typeof this.cartItem.product.ticketPrice !== 'object') {
+        return '-'
+      }
+      // Possible format:
+      // 1. MeDbuK4uIRJuTqp_STC,A區,正價票
+      // 2. 1625854073524,A區,正價票
+      return ticketId.split(',')[1]
+    },
+    ticketType(ticketId) {
+      if (this.cartItem.product.discount === 0) {
+        return '正價票'
+      }
+      if (ticketId.includes('正價票')) {
+        return '正價票'
+      } else {
+        return '優惠票'
+      }
     },
   },
 }
