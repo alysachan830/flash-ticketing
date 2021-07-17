@@ -8,7 +8,13 @@
       ><span class="material-icons"> close </span></a
     > -->
     <h2 class="font-m mb-6">{{ cartItem.product.title }}</h2>
-    <TicketCard v-for="id in ticketIds" :key="id" :ticketId="id"></TicketCard>
+    <TicketCard
+      v-for="id in ticketIds"
+      :key="id"
+      :ticket-id="id"
+      :cart-item="cartItem"
+      :ticket-qty="cartItem[id]"
+    ></TicketCard>
   </div>
 </template>
 

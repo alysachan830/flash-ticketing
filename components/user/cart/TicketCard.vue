@@ -21,7 +21,7 @@
     <!-- <p class="ticket-price">成人票 $320</p> -->
     <div class="d-flex justify-content-between align-items-center">
       <a href="#"><span class="material-icons font-base">add</span></a>
-      <p class="text-primary mx-md-12 mx-6 font-m">1</p>
+      <p class="text-primary mx-md-12 mx-6 font-m">{{ cartItem[ticketId] }}</p>
       <a href="#"><span class="material-icons font-base">remove</span></a>
     </div>
     <a href="#"><span class="material-icons font-base">clear</span></a>
@@ -34,6 +34,23 @@ export default {
     ticketId: {
       type: String,
       required: true,
+    },
+    cartItem: {
+      type: Object,
+      required: true,
+    },
+    // ticketQty: {
+    //   type: Number,
+    //   required: true,
+    // },
+  },
+  computed: {
+    dateTimeFormat() {
+      //   if (Array.isArray(this.eventInfo.dateTime)) {
+      //     return this.eventInfo.dateTime.map((item) => item.date).join(', ')
+      //   } else {
+      //     return `${this.eventInfo.dateTime.start} - ${this.eventInfo.dateTime.end}`
+      //   }
     },
   },
 }
