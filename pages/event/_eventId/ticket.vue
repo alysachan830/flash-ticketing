@@ -318,29 +318,30 @@ export default {
           return
         }
         // If the event is free, then we can directly add that ticket to cart
-        if (this.eventInfo.ticketPrice === 0) {
-          const allData = {
-            data: {
-              product_id: this.eventId,
-              qty: 0, // Because it is free, qty should be 0, so the total will be counted as 0
-            },
-          }
+        // if (this.eventInfo.ticketPrice === 0) {
+        //   const allData = {
+        //     data: {
+        //       product_id: this.eventId,
+        //       qty: 0, // Because it is free, qty should be 0, so the total will be counted as 0
+        //     },
+        //   }
 
-          // User's input ticket quantity
-          allData.data[this.eventId] = this.tempCart[this.eventId]
-          console.log(allData)
-          const addCartRes = await apiClientAddCart(allData)
-          console.log(addCartRes.data)
-          // Clear tempCart and all input quantity
-          this.tempCart = {}
-          this.$bus.$emit('clearInputQuantity')
-          if (!addCartRes.data.success) {
-            throw addCartRes.data.message.join()
-          }
-          // console.log(addCartRes.data)
-          this.$showSuccess('已加入購物車')
-          return
-        }
+        //   // User's input ticket quantity
+        //   allData.data[this.eventId] = this.tempCart[this.eventId]
+        //   console.log(allData)
+        //   const addCartRes = await apiClientAddCart(allData)
+        //   console.log(addCartRes.data)
+        //   // Clear tempCart and all input quantity
+        //   this.tempCart = {}
+        //   this.$bus.$emit('clearInputQuantity')
+        //   if (!addCartRes.data.success) {
+        //     throw addCartRes.data.message.join()
+        //   }
+        //   // console.log(addCartRes.data)
+        //   this.$showSuccess('已加入購物車')
+        //   return
+        // }
+
         // Check if items in temp cart are already existed in cart
         const tempCartIds = Object.keys(this.tempCart)
         await this.$store.dispatch('getCart')
@@ -352,6 +353,29 @@ export default {
         // User has not added this event before
         if (!existingCartItem) {
           console.log('還沒有此活動!')
+          if (this.eventInfo.ticketPrice === 0) {
+            const allData = {
+              data: {
+                product_id: this.eventId,
+                qty: 0, // Because it is free, qty should be 0, so the total will be counted as 0
+              },
+            }
+
+            // User's input ticket quantity
+            allData.data[this.eventId] = this.tempCart[this.eventId]
+            console.log(allData)
+            const addCartRes = await apiClientAddCart(allData)
+            console.log(addCartRes.data)
+            // Clear tempCart and all input quantity
+            this.tempCart = {}
+            this.$bus.$emit('clearInputQuantity')
+            if (!addCartRes.data.success) {
+              throw addCartRes.data.message.join()
+            }
+            // console.log(addCartRes.data)
+            this.$showSuccess('已加入購物車')
+            return
+          }
           const allData = {
             data: {
               product_id: this.eventId,
@@ -380,22 +404,32 @@ export default {
           const allData = {
             data: {},
           }
-          tempCartIds.forEach((id) => {
-            if (existingCartItem[id] !== undefined && id !== this.eventId) {
-              console.log('有此時段，要累加！')
-              // This ticket is already in the current cart or it is a free event
-              // If it is a free event, the id will be equal to eventId
-              // Accumulate the quantity
-              allData.data[id] = existingCartItem[id] + this.tempCart[id]
-            } else {
-              console.log('沒有此時段，不用累加！ / 免費活動')
-              // This ticket is new to the current cart or this event is free
-              // Add the key and value to allData
-              allData.data[id] = this.tempCart[id]
-            }
-          })
-          allData.data.qty = this.countQty(allData.data, existingCartItem)
-          allData.data.product_id = this.eventId
+          // If it is a free event, the id will be equal to eventId
+          if (tempCartIds[0] === this.eventId) {
+            console.log('free event')
+            console.log(existingCartItem[this.eventId])
+            allData.data[this.eventId] =
+              existingCartItem[this.eventId] + this.tempCart[this.eventId]
+            allData.data.qty = 0 // Qty has to be 0 because the event is free
+            allData.data.product_id = this.eventId
+          } else {
+            tempCartIds.forEach((id) => {
+              // existingCartItem[id] !== undefined && id !== this.eventId
+              if (existingCartItem[id] !== undefined) {
+                console.log('有此票種或zone，要累加！')
+                // This ticket is already in the current cart
+                // Accumulate the quantity
+                allData.data[id] = existingCartItem[id] + this.tempCart[id]
+              } else {
+                console.log('沒有此票種或zone，不用累加！')
+                // This ticket is new to the current cart or this event is free
+                // Add the key and value to allData
+                allData.data[id] = this.tempCart[id]
+              }
+            })
+            allData.data.qty = this.countQty(allData.data, existingCartItem)
+            allData.data.product_id = this.eventId
+          }
 
           console.log('----all data----')
           console.log(allData)
