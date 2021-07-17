@@ -62,10 +62,27 @@
         </tbody>
       </table> -->
       <!-- Card -->
-      <div
+      <!-- <div v-for="item in carts" :key="item.id"> -->
+      <CartCard
+        v-for="item in carts"
+        :key="item.id"
+        :cart-item="item"
+      ></CartCard>
+      <!-- </div> -->
+      <!-- <div
         v-for="n in 8"
         :key="n"
-        class="card-bg p-10 mb-6 rounded-3 border position-relative"
+        class="
+          card-bg
+          pt-10
+          pb-10
+          ps-10
+          pe-md-20 pe-10
+          mb-6
+          rounded-3
+          border
+          position-relative
+        "
       >
         <a class="remove-btn position-absolute" href="#"
           ><span class="material-icons"> close </span></a
@@ -84,11 +101,19 @@
               class="d-flex justify-content-between justify-content-md-start"
             >
               <p class="ticket-price">成人票 $320</p>
-              <p class="col-md-2 font-m text-primary">x 1</p>
+              <div class="d-flex justify-content-between">
+                <a href="#"
+                  ><span class="material-icons font-base">add</span></a
+                >
+                <p class="col-md-2 font-m text-primary mx-8">1</p>
+                <a href="#"
+                  ><span class="material-icons font-base">remove</span></a
+                >
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="d-flex justify-content-end mb-18">
         <Pagination></Pagination>
       </div>
@@ -116,7 +141,35 @@
 </template>
 
 <script>
-export default {}
+import CartCard from '@/components/user/cart/CartCard.vue'
+import Pagination from '@/components/common/Pagination.vue'
+
+export default {
+  components: {
+    CartCard,
+    Pagination,
+  },
+  async asyncData({ store }) {
+    try {
+      await store.dispatch('getCart')
+      const { carts } = store.getters
+      return { carts }
+    } catch (error) {
+      const errorMsg = error.message
+      return {
+        errorMsg,
+      }
+    }
+  },
+  mounted() {
+    // Error handling
+    if (this.errorMsg) {
+      this.$showError('載入資料失敗')
+      // eslint-disable-next-line no-console
+      console.error(this.errorMsg)
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -154,33 +207,24 @@ export default {}
   }
 }
 
-.card-bg {
-  background: #fafafa;
+// .remove-btn {
+//   top: 12px;
+//   right: 12px;
+// }
 
-  transition: filter 0.3s;
-  &:hover {
-    filter: drop-shadow(0.5px 0.5px 3px #e0e0e0);
-  }
-}
+// .ticket-price {
+//   margin-right: 0;
 
-.remove-btn {
-  top: 12px;
-  right: 12px;
-}
+//   @include media-breakpoint-up(md) {
+//     margin-right: 40px;
+//   }
 
-.ticket-price {
-  margin-right: 0;
+//   @include media-breakpoint-up(lg) {
+//     margin-right: 100px;
+//   }
 
-  @include media-breakpoint-up(md) {
-    margin-right: 40px;
-  }
-
-  @include media-breakpoint-up(lg) {
-    margin-right: 100px;
-  }
-
-  @include media-breakpoint-up(xl) {
-    margin-right: 152px;
-  }
-}
+//   @include media-breakpoint-up(xl) {
+//     margin-right: 152px;
+//   }
+// }
 </style>
