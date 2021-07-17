@@ -8,7 +8,7 @@
           ticketing
         </h1>
       </NuxtLink>
-      <p class="text-white font-s">此網站僅作學習用途，並非無任何商業用途。</p>
+      <p class="text-white font-s">此網站僅作學習用途，無任何商業用途。</p>
       <div class="d-lg-block d-none">
         <!-- Nuxt links -->
         <div class="d-flex">
