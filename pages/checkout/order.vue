@@ -121,6 +121,10 @@ export default {
   },
   methods: {
     async applyCoupon() {
+      if (this.carts.length === 0) {
+        this.$showError('目前購物車是空')
+        return
+      }
       if (
         this.carts.length > 0 &&
         this.carts[0].coupon.code === this.couponCode
