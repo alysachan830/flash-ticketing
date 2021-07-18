@@ -1,12 +1,5 @@
 <template>
-  <!-- pt-10
-      pb-10
-      ps-10
-      pe-md-20 pe-10 -->
   <div class="card-bg mb-15 p-10 rounded-3 border">
-    <!-- <a class="remove-btn position-absolute" href="#"
-      ><span class="material-icons"> close </span></a
-    > -->
     <h2 class="font-m mb-6">{{ cartItem.product.title }}</h2>
     <table class="table">
       <thead>
@@ -15,7 +8,6 @@
           <th scope="col">時間</th>
           <th scope="col" class="text-nowrap">座位區域</th>
           <th scope="col" class="text-nowrap">價錢</th>
-          <!-- <th scope="col" class="text-nowrap">價錢</th> -->
           <th scope="col">數量</th>
           <th scope="col" :class="{ 'd-none': editingId !== '' }"></th>
         </tr>
@@ -34,16 +26,8 @@
               <li>{{ ticketType(id)[1] }}</li>
             </ul>
           </td>
-          <!-- <td class="font-s font-md-base">$1000</td> -->
           <td class="font-s font-md-base" style="width: 20%">
             <div :ref="id" class="d-flex align-items-center">
-              <!-- <a href="#"><span class="material-icons font-base">add</span></a>
-              <p class="text-primary mx-md-12 mx-6 font-m">
-                {{ cartItem[id] }}
-              </p>
-              <a href="#"
-                ><span class="material-icons font-base">remove</span></a
-              > -->
               <input
                 v-if="id === editingId"
                 v-model="inputQty"
@@ -71,37 +55,15 @@
             </a>
           </td>
         </tr>
-        <!-- <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td colspan="2">Larry the Bird</td>
-          <td>@twitter</td>
-        </tr> -->
       </tbody>
     </table>
-    <!-- <TicketCard
-      v-for="id in ticketIds"
-      :key="id"
-      :ticket-id="id"
-      :cart-item="cartItem"
-      :ticket-qty="cartItem[id]"
-    ></TicketCard> -->
   </div>
 </template>
 
 <script>
 import { apiClientUpdateCart } from '@/api/index'
-// import TicketCard from '@/components/user/cart/TicketCard.vue'
 
 export default {
-  components: {
-    // TicketCard,
-  },
   props: {
     cartItem: {
       type: Object,
@@ -213,7 +175,6 @@ export default {
       return updatedTotal
     },
     countQtyEdit(ticketId) {
-      // let qty
       const ticketIdInfo = ticketId.split(',')
       switch (ticketIdInfo.length) {
         case 1: {
@@ -262,14 +223,6 @@ export default {
           return qty
         }
       }
-      // if(ticketIdInfo.length === 1){
-      //   return 0
-      // }else if()
-      // const [id, zone, ticketType] = ticketId.split(',')
-      // if (zone === undefined && ticketType === undefined) {
-      //   return 0
-      // }
-      // if()
     },
     async updateCart(ticketId) {
       if (this.inputQty === this.cartItem[ticketId]) {
