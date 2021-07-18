@@ -38,34 +38,38 @@
           </div>
         </div>
       </div>
-      <CartCard
-        v-for="item in carts"
-        :key="item.id"
-        :cart-item="item"
-      ></CartCard>
-      <div class="d-flex justify-content-end mb-18">
-        <Pagination></Pagination>
-      </div>
-      <!-- Total -->
-      <div class="row justify-content-between mb-21">
-        <div
-          class="
-            col-md-3
-            d-flex
-            justify-content-between
-            align-items-end
-            mb-6 mb-md-0
-          "
-        >
-          <p class="font-l">總計</p>
-          <p class="font-l fw-bold text-primary">
-            ${{ cartFinalTotal.toFixed(1) }}
-          </p>
+      <div v-if="carts.length > 0">
+        <CartCard
+          v-for="item in carts"
+          :key="item.id"
+          :cart-item="item"
+        ></CartCard>
+        <!-- </div> -->
+        <div class="d-flex justify-content-end mb-18">
+          <Pagination></Pagination>
         </div>
-        <div class="col-md-2 col-4 offset-8 offset-md-0">
-          <a href="/checkout/form" class="btn btn-primary w-100">確認</a>
+        <!-- Total -->
+        <div class="row justify-content-between mb-21">
+          <div
+            class="
+              col-md-3
+              d-flex
+              justify-content-between
+              align-items-end
+              mb-6 mb-md-0
+            "
+          >
+            <p class="font-l">總計</p>
+            <p class="font-l fw-bold text-primary">
+              ${{ cartFinalTotal.toFixed(1) }}
+            </p>
+          </div>
+          <div class="col-md-2 col-4 offset-8 offset-md-0">
+            <a href="/checkout/form" class="btn btn-primary w-100">確認</a>
+          </div>
         </div>
       </div>
+      <p v-else>目前購物車為空</p>
     </div>
     <div></div>
   </div>
