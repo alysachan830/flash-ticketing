@@ -129,7 +129,7 @@
           "
         >
           <p class="font-l">總計</p>
-          <p class="font-l fw-bold text-primary">$1,803</p>
+          <p class="font-l fw-bold text-primary">{{ cartFinalTotal }}</p>
         </div>
         <div class="col-md-2 col-4 offset-8 offset-md-0">
           <a href="/checkout/form" class="btn btn-primary w-100">確認</a>
@@ -152,8 +152,8 @@ export default {
   async asyncData({ store }) {
     try {
       await store.dispatch('getCart')
-      const { carts } = store.getters
-      return { carts }
+      const { carts, cartFinalTotal } = store.getters
+      return { carts, cartFinalTotal }
     } catch (error) {
       const errorMsg = error.message
       return {
