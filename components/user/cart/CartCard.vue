@@ -79,18 +79,22 @@ export default {
   },
   computed: {
     ticketIds() {
-      return Object.keys(this.cartItem).filter(
-        (item) =>
-          item !== 'final_total' &&
-          item !== 'id' &&
-          item !== 'product' &&
-          item !== 'product_id' &&
-          item !== 'qty' &&
-          item !== 'total' &&
-          item !== 'coupon'
-        // if user applies coupon, a 'coupon' object will be automatically added to the cart item,
-        // so we have to filter out 'coupon'
-      )
+      return Object.keys(this.cartItem)
+        .filter(
+          (item) =>
+            item !== 'final_total' &&
+            item !== 'id' &&
+            item !== 'product' &&
+            item !== 'product_id' &&
+            item !== 'qty' &&
+            item !== 'total' &&
+            item !== 'coupon'
+          // if user applies coupon, a 'coupon' object will be automatically added to the cart item,
+          // so we have to filter out 'coupon'
+        )
+        .filter((item) => this.cartItem[item] !== 0)
+      // Filter out ticket with 0 qty
+      // tickets with 0 qty are tickets that were once added to cart but then deleted by the user
     },
   },
   methods: {
