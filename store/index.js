@@ -21,7 +21,7 @@ export const actions = {
       const cartRes = await apiClientGetCart()
       // console.log('---- in vuex----')
       // console.log(cartRes.data.data.carts)
-      commit({ type: 'SetCart', list: cartRes.data.data.carts })
+      commit({ type: 'SetCart', cartInfo: cartRes.data.data })
     } catch (error) {
       throw new Error(error)
     }
@@ -53,7 +53,8 @@ export const mutations = {
     state.events = [...payload.list]
   },
   SetCart(state, payload) {
-    state.carts = [...payload.list]
+    state.cartFinalTotal = payload.cartInfo.final_total
+    state.carts = [...payload.cartInfo.carts]
   },
 }
 
@@ -62,4 +63,5 @@ export const getters = {
   hotEvents: (state) => state.events.filter((event) => event.tag === 'hottest'),
   newEvents: (state) => state.events.filter((event) => event.tag === 'newest'),
   carts: (state) => state.carts,
+  cartFinalTotal: (state) => state.cartFinalTotal,
 }
