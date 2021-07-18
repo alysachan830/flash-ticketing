@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-18" ref="cartPage">
+  <div ref="cartPage" class="pt-18">
     <div class="container">
       <!-- Stepper -->
       <div class="position-relative mb-23">
@@ -19,14 +19,14 @@
       </div>
       <!-- Coupon button -->
       <div class="row mb-18 justify-content-between align-items-end">
-        <div class="col-4">
+        <div class="col-md-6 col-lg-4">
           <label for="coupon" class="mb-2">優惠劵</label>
           <ul class="form-text mb-6 font-xs">
             <li>*套用優惠劵「flash2021」，可享有80%折扣優惠</li>
             <li>*優惠劵只能使用一次</li>
           </ul>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" v-model="couponCode" />
+            <input v-model="couponCode" type="text" class="form-control" />
             <button
               id="coupon"
               class="btn btn-primary"
@@ -106,6 +106,7 @@ export default {
       } catch (error) {
         const errorMsg = error.message
         this.$showError('載入購物車失敗')
+        // eslint-disable-next-line no-console
         console.log(errorMsg)
       }
     })
@@ -135,9 +136,6 @@ export default {
         })
         if (!applyCouponRes.data.success) {
           throw applyCouponRes.data.message
-          // this.$showError(applyCouponRes.data.message)
-          // // eslint-disable-next-line no-console
-          // console.log(applyCouponRes.data)
         }
         this.$showSuccess('成功套用優惠劵')
         // Update total price
