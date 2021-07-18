@@ -161,6 +161,19 @@ export default {
       }
     }
   },
+  created() {
+    this.$nuxt.$on('refreshCart', async () => {
+      try {
+        await this.$store.dispatch('getCart')
+        const { carts } = this.$store.getters
+        this.carts = carts
+      } catch (error) {
+        const errorMsg = error.message
+        this.$showError('載入購物車失敗')
+        console.log(errorMsg)
+      }
+    })
+  },
   mounted() {
     // Error handling
     if (this.errorMsg) {
@@ -168,12 +181,6 @@ export default {
       // eslint-disable-next-line no-console
       console.error(this.errorMsg)
     }
-
-    // this.$refs.cartPage.addEventListener('click', (e) => {
-    //   if (e.target.nodeName !== 'INPUT') {
-    //     this.$bus.$emit('closeEdit')
-    //   }
-    // })
   },
 }
 </script>

@@ -49,7 +49,7 @@
                 v-model="inputQty"
                 type="number"
                 class="edit-input form-control w-25 me-0"
-                @blur="closeEdit(id)"
+                @blur="updateCart(id)"
               />
               <p v-else class="text-primary me-6 font-base font-md-m">
                 {{ cartItem[id] }}
@@ -95,6 +95,7 @@
 </template>
 
 <script>
+import { apiClientUpdateCart } from '@/api/index'
 // import TicketCard from '@/components/user/cart/TicketCard.vue'
 
 export default {
@@ -113,9 +114,6 @@ export default {
       inputQty: 0,
     }
   },
-  // created() {
-  //   this.inputQty = this.cartItem
-  // },
   computed: {
     ticketIds() {
       return Object.keys(this.cartItem).filter(
@@ -127,11 +125,7 @@ export default {
           item !== 'qty' &&
           item !== 'total'
       )
-      // return ticketKeys.map( key => this.cartItem[key])
     },
-  },
-  created() {
-    // this.$bus.$on('closeEdit', () => console.log('close!'))
   },
   methods: {
     dateTimeFormat(ticketId) {
@@ -147,8 +141,6 @@ export default {
           (item) => `${item.timestamp}` === selectedDateTimestamp
         )
         return selectedDateObj
-        // const selectedDate = selectedDateObj.date
-        // const selectedTime = `${selectedDateObj.startTime} - ${selectedDateObj.endTime}`
       } else {
         return {
           startTime: dateInfo.startTime,
@@ -195,19 +187,6 @@ export default {
           return ['正價票', `$${price}`]
         }
       }
-      // if (this.cartItem.product.discount === 0) {
-      //   return ['正價票', `$${this.cartItem.product.price}`]
-      // }
-      // if (ticketId.includes('正價票')) {
-      //   return ['正價票', `$${this.cartItem.product.price}`]
-      // } else {
-      //   return [
-      //     '優惠票',
-      //     `$${
-      //       this.cartItem.product.price * (this.cartItem.product.discount / 100)
-      //     }`,
-      //   ]
-      // }
     },
     openEdit(ticketId) {
       this.editingId = ticketId
@@ -289,7 +268,13 @@ export default {
       // }
       // if()
     },
-    closeEdit(ticketId) {
+    async updateCart(ticketId) {
+      if (this.inputQty === this.cartItem[ticketId]) {
+        console.log('no changes!')
+        // Clear input
+        this.editingId = ''
+        return
+      }
       const allData = {
         data: {
           product_id: this.cartItem.id,
@@ -298,6 +283,24 @@ export default {
       }
       allData.data[ticketId] = this.inputQty
       console.log(allData)
+
+      try {
+        const updateCartRes = await apiClientUpdateCart(
+          this.cartItem.id,
+          allData
+        )
+        console.log('---- API -----')
+        console.log(updateCartRes.data)
+        if (!updateCartRes.data.success) {
+          throw updateCartRes.data.message.join()
+        }
+        this.$nuxt.$emit('refreshCart')
+        this.$showSuccess('已更新購物車')
+      } catch (error) {
+        this.$showError('加入購物車失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
 
       // Clear input
       this.editingId = ''
