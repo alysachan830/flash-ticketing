@@ -13,23 +13,23 @@
         <tr>
           <th scope="col">日期</th>
           <th scope="col">時間</th>
-          <th scope="col">座位區域</th>
-          <th scope="col">票種</th>
+          <th scope="col" class="text-nowrap">座位區域</th>
+          <th scope="col" class="text-nowrap">票種</th>
           <th scope="col">數量</th>
-          <th scope="col">刪除</th>
+          <th scope="col" :class="{ 'd-none': editingId !== '' }"></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="id in ticketIds" :key="id">
-          <td>{{ dateTimeFormat(id).date }}</td>
-          <td>
+          <td class="font-s font-md-base">{{ dateTimeFormat(id).date }}</td>
+          <td class="font-s font-md-base">
             {{ dateTimeFormat(id).startTime }} -
             {{ dateTimeFormat(id).endTime }}
           </td>
-          <td>{{ zone(id) }}</td>
-          <td>{{ ticketType(id) }}</td>
-          <td>
-            <div class="d-flex align-items-center">
+          <td class="font-s font-md-base">{{ zone(id) }}</td>
+          <td class="font-s font-md-base">{{ ticketType(id) }}</td>
+          <td class="font-s font-md-base" style="width: 20%">
+            <div :ref="id" class="d-flex align-items-center">
               <!-- <a href="#"><span class="material-icons font-base">add</span></a>
               <p class="text-primary mx-md-12 mx-6 font-m">
                 {{ cartItem[id] }}
@@ -41,17 +41,24 @@
                 v-if="id === editingId"
                 v-model="inputEdit"
                 type="number"
-                class="form-control w-25 me-6"
+                class="edit-input form-control w-25 me-0"
+                @blur="closeEdit"
               />
-              <p v-else class="text-primary me-6 font-m">
+              <p v-else class="text-primary me-6 font-base font-md-m">
                 {{ cartItem[id] }}
               </p>
-              <a href="#" @click.prevent="openEdit(id)"
+              <a
+                href="#"
+                @click.prevent="openEdit(id)"
+                :class="{ 'd-none': editingId !== '' }"
                 ><span class="font-base material-icons"> edit </span></a
               >
             </div>
           </td>
-          <td>
+          <td
+            class="font-s font-md-base"
+            :class="{ 'd-none': editingId !== '' }"
+          >
             <a href="#">
               <span class="material-icons font-base">clear</span>
             </a>
@@ -87,17 +94,17 @@ export default {
   components: {
     // TicketCard,
   },
-  data() {
-    return {
-      editingId: '',
-      inputEdit: 0,
-    }
-  },
   props: {
     cartItem: {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      editingId: '',
+      inputEdit: 0,
+    }
   },
   // created() {
   //   this.inputEdit = this.cartItem
@@ -115,6 +122,9 @@ export default {
       )
       // return ticketKeys.map( key => this.cartItem[key])
     },
+  },
+  created() {
+    // this.$bus.$on('closeEdit', () => console.log('close!'))
   },
   methods: {
     dateTimeFormat(ticketId) {
@@ -162,12 +172,26 @@ export default {
     openEdit(ticketId) {
       this.editingId = ticketId
       this.inputEdit = this.cartItem[ticketId]
+      // Since the input is rendered based on v-if,
+      // we can only get access to the input node,
+      // after the input is rendered on the page
+      this.$nextTick().then(() => {
+        this.$refs[ticketId][0].firstChild.focus()
+      })
+    },
+    closeEdit() {
+      this.editingId = ''
+      console.log('blur!')
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.edit-input {
+  width: 60px !important;
+}
+
 .card-bg {
   background: #fafafa;
 

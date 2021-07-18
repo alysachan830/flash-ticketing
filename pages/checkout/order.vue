@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-18">
+  <div class="pt-18" ref="cartPage">
     <div class="container">
       <!-- Stepper -->
       <div class="position-relative mb-23">
@@ -168,6 +168,12 @@ export default {
       // eslint-disable-next-line no-console
       console.error(this.errorMsg)
     }
+
+    // this.$refs.cartPage.addEventListener('click', (e) => {
+    //   if (e.target.nodeName !== 'INPUT') {
+    //     this.$bus.$emit('closeEdit')
+    //   }
+    // })
   },
 }
 </script>
