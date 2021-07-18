@@ -167,19 +167,47 @@ export default {
       return ticketId.split(',')[1]
     },
     ticketType(ticketId) {
-      if (this.cartItem.product.discount === 0) {
-        return ['正價票', `$${this.cartItem.product.price}`]
+      const ticketIdInfo = ticketId.split(',')
+      switch (ticketIdInfo.length) {
+        case 1: {
+          return ['正價票', `$${this.cartItem.product.price}`]
+        }
+        case 2: {
+          if (ticketIdInfo[1] === '正價票') {
+            return ['正價票', `$${this.cartItem.product.price}`]
+          } else {
+            return [
+              '優惠票',
+              `$${
+                this.cartItem.product.price *
+                (this.cartItem.product.discount / 100)
+              }`,
+            ]
+          }
+        }
+        case 3: {
+          const zone = ticketIdInfo[1][0]
+          let price = this.cartItem.product.ticketPrice[zone]
+          if (ticketIdInfo[2] === '優惠票') {
+            price = price * (this.cartItem.product.discount / 100)
+            return ['優惠票', `$${price}`]
+          }
+          return ['正價票', `$${price}`]
+        }
       }
-      if (ticketId.includes('正價票')) {
-        return ['正價票', `$${this.cartItem.product.price}`]
-      } else {
-        return [
-          '優惠票',
-          `$${
-            this.cartItem.product.price * (this.cartItem.product.discount / 100)
-          }`,
-        ]
-      }
+      // if (this.cartItem.product.discount === 0) {
+      //   return ['正價票', `$${this.cartItem.product.price}`]
+      // }
+      // if (ticketId.includes('正價票')) {
+      //   return ['正價票', `$${this.cartItem.product.price}`]
+      // } else {
+      //   return [
+      //     '優惠票',
+      //     `$${
+      //       this.cartItem.product.price * (this.cartItem.product.discount / 100)
+      //     }`,
+      //   ]
+      // }
     },
     openEdit(ticketId) {
       this.editingId = ticketId
@@ -227,6 +255,30 @@ export default {
           console.log('qty => ' + qty)
           return qty
         }
+        case 3: {
+          console.log('--- in case 3---')
+          const ticketType = ticketIdInfo[2]
+          const zone = ticketIdInfo[1][0]
+          let perTicketPrice
+          perTicketPrice = this.cartItem.product.ticketPrice[zone]
+          console.log('perTicketPrice with zone => ' + perTicketPrice)
+          if (ticketType === '優惠票') {
+            perTicketPrice =
+              perTicketPrice * (this.cartItem.product.discount / 100)
+            console.log(
+              '優惠票, DISCOUNT: ' + this.cartItem.product.discount / 100
+            )
+            console.log(perTicketPrice)
+          } else {
+            perTicketPrice = this.cartItem.product.price
+          }
+          console.log('---- before go counting ----')
+          console.log('perTicketPrice => ' + perTicketPrice)
+          const updatedTotal = this.countPrice(ticketId, perTicketPrice)
+          const qty = updatedTotal / this.cartItem.product.price
+          console.log('qty => ' + qty)
+          return qty
+        }
       }
       // if(ticketIdInfo.length === 1){
       //   return 0
@@ -244,7 +296,7 @@ export default {
           qty: this.countQtyEdit(ticketId),
         },
       }
-      allData[ticketId] = this.inputQty
+      allData.data[ticketId] = this.inputQty
       console.log(allData)
 
       // Clear input
