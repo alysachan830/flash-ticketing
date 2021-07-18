@@ -14,7 +14,8 @@
           <th scope="col">日期</th>
           <th scope="col">時間</th>
           <th scope="col" class="text-nowrap">座位區域</th>
-          <th scope="col" class="text-nowrap">票種</th>
+          <th scope="col" class="text-nowrap">價錢</th>
+          <!-- <th scope="col" class="text-nowrap">價錢</th> -->
           <th scope="col">數量</th>
           <th scope="col" :class="{ 'd-none': editingId !== '' }"></th>
         </tr>
@@ -27,7 +28,13 @@
             {{ dateTimeFormat(id).endTime }}
           </td>
           <td class="font-s font-md-base">{{ zone(id) }}</td>
-          <td class="font-s font-md-base">{{ ticketType(id) }}</td>
+          <td class="font-s font-md-base">
+            <ul>
+              <li class="font-xs text-nowrap">{{ ticketType(id)[0] }}</li>
+              <li>{{ ticketType(id)[1] }}</li>
+            </ul>
+          </td>
+          <!-- <td class="font-s font-md-base">$1000</td> -->
           <td class="font-s font-md-base" style="width: 20%">
             <div :ref="id" class="d-flex align-items-center">
               <!-- <a href="#"><span class="material-icons font-base">add</span></a>
@@ -39,18 +46,18 @@
               > -->
               <input
                 v-if="id === editingId"
-                v-model="inputEdit"
+                v-model="inputQty"
                 type="number"
                 class="edit-input form-control w-25 me-0"
-                @blur="closeEdit"
+                @blur="closeEdit(id)"
               />
               <p v-else class="text-primary me-6 font-base font-md-m">
                 {{ cartItem[id] }}
               </p>
               <a
                 href="#"
-                @click.prevent="openEdit(id)"
                 :class="{ 'd-none': editingId !== '' }"
+                @click.prevent="openEdit(id)"
                 ><span class="font-base material-icons"> edit </span></a
               >
             </div>
@@ -103,11 +110,11 @@ export default {
   data() {
     return {
       editingId: '',
-      inputEdit: 0,
+      inputQty: 0,
     }
   },
   // created() {
-  //   this.inputEdit = this.cartItem
+  //   this.inputQty = this.cartItem
   // },
   computed: {
     ticketIds() {
@@ -161,17 +168,22 @@ export default {
     },
     ticketType(ticketId) {
       if (this.cartItem.product.discount === 0) {
-        return '正價票'
+        return ['正價票', `$${this.cartItem.product.price}`]
       }
       if (ticketId.includes('正價票')) {
-        return '正價票'
+        return ['正價票', `$${this.cartItem.product.price}`]
       } else {
-        return '優惠票'
+        return [
+          '優惠票',
+          `$${
+            this.cartItem.product.price * (this.cartItem.product.discount / 100)
+          }`,
+        ]
       }
     },
     openEdit(ticketId) {
       this.editingId = ticketId
-      this.inputEdit = this.cartItem[ticketId]
+      this.inputQty = this.cartItem[ticketId]
       // Since the input is rendered based on v-if,
       // we can only get access to the input node,
       // after the input is rendered on the page
@@ -179,9 +191,64 @@ export default {
         this.$refs[ticketId][0].firstChild.focus()
       })
     },
-    closeEdit() {
+    countPrice(ticketId, perTicketPrice) {
+      console.log('---- in couting ----')
+      const oldQty = this.cartItem[ticketId]
+      const oldPrice = perTicketPrice * oldQty
+      const oldTotal = this.cartItem.total
+      console.log('oldPrice => ' + oldPrice)
+      console.log('oldTotal => ' + oldTotal)
+      const updatedTotal = oldTotal - oldPrice + perTicketPrice * this.inputQty
+      console.log('updatedTotal => ' + updatedTotal)
+      return updatedTotal
+    },
+    countQtyEdit(ticketId) {
+      // let qty
+      const ticketIdInfo = ticketId.split(',')
+      switch (ticketIdInfo.length) {
+        case 1: {
+          return 0
+        }
+        case 2: {
+          console.log('--- in case 2---')
+          const ticketType = ticketIdInfo[1]
+          let perTicketPrice
+          if (ticketType === '優惠票') {
+            perTicketPrice =
+              this.cartItem.product.price *
+              (this.cartItem.product.discount / 100)
+          } else {
+            perTicketPrice = this.cartItem.product.price
+          }
+          console.log('---- before go counting ----')
+          console.log('perTicketPrice => ' + perTicketPrice)
+          const updatedTotal = this.countPrice(ticketId, perTicketPrice)
+          const qty = updatedTotal / this.cartItem.product.price
+          console.log('qty => ' + qty)
+          return qty
+        }
+      }
+      // if(ticketIdInfo.length === 1){
+      //   return 0
+      // }else if()
+      // const [id, zone, ticketType] = ticketId.split(',')
+      // if (zone === undefined && ticketType === undefined) {
+      //   return 0
+      // }
+      // if()
+    },
+    closeEdit(ticketId) {
+      const allData = {
+        data: {
+          product_id: this.cartItem.id,
+          qty: this.countQtyEdit(ticketId),
+        },
+      }
+      allData[ticketId] = this.inputQty
+      console.log(allData)
+
+      // Clear input
       this.editingId = ''
-      console.log('blur!')
     },
   },
 }
