@@ -78,7 +78,7 @@
           </div>
         </div>
       </div>
-      <p v-else>目前購物車為空</p>
+      <p v-else class="vh-100">目前購物車為空</p>
     </div>
     <div></div>
   </div>
@@ -87,7 +87,11 @@
 <script>
 import CartCard from '@/components/user/cart/CartCard.vue'
 import Pagination from '@/components/common/Pagination.vue'
-import { apiClientApplyCoupon, apiClientDeleteAllCart } from '@/api/index'
+import {
+  apiClientApplyCoupon,
+  apiClientDeleteAllCart,
+  apiClientDeleteCart,
+} from '@/api/index'
 
 export default {
   components: {
@@ -112,21 +116,15 @@ export default {
     }
   },
   created() {
-    // this.$nuxt.$on('refreshCart', async () => {
-    //   try {
-    //     await this.$store.dispatch('getCart')
-    //     const { carts, cartFinalTotal } = this.$store.getters
-    //     this.carts = carts
-    //     this.cartFinalTotal = cartFinalTotal
-    //   } catch (error) {
-    //     const errorMsg = error.message
-    //     this.$showError('載入購物車失敗')
-    //     // eslint-disable-next-line no-console
-    //     console.log(errorMsg)
-    //   }
-    // })
-    this.$nuxt.$on('refreshCart', () => {
-      this.getCart()
+    this.$nuxt.$on('refreshCart', async (cartId, ticketIds) => {
+      await this.getCart()
+      if (cartId && ticketIds) {
+        const cartItem = this.carts.find((item) => item.id === cartId)
+        const isEmpty = ticketIds.every((ticketId) => cartItem[ticketId] === 0)
+        if (isEmpty) {
+          this.deleteCart(cartId)
+        }
+      }
     })
   },
   mounted() {
@@ -206,6 +204,17 @@ export default {
         } else {
           this.$showError('套用優惠劵失敗')
         }
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
+    },
+    async deleteCart(cartId) {
+      try {
+        await apiClientDeleteCart(cartId)
+        this.$showSuccess('已刪除購物車內此節目的所有票卷')
+        this.getCart()
+      } catch (error) {
+        this.$showError('刪除單一購物車資料失敗')
         // eslint-disable-next-line no-console
         console.log(error)
       }

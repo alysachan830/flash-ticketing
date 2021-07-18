@@ -50,7 +50,7 @@
             class="font-s font-md-base"
             :class="{ 'd-none': editingId !== '' }"
           >
-            <a href="#" @click="removeCart(id)">
+            <a href="#" @click="removeTicket(id)">
               <span class="material-icons font-base">clear</span>
             </a>
           </td>
@@ -278,7 +278,10 @@ export default {
         if (!updateCartRes.data.success) {
           throw updateCartRes.data.message.join()
         }
-        this.$nuxt.$emit('refreshCart')
+        // Stop running code below if user is deleting item, not editing item
+        // We will call update cart API in removeTicket
+        if (this.isDelete) return
+        await this.$nuxt.$emit('refreshCart')
         this.$showSuccess('已更新購物車')
       } catch (error) {
         this.$showError('更新購物車失敗')
@@ -289,14 +292,14 @@ export default {
       // Clear input
       this.editingId = ''
     },
-    async removeCart(ticketId) {
+    async removeTicket(ticketId) {
       const confirmDelete = await this.$showConfirm('是否確定刪除此票卷？')
       if (!confirmDelete) return
-      // this.cartItem
       this.isDelete = true
       try {
         await this.updateCart(ticketId)
         this.isDelete = false
+        await this.$nuxt.$emit('refreshCart', this.cartItem.id, this.ticketIds)
       } catch (error) {}
     },
   },
