@@ -78,6 +78,8 @@ export const apiClientGetCart = () => clientRequest.get('/cart')
 export const apiClientAddCart = (data) => clientRequest.post('/cart', data)
 export const apiClientUpdateCart = (id, data) =>
   clientRequest.put(`/cart/${id}`, data)
+export const apiClientApplyCoupon = (data) =>
+  clientRequest.post('/coupon', data)
 // export const apiClientGetProduct = (pageNum) =>
 //   clientRequest.get(`/products?page=${pageNum}`)
 

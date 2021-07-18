@@ -123,7 +123,10 @@ export default {
           item !== 'product' &&
           item !== 'product_id' &&
           item !== 'qty' &&
-          item !== 'total'
+          item !== 'total' &&
+          item !== 'coupon'
+        // if user applies coupon, a 'coupon' object will be automatically added to the cart item,
+        // so we have to filter out 'coupon'
       )
     },
   },
