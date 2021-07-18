@@ -50,7 +50,7 @@
             class="font-s font-md-base"
             :class="{ 'd-none': editingId !== '' }"
           >
-            <a href="#">
+            <a href="#" @click="removeCart(id)">
               <span class="material-icons font-base">clear</span>
             </a>
           </td>
@@ -74,6 +74,7 @@ export default {
     return {
       editingId: '',
       inputQty: 0,
+      isDelete: false,
     }
   },
   computed: {
@@ -170,7 +171,13 @@ export default {
       const oldTotal = this.cartItem.total
       console.log('oldPrice => ' + oldPrice)
       console.log('oldTotal => ' + oldTotal)
-      const updatedTotal = oldTotal - oldPrice + perTicketPrice * this.inputQty
+      let updatedTotal
+      if (this.isDelete) {
+        updatedTotal = oldTotal - oldPrice
+      } else {
+        updatedTotal = oldTotal - oldPrice + perTicketPrice * this.inputQty
+      }
+      // const updatedTotal = oldTotal - oldPrice + perTicketPrice * this.inputQty
       console.log('updatedTotal => ' + updatedTotal)
       return updatedTotal
     },
@@ -225,20 +232,23 @@ export default {
       }
     },
     async updateCart(ticketId) {
-      if (this.inputQty === this.cartItem[ticketId]) {
-        // Clear input
-        this.editingId = ''
-        return
-      }
-      if (this.inputQty < 1) {
-        this.$showError('數量不能少於零')
-        this.editingId = ''
-        return
-      }
-      if (!Number.isInteger(this.inputQty)) {
-        this.$showError('數量需要是整數')
-        this.editingId = ''
-        return
+      // If isDelete is false, the user is editing cart, not deleting
+      if (!this.isDelete) {
+        if (this.inputQty === this.cartItem[ticketId]) {
+          // Clear input
+          this.editingId = ''
+          return
+        }
+        if (this.inputQty < 1) {
+          this.$showError('數量不能少於零')
+          this.editingId = ''
+          return
+        }
+        if (!Number.isInteger(this.inputQty)) {
+          this.$showError('數量需要是整數')
+          this.editingId = ''
+          return
+        }
       }
       const allData = {
         data: {
@@ -246,7 +256,12 @@ export default {
           qty: this.countQtyEdit(ticketId),
         },
       }
-      allData.data[ticketId] = this.inputQty
+      if (this.isDelete) {
+        // Set qty to 0 as a way to disable this ticket in cart
+        allData.data[ticketId] = 0
+      } else {
+        allData.data[ticketId] = this.inputQty
+      }
       console.log(allData)
 
       try {
@@ -262,13 +277,23 @@ export default {
         this.$nuxt.$emit('refreshCart')
         this.$showSuccess('已更新購物車')
       } catch (error) {
-        this.$showError('加入購物車失敗')
+        this.$showError('更新購物車失敗')
         // eslint-disable-next-line no-console
         console.log(error)
       }
 
       // Clear input
       this.editingId = ''
+    },
+    async removeCart(ticketId) {
+      const confirmDelete = await this.$showConfirm('是否確定刪除此票卷？')
+      if (!confirmDelete) return
+      // this.cartItem
+      this.isDelete = true
+      try {
+        await this.updateCart(ticketId)
+        this.isDelete = false
+      } catch (error) {}
     },
   },
 }
