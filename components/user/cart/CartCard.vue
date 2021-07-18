@@ -30,7 +30,7 @@
             <div :ref="id" class="d-flex align-items-center">
               <input
                 v-if="id === editingId"
-                v-model="inputQty"
+                v-model.number="inputQty"
                 type="number"
                 class="edit-input form-control w-25 me-0"
                 @blur="updateCart(id)"
@@ -226,8 +226,17 @@ export default {
     },
     async updateCart(ticketId) {
       if (this.inputQty === this.cartItem[ticketId]) {
-        console.log('no changes!')
         // Clear input
+        this.editingId = ''
+        return
+      }
+      if (this.inputQty < 1) {
+        this.$showError('數量不能少於零')
+        this.editingId = ''
+        return
+      }
+      if (!Number.isInteger(this.inputQty)) {
+        this.$showError('數量需要是整數')
         this.editingId = ''
         return
       }
