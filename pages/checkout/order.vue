@@ -129,7 +129,7 @@
           "
         >
           <p class="font-l">總計</p>
-          <p class="font-l fw-bold text-primary">{{ cartFinalTotal }}</p>
+          <p class="font-l fw-bold text-primary">${{ cartFinalTotal }}</p>
         </div>
         <div class="col-md-2 col-4 offset-8 offset-md-0">
           <a href="/checkout/form" class="btn btn-primary w-100">確認</a>
@@ -165,8 +165,9 @@ export default {
     this.$nuxt.$on('refreshCart', async () => {
       try {
         await this.$store.dispatch('getCart')
-        const { carts } = this.$store.getters
+        const { carts, cartFinalTotal } = this.$store.getters
         this.carts = carts
+        this.cartFinalTotal = cartFinalTotal
       } catch (error) {
         const errorMsg = error.message
         this.$showError('載入購物車失敗')
