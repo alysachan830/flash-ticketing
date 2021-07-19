@@ -70,25 +70,9 @@ export default {
       try {
         await this.$store.dispatch('signIn', allData)
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error)
       }
-      // try {
-      //   const signInRes = await apiAdminSignIn(allData)
-      //   if (!signInRes.data.success) {
-      //     throw signInRes.data.message
-      //   }
-      //   console.log(signInRes.data)
-      //   const { token, expired } = signInRes.data
-      //   document.cookie = `flashTicketing=${token};expires=${new Date(
-      //     expired
-      //   )}; path=/`
-      //   this.$router.push('/admin')
-      // } catch (error) {
-      //   this.$showError('登入失敗')
-      //   // Clear input
-      //   this.username = ''
-      //   this.password = ''
-      // }
     },
   },
 }
