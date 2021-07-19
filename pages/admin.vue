@@ -65,7 +65,11 @@
             <div class="avatar rounded-circle me-2"></div>
             <span class="text-white font-s">David Chan</span>
           </div>
-          <button type="button" class="btn btn-outline-light w-100">
+          <button
+            type="button"
+            class="btn btn-outline-light w-100"
+            @click="logout"
+          >
             登出
           </button>
         </div>
@@ -90,6 +94,8 @@
 </template>
 
 <script>
+import { apiAdminLogout } from '@/api/index'
+
 export default {
   layout: 'empty',
   // If user has not signed in, all admin pages will be hidden
@@ -106,6 +112,23 @@ export default {
     } else {
       this.$router.push('/login')
     }
+  },
+  methods: {
+    async logout() {
+      try {
+        await apiAdminLogout()
+        this.$showSuccess('已成功登出')
+        // Turn sign in status to false in Vuex
+        this.$store.dispatch('checkSignIn', false)
+        // Clear cookie
+        this.$cookies.removeAll()
+        this.$router.push('/login')
+      } catch (error) {
+        this.$showError('登出失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
+    },
   },
 }
 </script>

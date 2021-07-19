@@ -79,13 +79,12 @@ export const apiClientApplyCoupon = (data) =>
 export const apiClientDeleteCart = (id) => clientRequest.delete(`/cart/${id}`)
 export const apiClientDeleteAllCart = () => clientRequest.delete('/carts')
 export const apiClientSubmitOrder = (data) => clientRequest.post('/order', data)
-// export const apiClientGetProduct = (pageNum) =>
-//   clientRequest.get(`/products?page=${pageNum}`)
 
 // Complete API
 // Backstage API
 export const apiAdminSignIn = (data) => adminSignIn.post('/admin/signin', data)
 export const apiCheckSignIn = () => adminSignIn.post('/api/user/check')
+export const apiAdminLogout = () => adminSignIn.post('/admin/logout')
 export const apiAdminCheckSignIn = () => adminSignIn.post('/api/user/check')
 export const apiAdminGetProducts = (token, pageNum) => {
   adminRequest.defaults.headers.common.Authorization = token
