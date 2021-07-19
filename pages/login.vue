@@ -69,6 +69,7 @@ export default {
       }
       try {
         await this.$store.dispatch('signIn', allData)
+        this.$router.push('/admin')
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error)

@@ -42,8 +42,8 @@ export default {
   },
   async mounted() {
     try {
-      // const token = this.$cookies.get('flashTicketingAuth').token
-      await this.$store.dispatch('adminGetEvents', { token: '', pageNum: 1 })
+      const token = this.$cookies.get('flashTicketingAuth').token
+      await this.$store.dispatch('adminGetEvents', { token, pageNum: 1 })
       this.events = this.$store.getters.adminEvents
     } catch (error) {
       this.$showError('載入節目活動資料失敗')
