@@ -27,6 +27,7 @@
                 <label for="name" class="form-label">姓名</label>
                 <input
                   id="name"
+                  v-model="name"
                   type="text"
                   class="form-control"
                   placeholder="請輸入姓名"
@@ -38,6 +39,7 @@
                 <label for="email" class="form-label">電郵</label>
                 <input
                   id="email"
+                  v-model="email"
                   type="email"
                   class="form-control"
                   placeholder="example@gmail.com"
@@ -49,17 +51,29 @@
             <label for="address" class="form-label">地址</label>
             <input
               id="address"
+              v-model="address"
               type="text"
               class="form-control"
               placeholder="請輸入地址"
             />
           </div>
-          <div class="row mb-14">
+          <div class="mb-14">
+            <label for="tel" class="form-label">電話</label>
+            <input
+              id="tel"
+              v-model="tel"
+              type="text"
+              class="form-control"
+              placeholder="請輸入電話"
+            />
+          </div>
+          <!-- <div class="row mb-14">
             <div class="col-md-6 mb-md-0 mb-14">
               <div>
                 <label for="tel" class="form-label">電話</label>
                 <input
                   id="tel"
+                  v-model="tel"
                   type="text"
                   class="form-control"
                   placeholder="請輸入電話"
@@ -69,16 +83,25 @@
             <div class="col-md-6 mb-md-0 mb-14">
               <div>
                 <label for="payment" class="form-label">付款方式</label>
-                <select id="payment" class="form-select">
+                <select
+                  id="payment"
+                  v-model="paymentMethod"
+                  class="form-select"
+                >
                   <option value="visa">VISA</option>
                   <option value="paypal">Paypal</option>
                 </select>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="mb-18">
-            <label for="comment" class="form-label">留言</label>
-            <textarea id="comment" class="form-control" rows="3"></textarea>
+            <label for="message" class="form-label">留言</label>
+            <textarea
+              id="message"
+              v-model="message"
+              class="form-control"
+              rows="3"
+            ></textarea>
           </div>
           <div class="row justify-content-between mb-21">
             <div class="col-md-2 col-4">
@@ -90,7 +113,12 @@
               </a>
             </div>
             <div class="col-md-2 col-4">
-              <a href="/checkout/result" class="btn btn-primary w-100">確認</a>
+              <a
+                href="/checkout/result"
+                class="btn btn-primary w-100"
+                @click.prevent="submitOrder"
+                >確認</a
+              >
             </div>
           </div>
         </div>
@@ -100,7 +128,57 @@
 </template>
 
 <script>
-export default {}
+import { apiClientSubmitOrder } from '@/api/index'
+
+export default {
+  data() {
+    return {
+      name: '',
+      email: '',
+      address: '',
+      tel: '',
+      // paymentMethod: 'visa',
+      message: '',
+    }
+  },
+  methods: {
+    async submitOrder() {
+      const allData = {
+        data: {
+          user: {
+            name: this.name,
+            email: this.email,
+            tel: this.tel,
+            address: this.address,
+          },
+          message: this.message,
+        },
+      }
+
+      try {
+        const sumbitOrderRes = await apiClientSubmitOrder(allData)
+        if (!sumbitOrderRes.data.success) {
+          throw sumbitOrderRes.data.message
+        }
+        this.$showSuccess('結帳成功')
+
+        // Clear input
+        this.name = ''
+        this.email = ''
+        this.address = ''
+        this.tel = ''
+        this.message = ''
+
+        // redirect to success page
+        this.$router.push('/checkout/result')
+      } catch (error) {
+        this.$showError('結帳失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
