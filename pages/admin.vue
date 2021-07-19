@@ -72,7 +72,20 @@
       </div>
       <NuxtChild class="ps-200 py-14 pe-20 w-100" />
     </div>
-    <div v-else>請先登入</div>
+    <div
+      v-else
+      class="
+        vh-100
+        d-flex
+        justify-content-center
+        align-items-center
+        font-2xl
+        text-primary
+      "
+    >
+      <span class="material-icons font-4xl me-12"> error_outline </span>
+      請先登入
+    </div>
   </div>
 </template>
 
@@ -90,6 +103,8 @@ export default {
     // If yes, set the sign in state in Vuex to true
     if (this.$cookies.get('flashTicketingAuth')?.token) {
       this.$store.dispatch('checkSignIn', true)
+    } else {
+      this.$router.push('/login')
     }
   },
 }
