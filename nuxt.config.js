@@ -35,6 +35,7 @@ export default {
     { src: '~plugins/bus.js' },
     { src: '~plugins/v-calendar.js', ssr: false },
     { src: '~plugins/ckeditor.js', ssr: false },
+    { src: '~plugins/myFavourite.js', ssr: false },
     { src: '~plugins/sweetAlert.js', ssr: false },
     // { src: '~/plugins/vee-validate.js', ssr: true },
   ],
