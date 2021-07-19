@@ -20,7 +20,7 @@
             {{ dateTimeTemplate }}
           </p>
         </div>
-        <a href="#"
+        <a href="#" @click.prevent="addFavourite(id)"
           ><span
             class="
               favourite-icon
@@ -77,6 +77,11 @@ export default {
     } else {
       this.dateTimeTemplate = `${this.dateTime.start} - ${this.dateTime.end}`
     }
+  },
+  methods: {
+    addFavourite(id) {
+      this.$addFavourite(id)
+    },
   },
 }
 </script>
