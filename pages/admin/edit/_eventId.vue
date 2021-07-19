@@ -295,9 +295,9 @@
                         />
                       </svg>
                       <input
+                        class="border px-2 py-1 rounded"
                         :value="inputValue.end"
                         v-on="inputEvents.end"
-                        class="border px-2 py-1 rounded"
                       />
                     </div>
                   </template>
@@ -473,11 +473,6 @@
             alt=""
             class="preview-image-h mb-6"
           />
-          <!-- <img
-            src="~/assets/images/ivana-cajina-_7LbC5J-jw4-unsplash.jpg"
-            alt=""
-            class="preview-image-h mb-6"
-          /> -->
         </div>
         <div class="input-group">
           <input
@@ -536,11 +531,6 @@ export default {
         },
       ],
       selected: {},
-      // days: [],
-      // dateRange: {
-      //   start: new Date(2021, 6, 1),
-      //   end: new Date(2021, 6, 3),
-      // },
       range: {
         start: new Date(),
         end: new Date(),
@@ -569,7 +559,6 @@ export default {
       // seats: [],
       tag: 'newest',
       ticketPrice: 0, //*
-      // ticketPrice: this.chargingOption === 'fixedPrice' ? 0 : [],
       discount: 0,
       mainImage: '',
       mainImagePreview: '',
@@ -693,16 +682,6 @@ export default {
         alert('請填寫區域和票價！')
         return
       }
-      // If user is editing event,
-      // user cannot add zone that is already exist
-      //   if (
-      //     !this.isNew &&
-      //     this.eventInfo.ticketPrice[this.seatZone] !== undefined
-      //   ) {
-      //     this.$set(this.ticketPrice, this.seatZone, this.seatZonePrice)
-      //     this.seatZonePrice = 0
-      //     return
-      //   }
       this.$set(this.ticketPrice, this.seatZone, this.seatZonePrice)
       this.seatZone = ''
       this.seatZonePrice = 0
@@ -780,9 +759,6 @@ export default {
         .catch((err) => console.log(err))
     },
     submitEvent() {
-      // if(this.dateOption === 'period' && typeof this.range.start !== 'string' || typeof this.range.end !== 'string' ){
-
-      // }
       if (this.dateOption === 'period') {
         if (typeof this.range.start !== 'string') {
           this.range.start = moment().format('YYYY-MM-DD')
