@@ -48,7 +48,6 @@
                       v-slot="{ errors }"
                       rules="required|email"
                     >
-                      <!-- name="email" -->
                       <input
                         id="電郵"
                         v-model="user.email"
@@ -152,6 +151,7 @@ export default {
     ValidationProvider,
     ValidationObserver,
   },
+  middleware: 'orderForm',
   data() {
     return {
       user: {
