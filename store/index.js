@@ -2,6 +2,7 @@ import {
   apiClientGetAllEvents,
   apiClientGetCart,
   apiAdminSignIn,
+  apiAdminGetProducts,
 } from '@/api/index'
 
 export const state = () => ({
@@ -10,6 +11,7 @@ export const state = () => ({
   newEvents: [],
   carts: [],
   isSignIn: false,
+  adminEvents: [],
 })
 
 export const actions = {
@@ -32,16 +34,36 @@ export const actions = {
     }
   },
   checkSignIn({ commit }, hasCookie) {
-    commit('signInStatus', hasCookie)
+    commit('SetSignInStatus', hasCookie)
   },
   async signIn({ commit }, payload) {
     try {
       const { username, password } = payload
       const signInRes = await apiAdminSignIn({ username, password })
-      console.log(signInRes)
       commit('SetAuth', signInRes)
     } catch (error) {
       throw new Error(error)
+    }
+  },
+  async adminGetEvents({ commit }, payload) {
+    const { token, pageNum } = payload
+    try {
+      const getProductsRes = await apiAdminGetProducts(token, pageNum)
+      if (!getProductsRes.data.success) {
+        throw new Error(getProductsRes.data.message)
+      }
+      commit('SetAdminEvents', getProductsRes)
+    } catch (error) {
+      // Something wrong with user's token
+      // User's token may be expired or user deleted the token
+      // It means that user has not signed in yet
+
+      // Reset isSignIn to false
+      commit('SetSignInStatus', false)
+
+      // Remove all cookie
+      this.$cookies.removeAll()
+      this.$router.push('/login')
     }
   },
 }
@@ -64,8 +86,11 @@ export const mutations = {
     )
     state.isSignIn = true
   },
-  signInStatus(state, hasCookie) {
+  SetSignInStatus(state, hasCookie) {
     state.isSignIn = hasCookie
+  },
+  SetAdminEvents(state, getProductsRes) {
+    state.adminEvents = getProductsRes.data.products
   },
 }
 
@@ -76,4 +101,5 @@ export const getters = {
   carts: (state) => state.carts,
   cartFinalTotal: (state) => state.cartFinalTotal,
   signInStatus: (state) => state.isSignIn,
+  adminEvents: (state) => state.adminEvents,
 }
