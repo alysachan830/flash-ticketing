@@ -1,10 +1,15 @@
-import { apiClientGetAllEvents, apiClientGetCart } from '@/api/index'
+import {
+  apiClientGetAllEvents,
+  apiClientGetCart,
+  apiAdminSignIn,
+} from '@/api/index'
 
 export const state = () => ({
   events: [],
   hotEvents: [],
   newEvents: [],
   carts: [],
+  isSignIn: false,
 })
 
 export const actions = {
@@ -26,24 +31,19 @@ export const actions = {
       throw new Error(error)
     }
   },
-
-  // async getEvent({ commit }) {
-  //   try {
-  //     const eventRes = await apiClientGetEvent()
-  //     commit({ type: 'AddAllEvents', list: allEventsRes.data.products })
-  //   } catch (error) {
-  //     throw new Error(error)
-  //   }
-  // },
-
-  // async getEvent({ commit }) {
-  //   try {
-  //     const allEventsRes = await apiClientGetAllEvents()
-  //     commit({ type: 'AddAllEvents', list: allEventsRes.data.products })
-  //   } catch (error) {
-  //     throw new Error(error)
-  //   }
-  // },
+  checkSignIn({ commit }, hasCookie) {
+    commit('signInStatus', hasCookie)
+  },
+  async signIn({ commit }, payload) {
+    try {
+      const { username, password } = payload
+      const signInRes = await apiAdminSignIn({ username, password })
+      console.log(signInRes)
+      commit('SetAuth', signInRes)
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
 }
 
 export const mutations = {
@@ -56,6 +56,17 @@ export const mutations = {
     state.cartFinalTotal = payload.cartInfo.final_total
     state.carts = [...payload.cartInfo.carts]
   },
+  SetAuth(state, signInRes) {
+    this.$cookies.set(
+      'flashTicketingAuth',
+      { token: signInRes.data.token },
+      { expires: signInRes.data.expired }
+    )
+    state.isSignIn = true
+  },
+  signInStatus(state, hasCookie) {
+    state.isSignIn = hasCookie
+  },
 }
 
 export const getters = {
@@ -64,4 +75,5 @@ export const getters = {
   newEvents: (state) => state.events.filter((event) => event.tag === 'newest'),
   carts: (state) => state.carts,
   cartFinalTotal: (state) => state.cartFinalTotal,
+  signInStatus: (state) => state.isSignIn,
 }

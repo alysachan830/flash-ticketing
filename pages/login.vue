@@ -6,17 +6,23 @@
       <div class="row justify-content-center w-100">
         <div class="px-12 px-md-0 col-md-4">
           <h2 class="text-white mb-16 text-center font-2xl">管理員登入</h2>
-          <form class="mb-20">
+          <form class="mb-20" @submit.prevent="signIn">
             <div class="mb-6">
               <label for="email" class="form-label text-white">電郵</label>
-              <input id="email" type="email" class="login-input form-control" />
+              <input
+                id="email"
+                v-model="username"
+                type="email"
+                class="signIn-input form-control"
+              />
             </div>
             <div class="mb-16">
               <label for="password" class="form-label text-white">密碼</label>
               <input
                 id="password"
+                v-model="password"
                 type="password"
-                class="login-input form-control"
+                class="signIn-input form-control"
               />
             </div>
             <button type="submit" class="btn btn-secondary text-primary w-100">
@@ -42,11 +48,54 @@
 <script>
 export default {
   layout: 'empty',
+  data() {
+    return {
+      username: '',
+      password: '',
+    }
+  },
+  mounted() {
+    // When user access the page, check if user has cookie
+    // If yes, set the sign in state in Vuex to true
+    if (this.$cookies.get('flashTicketingAuth')?.token) {
+      this.$store.dispatch('checkSignIn', true)
+    }
+  },
+  methods: {
+    async signIn() {
+      const allData = {
+        username: this.username,
+        password: this.password,
+      }
+      try {
+        await this.$store.dispatch('signIn', allData)
+      } catch (error) {
+        console.log(error)
+      }
+      // try {
+      //   const signInRes = await apiAdminSignIn(allData)
+      //   if (!signInRes.data.success) {
+      //     throw signInRes.data.message
+      //   }
+      //   console.log(signInRes.data)
+      //   const { token, expired } = signInRes.data
+      //   document.cookie = `flashTicketing=${token};expires=${new Date(
+      //     expired
+      //   )}; path=/`
+      //   this.$router.push('/admin')
+      // } catch (error) {
+      //   this.$showError('登入失敗')
+      //   // Clear input
+      //   this.username = ''
+      //   this.password = ''
+      // }
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.login-input {
+.signIn-input {
   background-color: transparent !important;
   color: #ffffff;
 }
