@@ -11,7 +11,9 @@ export default ({ app }, inject) => {
   inject('getFavourite', () => {
     const items = localStorage.getItem('flashTicketing')
     if (!items) {
-      return items // if items is empty, items will be null
+      // if items is empty, items will be null
+      // Here we manually set it to an empty array and return it
+      return []
     }
     return JSON.parse(items)
   })

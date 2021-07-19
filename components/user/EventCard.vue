@@ -20,18 +20,13 @@
             {{ dateTimeTemplate }}
           </p>
         </div>
-        <a href="#" @click.prevent="addFavourite(id)"
-          ><span
-            class="
-              favourite-icon
-              material-icons
-              font-lg-l font-m
-              align-baseline
-            "
-          >
-            bookmark_border
-          </span></a
+        <span
+          class="favourite-icon material-icons font-lg-l font-m align-baseline"
+          :class="{ 'text-primary': isFavourite }"
+          @click.prevent="addFavourite(id)"
         >
+          {{ isFavourite ? 'bookmark' : 'bookmark_border' }}
+        </span>
       </div>
       <span class="badge font-lg-s font-xs bg-secondary text-black mb-4">
         {{ tag }}
@@ -67,7 +62,16 @@ export default {
   data() {
     return {
       dateTimeTemplate: '',
+      myFavouriteItems: [],
     }
+  },
+  computed: {
+    isFavourite() {
+      return this.myFavouriteItems.includes(this.id)
+    },
+  },
+  create() {
+    this.myFavouriteItems = this.$getFavourite()
   },
   mounted() {
     if (Array.isArray(this.dateTime)) {
@@ -81,6 +85,10 @@ export default {
   methods: {
     addFavourite(id) {
       this.$addFavourite(id)
+      // refresh my favourite items data
+      this.$nextTick().then(
+        () => (this.myFavouriteItems = this.$getFavourite())
+      )
     },
   },
 }
@@ -113,6 +121,7 @@ export default {
 }
 
 .favourite-icon {
+  cursor: pointer;
   &:hover {
     color: $primary;
   }
