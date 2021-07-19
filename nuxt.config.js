@@ -36,6 +36,7 @@ export default {
     { src: '~plugins/v-calendar.js', ssr: false },
     { src: '~plugins/ckeditor.js', ssr: false },
     { src: '~plugins/sweetAlert.js', ssr: false },
+    // { src: '~/plugins/vee-validate.js', ssr: true },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -78,7 +79,10 @@ export default {
     },
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    // Add exception
+    transpile: ['vee-validate/dist/rules'],
+  },
   server: {
     port: process.env.PORT || 3000,
   },

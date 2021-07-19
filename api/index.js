@@ -80,6 +80,9 @@ export const apiClientUpdateCart = (id, data) =>
   clientRequest.put(`/cart/${id}`, data)
 export const apiClientApplyCoupon = (data) =>
   clientRequest.post('/coupon', data)
+export const apiClientDeleteCart = (id) => clientRequest.delete(`/cart/${id}`)
+export const apiClientDeleteAllCart = () => clientRequest.delete('/carts')
+export const apiClientSubmitOrder = (data) => clientRequest.post('/order', data)
 // export const apiClientGetProduct = (pageNum) =>
 //   clientRequest.get(`/products?page=${pageNum}`)
 
