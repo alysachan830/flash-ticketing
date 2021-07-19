@@ -6,9 +6,7 @@
         <!-- Title -->
         <div class="mb-20">
           <div class="mb-3">
-            <label for="title" class="form-label"
-              ><span class="text-danger">*</span>節目標題</label
-            >
+            <label for="title" class="form-label">節目標題</label>
             <input
               id="title"
               v-model="title"
@@ -111,38 +109,40 @@
           </div> -->
           <!-- Charge by seating zone -->
           <div class="mb-8">
-            <div
-              v-if="chargingOption === 'seatPrice'"
-              class="row align-items-end"
-            >
-              <div class="col-2">
-                <label for="seatZone" class="form-label">區域 </label>
-                <input
-                  id="seatZone"
-                  v-model.trim="seatZone"
-                  type="text"
-                  class="form-control"
-                  placeholder="A"
-                />
+            <div v-if="chargingOption === 'seatPrice'">
+              <div class="row align-items-end mb-16">
+                <div class="col-2">
+                  <label for="seatZone" class="form-label">區域 </label>
+                  <input
+                    id="seatZone"
+                    v-model.trim="seatZone"
+                    type="text"
+                    class="form-control"
+                    placeholder="A"
+                  />
+                </div>
+                <div class="col-2">
+                  <label for="ticketPrice" class="form-label">票價 </label>
+                  <input
+                    id="ticketPrice"
+                    v-model.number="seatZonePrice"
+                    type="number"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-4">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    @click="addTicketPrice"
+                  >
+                    {{ isNew ? '新增' : '新增或修改' }}
+                  </button>
+                </div>
               </div>
-              <div class="col-2">
-                <label for="ticketPrice" class="form-label">票價 </label>
-                <input
-                  id="ticketPrice"
-                  v-model.number="seatZonePrice"
-                  type="number"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-4">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  @click="addTicketPrice"
-                >
-                  {{ isNew ? '新增' : '新增或修改' }}
-                </button>
-              </div>
+              <p class="font-xs text-info">
+                注意：能修改已有座位區域價錢，但不能刪除已有座位區域
+              </p>
               <!-- Seat zone price table -->
               <div v-if="Object.keys(ticketPrice).length > 0" class="row">
                 <div class="col-6">
@@ -202,9 +202,7 @@
           <!-- Event categories -->
           <div class="row">
             <div class="col-3">
-              <label for="catgories" class="mb-3"
-                ><span class="text-danger">*</span>節目種類</label
-              >
+              <label for="catgories" class="mb-3">節目種類</label>
               <select
                 id="catgories"
                 v-model="category"
@@ -268,60 +266,72 @@
             <!-- 某一時段 -->
             <!-- Date range -->
             <div v-if="dateOption === 'period'" class="mb-6">
-              <p class="mb-2">選擇時期</p>
-              <v-date-picker
-                v-model="range"
-                :model-config="modelConfig"
-                is-range
-              >
-                <template v-slot="{ inputValue, inputEvents }">
-                  <div class="flex justify-center items-center">
-                    <input
-                      :value="inputValue.start"
-                      v-on="inputEvents.start"
-                      class="border px-2 py-1 rounded"
-                    />
-                    <svg
-                      style="width: 20px; height: 20px"
-                      class="w-4 h-4 mx-2"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+              <div class="mb-6">
+                <p class="mb-2">選擇時期</p>
+                <v-date-picker
+                  v-model="range"
+                  :model-config="modelConfig"
+                  is-range
+                >
+                  <template v-slot="{ inputValue, inputEvents }">
+                    <div class="flex justify-center items-center">
+                      <input
+                        :value="inputValue.start"
+                        v-on="inputEvents.start"
+                        class="border px-2 py-1 rounded"
                       />
-                    </svg>
-                    <input
-                      :value="inputValue.end"
-                      v-on="inputEvents.end"
-                      class="border px-2 py-1 rounded"
-                    />
-                  </div>
-                </template>
-              </v-date-picker>
+                      <svg
+                        style="width: 20px; height: 20px"
+                        class="w-4 h-4 mx-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M14 5l7 7m0 0l-7 7m7-7H3"
+                        />
+                      </svg>
+                      <input
+                        :value="inputValue.end"
+                        v-on="inputEvents.end"
+                        class="border px-2 py-1 rounded"
+                      />
+                    </div>
+                  </template>
+                </v-date-picker>
+              </div>
               <!-- Time range -->
               <div>
                 <p class="mb-2">選擇劃一時段</p>
-                <input v-model="range.startTime" type="time" />
-                <svg
-                  style="width: 20px; height: 20px"
-                  class="mx-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                <div class="d-flex">
+                  <input
+                    v-model="range.startTime"
+                    type="time"
+                    class="form-control"
                   />
-                </svg>
-                <input v-model="range.endTime" type="time" />
+                  <svg
+                    style="width: 42px; height: 42px"
+                    class="mx-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
+                  </svg>
+                  <input
+                    v-model="range.endTime"
+                    type="time"
+                    class="form-control"
+                  />
+                </div>
               </div>
             </div>
             <!-- 某日時段或多個某日時段 -->
@@ -368,7 +378,7 @@
               </button>
               <div v-if="selectedDates.length > 0">
                 <p>已選擇時段</p>
-                <p v-if="!isNew" class="font-xs">
+                <p v-if="!isNew" class="font-xs text-info">
                   注意：無法修改已有日期和時段
                 </p>
                 <hr />
@@ -619,6 +629,10 @@ export default {
         // this.selectedDate.date
       } else {
         this.dateOption = 'period'
+        this.range.start = this.eventInfo.dateTime.start
+        this.range.end = this.eventInfo.dateTime.end
+        this.range.startTime = this.eventInfo.dateTime.startTime
+        this.range.endTime = this.eventInfo.dateTime.endTime
       }
       //   if(typeof this.eventInfo.ticketPrice === 'object'){
 
