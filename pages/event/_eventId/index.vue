@@ -166,7 +166,6 @@ export default {
   data() {
     return {
       dateTimeTemplate: '',
-      loader: {},
     }
   },
   computed: {
@@ -203,13 +202,7 @@ export default {
       )
     },
   },
-  watch: {
-    eventInfo() {
-      // this.loader.hide()
-    },
-  },
   mounted() {
-    // this.loader = this.$loading.show()
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
