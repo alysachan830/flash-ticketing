@@ -23,12 +23,12 @@
             </div>
             <!-- Shop cart, bookmark, toggle button -->
             <div class="d-flex">
-              <a href="#" class="me-4" @click="showCart">
+              <a href="#" class="me-4" @click.prevent="showCart">
                 <span class="material-icons text-white align-middle">
                   shopping_cart
                 </span>
               </a>
-              <a href="#" class="me-4" @click="showFavourite">
+              <a href="#" class="me-4" @click.prevent="showFavourite">
                 <span class="material-icons text-white align-middle">
                   bookmark
                 </span>
