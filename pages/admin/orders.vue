@@ -6,6 +6,7 @@
         <tr>
           <th scope="col">下單時間</th>
           <th scope="col">編號</th>
+          <th scope="col">買家姓名</th>
           <th scope="col">付款狀態</th>
           <!-- <th scope="col">購買票卷</th> -->
           <th scope="col">總額</th>
@@ -17,6 +18,7 @@
         <tr v-for="order in orders" :key="order.id">
           <td>{{ formatDate(order.create_at) }}</td>
           <td>{{ order.id }}</td>
+          <td>{{ order.user.name }}</td>
           <td>{{ order.is_paid ? '已付款' : '未付款' }}</td>
           <!-- <td>{{ order.products }}</td> -->
           <td>${{ order.total }}</td>
@@ -30,7 +32,9 @@
             >
           </td>
           <td>
-            <a href="#"><span class="material-icons"> clear </span></a>
+            <a href="#" @click.prevent="deleteOrder(order.id)"
+              ><span class="material-icons"> clear </span></a
+            >
           </td>
         </tr>
       </tbody>
@@ -39,7 +43,7 @@
 </template>
 
 <script>
-import { apiAdminGetOrders } from '@/api/index'
+import { apiAdminGetOrders, apiAdminDeleteOrder } from '@/api/index'
 import moment from 'moment'
 
 export default {
@@ -71,6 +75,24 @@ export default {
     editOrder(order) {
       this.$store.dispatch('adminEditOrder', order)
       this.$router.push(`/admin/order/${order.id}`)
+    },
+    async deleteOrder(id) {
+      try {
+        const confirmDelete = await this.$showConfirm('是否確定刪除此訂單？')
+        if (!confirmDelete) return
+        const token = this.$cookies.get('flashTicketingAuth').token
+        const deleteOrderRes = await apiAdminDeleteOrder(token, id)
+        if (!deleteOrderRes.data.success) {
+          throw deleteOrderRes.data.message
+        }
+        this.$showSuccess('已成功刪除此訂單')
+        // Refresh all orders table
+        this.getOrders()
+      } catch (error) {
+        this.$showError(error)
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
     },
   },
 }

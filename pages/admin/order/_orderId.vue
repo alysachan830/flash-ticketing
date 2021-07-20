@@ -53,7 +53,20 @@
         </div>
       </div>
     </div>
-
+    <!-- Is paid -->
+    <div class="mb-21">
+      <h3 class="font-m mb-8">付款狀態</h3>
+      <div class="form-check">
+        <input
+          id="isPaid"
+          v-model="inputData.is_paid"
+          class="form-check-input"
+          type="checkbox"
+          value=""
+        />
+        <label class="form-check-label" for="isPaid"> 已付款 </label>
+      </div>
+    </div>
     <!-- Items -->
     <div class="mb-21">
       <h3 class="font-m mb-8">購物票卷</h3>

@@ -119,3 +119,7 @@ export const apiAdminEditOrder = (token, id, data) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.put(`/order/${id}`, data)
 }
+export const apiAdminDeleteOrder = (token, id) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.delete(`/order/${id}`)
+}
