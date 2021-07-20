@@ -441,9 +441,14 @@
               >*檔案名稱長度必須少於32</span
             >
           </div>
-          <span class="badge bg-info mb-6">主圖片</span>
+          <span class="badge mb-6">主圖片</span>
 
-          <img :src="mainImagePreview" alt="" class="preview-image-h mb-6" />
+          <div v-if="mainImage !== ''" class="d-flex">
+            <img :src="mainImagePreview" alt="" class="preview-image-h mb-6" />
+            <a href="#" @click.prevent="deleteImage">
+              <span class="material-icons"> clear </span>
+            </a>
+          </div>
           <div class="input-group">
             <input
               id="mainImage"
@@ -464,15 +469,22 @@
             </button>
           </div>
         </div>
-        <span class="badge bg-info mb-6">其他圖片</span>
+        <span class="badge mb-1">其他圖片</span>
+        <p class="font-xs text-muted mb-6">前台只會顯示前兩張圖片</p>
         <div v-if="imagesUrl.length > 0" class="sub-image-wrap mb-6">
-          <img
+          <!-- <img
             v-for="url in imagesUrl"
             :key="url"
             :src="url"
             alt=""
             class="preview-image-h mb-6"
-          />
+          /> -->
+          <div v-for="(url, i) in imagesUrl" :key="url" class="d-flex">
+            <img :src="url" alt="" class="preview-image-h mb-6" />
+            <a href="#" @click.prevent="deleteSubImage(i)">
+              <span class="material-icons"> clear </span>
+            </a>
+          </div>
         </div>
         <div class="input-group">
           <input
@@ -601,6 +613,7 @@ export default {
       this.tag = this.eventInfo.tag
       this.description = this.eventInfo.description
       this.mainImagePreview = this.eventInfo.imageUrl
+      this.mainImage = this.eventInfo.imageUrl
       this.imageUrl = this.eventInfo.imageUrl
       this.imagesUrl = this.eventInfo.imagesUrl
       if (typeof this.eventInfo.ticketPrice === 'number') {
@@ -707,6 +720,14 @@ export default {
       this.mainImage = e.target.files[0]
       // console.log(e.target.files[0])
     },
+    deleteImage() {
+      this.imageUrl = ''
+      this.mainImagePreview = ''
+      this.mainImage = ''
+    },
+    deleteSubImage(index) {
+      this.imagesUrl.splice(index, 1)
+    },
     async uploadImage() {
       if (this.mainImage === '') {
         this.$showError('請選擇圖片')
@@ -796,7 +817,6 @@ export default {
           is_enabled: Number(this.is_enabled),
           imageUrl: this.imageUrl,
           imagesUrl: this.imagesUrl,
-          // Note: 需預先判斷selectedDates此陣列是不是已經有資料
           dateTime:
             this.dateOption === 'period' ? this.range : this.selectedDates,
           organizer: this.organizer,
@@ -837,6 +857,16 @@ export default {
         return
       }
 
+      if (info.data.imagesUrl.length < 2) {
+        this.$showError('最少要上載兩張其他圖片')
+        return
+      }
+
+      if (info.data.imageUrl === '') {
+        this.$showError('必需上載主圖片')
+        return
+      }
+
       console.log('check')
       //   const AUTH_TOKEN =
       //     'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI1NDA5MTg4LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjU0MDkxODgsImV4cCI6MTYyNTg0MTE4OCwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.aquUuQ1goSLkyJKcwWKx4LDj37f8ajbfL9jC5P7JGBeGM2PV0QHfQavxpmyX2Bw46wYQ5DuN7FPQFqGVR7jDZtqaxZddHOE52Ht_pbBStrM89-f2ALgIrR8nOAwCXJjIEChDGBjAQi0jM_GTzREbz3UzuFydZgRRazuo9Ctc1qidt9qEnkY1G6yqBxoO50RGX-h9oYVXJTvmblxw2hEPUkx4jtF4-Zt5cICSQe1IT_IMiJef2JbTLpVKP2InLYh0YQJkg656aUdY6GXYTGZi6F3SZHCVg0x-cLG_wEZpzx7fzvQhiYD5pSC4kIcxuucuXdT1r7kbk9I9JGAvJ6CxYg'
@@ -856,6 +886,10 @@ export default {
 <style lang="scss" scoped>
 .description {
   resize: none;
+}
+
+.badge {
+  background: #e0e0e0;
 }
 
 .preview-image-h {
