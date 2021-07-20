@@ -502,8 +502,8 @@ import {
   apiClientGetEvent,
   apiAdminUploadImage,
   apiAdminAddProduct,
+  apiAdminEditProduct,
 } from '@/api/index'
-// import vCalendar from 'v-calendar'
 
 export default {
   layout: 'dashboard',
@@ -563,6 +563,10 @@ export default {
   watch: {
     chargingOption() {
       this.ticketPrice = this.chargingOption === 'fixedPrice' ? 0 : {}
+    },
+    isNew() {
+      this.chargingOption =
+        typeof this.ticketPrice === 'object' ? 'seatPrice' : 'fixedPrice'
     },
   },
   async mounted() {
@@ -756,10 +760,6 @@ export default {
       }
     },
     async submitEvent() {
-      if (!this.isNew) {
-        this.editEvent()
-        return
-      }
       if (this.dateOption === 'period') {
         if (typeof this.range.start !== 'string') {
           this.range.start = moment().format('YYYY-MM-DD')
@@ -819,22 +819,40 @@ export default {
             price:
               typeof this.ticketPrice === 'object'
                 ? Math.min(...Object.values(this.ticketPrice))
-                : this.ticketPrice,
+                : this.fixedPrice,
             unit: '張',
           },
         }
 
         console.log(info)
         const token = this.$cookies.get('flashTicketingAuth').token
-        const addProductRes = await apiAdminAddProduct(token, info)
-        if (!addProductRes.data.success) {
-          throw addProductRes.data.message
+        if (this.isNew) {
+          const addProductRes = await apiAdminAddProduct(token, info)
+          if (!addProductRes.data.success) {
+            throw addProductRes.data.message
+          }
+          this.$showSuccess('已成功建立活動')
+        } else {
+          const editProductRes = await apiAdminEditProduct(
+            token,
+            this.eventInfo.id,
+            info
+          )
+          if (!editProductRes.data.success) {
+            throw editProductRes.data.message
+          }
+          this.$showSuccess('已成功修改活動')
         }
-        this.$showSuccess('已成功建立活動')
-        // Clear input
-        window.location.reload()
+        // Back to all events table
+        window.setTimeout(() => {
+          this.$router.push('/admin')
+        }, 2500)
       } catch (error) {
-        this.$showError('建立節目活動失敗')
+        if (this.isNew) {
+          this.$showError('建立節目活動失敗')
+        } else {
+          this.$showError('編輯節目活動失敗')
+        }
         // eslint-disable-next-line no-console
         console.log(error)
       }
