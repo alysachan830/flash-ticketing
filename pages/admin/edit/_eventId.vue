@@ -101,12 +101,6 @@
               </label>
             </div>
           </div>
-          <!-- <div v-else>
-            <div v-if="typeof eventInfo.ticketPrice === 'number'">
-              <p class="mb-3">票價</p>
-              <input type="number" v-model.number="fixedPrice" />
-            </div>
-          </div> -->
           <!-- Charge by seating zone -->
           <div class="mb-8">
             <div v-if="chargingOption === 'seatPrice'">
@@ -178,11 +172,6 @@
                   </table>
                 </div>
               </div>
-              <!-- <ul>
-                <li v-for="seat in Object.keys(ticketPrice)" :key="seat">
-                  {{ seat }} 區：$ {{ ticketPrice[seat] }}
-                </li>
-              </ul> -->
             </div>
             <div v-else>
               <div class="col-2">
@@ -472,13 +461,6 @@
         <span class="badge mb-1">其他圖片</span>
         <p class="font-xs text-muted mb-6">前台只會顯示前兩張圖片</p>
         <div v-if="imagesUrl.length > 0" class="sub-image-wrap mb-6">
-          <!-- <img
-            v-for="url in imagesUrl"
-            :key="url"
-            :src="url"
-            alt=""
-            class="preview-image-h mb-6"
-          /> -->
           <div v-for="(url, i) in imagesUrl" :key="url" class="d-flex">
             <img :src="url" alt="" class="preview-image-h mb-6" />
             <a href="#" @click.prevent="deleteSubImage(i)">
@@ -567,17 +549,12 @@ export default {
       category: '藝術展覽',
       organizer: '',
       venue: '',
-      // seats: [],
       tag: 'newest',
       ticketPrice: 0, //*
       discount: 0,
       mainImage: '',
       mainImagePreview: '',
       subImage: '',
-      // 以下資料雖然將不會使用，但是這些也是API必須要傳的參數
-      // unit: '張',
-      // origin_price: 0,
-      // price: 0,
     }
   },
   watch: {
@@ -636,9 +613,6 @@ export default {
         this.range.startTime = this.eventInfo.dateTime.startTime
         this.range.endTime = this.eventInfo.dateTime.endTime
       }
-      //   if(typeof this.eventInfo.ticketPrice === 'object'){
-
-      //   }
     },
     addSelectedDate() {
       // this.selectedDate.date === '' ||
@@ -779,27 +753,6 @@ export default {
         // eslint-disable-next-line no-console
         console.log(error)
       }
-      // if (this.subImage === '') {
-      //   console.log('請選擇圖片')
-      //   return
-      // }
-      // const form = new FormData()
-      // form.append('', this.subImage)
-      // const AUTH_TOKEN =
-      //   'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI1NDA5MTg4LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjU0MDkxODgsImV4cCI6MTYyNTg0MTE4OCwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.aquUuQ1goSLkyJKcwWKx4LDj37f8ajbfL9jC5P7JGBeGM2PV0QHfQavxpmyX2Bw46wYQ5DuN7FPQFqGVR7jDZtqaxZddHOE52Ht_pbBStrM89-f2ALgIrR8nOAwCXJjIEChDGBjAQi0jM_GTzREbz3UzuFydZgRRazuo9Ctc1qidt9qEnkY1G6yqBxoO50RGX-h9oYVXJTvmblxw2hEPUkx4jtF4-Zt5cICSQe1IT_IMiJef2JbTLpVKP2InLYh0YQJkg656aUdY6GXYTGZi6F3SZHCVg0x-cLG_wEZpzx7fzvQhiYD5pSC4kIcxuucuXdT1r7kbk9I9JGAvJ6CxYg'
-      // axios.defaults.headers.common.Authorization = AUTH_TOKEN
-      // axios
-      //   .post(
-      //     `https://vue3-course-api.hexschool.io/api/${process.env.API_PATH}/admin/upload`,
-      //     form
-      //   )
-      //   .then((res) => {
-      //     console.log(res)
-      //     this.subImage = ''
-      //     this.$refs.subImage.value = ''
-      //     this.imagesUrl.push(res.data.imageUrl)
-      //   })
-      //   .catch((err) => console.log(err))
     },
     submitEvent() {
       if (this.dateOption === 'period') {
