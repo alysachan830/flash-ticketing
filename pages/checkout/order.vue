@@ -49,13 +49,13 @@
 
       <div v-if="carts.length > 0">
         <CartCard
-          v-for="item in carts"
+          v-for="item in filterCarts"
           :key="item.id"
           :cart-item="item"
         ></CartCard>
         <!-- </div> -->
         <div class="d-flex justify-content-end mb-18">
-          <Pagination></Pagination>
+          <Pagination :total-pages="Math.ceil(carts.length / 4)"></Pagination>
         </div>
         <!-- Total -->
         <div class="row justify-content-between mb-21">
@@ -115,10 +115,26 @@ export default {
   data() {
     return {
       loader: {},
+      currentPage: 1,
       couponCode: 'flash2021',
     }
   },
+  computed: {
+    filterCarts() {
+      return this.carts.slice(
+        (this.currentPage - 1) * 4,
+        (this.currentPage - 1) * 4 + 4
+      )
+    },
+  },
   created() {
+    this.$nuxt.$on('clickPageNum', (n) => {
+      this.currentPage = n
+    })
+    this.$bus.$on('clearPageNum', () => {
+      this.currentPage = 1
+    })
+
     this.$nuxt.$on('refreshCart', async (cartId, ticketIds) => {
       await this.getCart()
       if (cartId && ticketIds) {
