@@ -363,8 +363,6 @@ export default {
         let ids
         let updatedItems
         if (accumulatedItems) {
-          console.log('----accmulated items----')
-          console.log(accumulatedItems)
           const newIds = Object.keys(accumulatedItems)
           // Filter out the replaced items
           const exisitingIds = Object.keys(originalItem)
@@ -372,10 +370,8 @@ export default {
             .filter((item) => item.includes('票'))
           const exisitingItems = {}
           exisitingIds.forEach((id) => (exisitingItems[id] = originalItem[id]))
-          console.log('updateItems')
           updatedItems = { ...accumulatedItems, ...exisitingItems }
           ids = Object.keys(updatedItems)
-          console.log(updatedItems)
         } else {
           ids = Object.keys(this.tempCart)
         }
@@ -393,8 +389,6 @@ export default {
           if (ticketType === '優惠票') {
             perTicketPrice = perTicketPrice * (this.eventInfo.discount / 100)
           }
-          console.log('----perTicketPrice---')
-          console.log(perTicketPrice)
           let subTotal
           if (accumulatedItems) {
             subTotal = perTicketPrice * updatedItems[id]
@@ -403,7 +397,6 @@ export default {
           }
           return acc + subTotal
         }, 0)
-        console.log(totalPrice)
         const qty = totalPrice / this.eventInfo.price
         return qty
       }
@@ -420,10 +413,8 @@ export default {
         const existingCartItem = carts.find(
           (item) => item.product_id === this.eventId
         )
-        console.log(carts)
         // User has not added this event before
         if (!existingCartItem) {
-          console.log('還沒有此活動!')
           const allData = {
             data: {
               product_id: this.eventId,
@@ -434,7 +425,6 @@ export default {
           tempCartIds.forEach((id) => {
             allData.data[id] = this.tempCart[id]
           })
-          console.log(allData)
           const addCartRes = await apiClientAddCart(allData)
           // Clear tempCart and all input quantity
           this.tempCart = {}
@@ -442,10 +432,8 @@ export default {
           if (!addCartRes.data.success) {
             throw addCartRes.data.message.join()
           }
-          console.log(addCartRes.data)
           this.$showSuccess('已加入購物車')
         } else {
-          console.log('之前已有加這 event !')
           // User has added this event before
           // Check if this event item contains the same event period
           // If yes, We have to accumulate the quantity
@@ -455,11 +443,9 @@ export default {
           }
           tempCartIds.forEach((id) => {
             if (existingCartItem[id] !== undefined) {
-              console.log('有此時段，要累加！')
               // Accumulate the quantity
               allData.data[id] = existingCartItem[id] + this.tempCart[id]
             } else {
-              console.log('沒有此時段，不用累加！')
               // If not, add the key and value to allData
               allData.data[id] = this.tempCart[id]
             }
@@ -469,7 +455,6 @@ export default {
           // Qty will be accumulated if that event is already added in the cart before
           // To avoid accumulation, use update cart API
 
-          console.log(allData)
           const updateCartRes = await apiClientUpdateCart(
             existingCartItem.id,
             allData
@@ -481,11 +466,11 @@ export default {
           if (!updateCartRes.data.success) {
             throw updateCartRes.data.message.join()
           }
-          console.log(updateCartRes.data)
           this.$showSuccess('已加入購物車')
         }
       } catch (error) {
         this.$showError('加入購物車失敗')
+        // eslint-disable-next-line no-console
         console.log(error)
       }
     },
