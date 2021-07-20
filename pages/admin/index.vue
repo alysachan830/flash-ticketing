@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h2 class="font-xl mb-13">所有節目</h2>
+    <div class="d-flex justify-content-between align-items-start">
+      <h2 class="font-xl mb-13">所有節目</h2>
+      <NuxtLink to="/admin/edit/new" class="btn btn-primary">新增節目</NuxtLink>
+    </div>
     <table class="table">
       <thead>
         <tr>
