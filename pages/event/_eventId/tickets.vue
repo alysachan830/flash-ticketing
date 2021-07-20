@@ -6,25 +6,9 @@
           <img class="rounded-4" :src="eventInfo.imageUrl" alt="event image" />
         </div>
         <div class="col-lg-3 offset-lg-1">
-          <div class="d-flex justify-content-between mb-6">
-            <span class="badge font-lg-s font-xs bg-secondary text-black mb-4">
-              {{ eventInfo.category }}
-            </span>
-            <ul class="d-flex">
-              <li>
-                <a href="#">
-                  <span class="me-2 text-info material-icons">
-                    bookmark_border
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="text-info material-icons"> share </span>
-                </a>
-              </li>
-            </ul>
-          </div>
+          <span class="badge font-lg-s font-xs bg-secondary text-black mb-6">
+            {{ eventInfo.category }}
+          </span>
           <div class="mb-15">
             <h2 class="mb-6">{{ eventInfo.title }}</h2>
             <p>{{ eventInfo.organizer }}</p>
@@ -194,6 +178,7 @@ export default {
   },
   data() {
     return {
+      loader: {},
       inputDateTime: '',
       inputTicketType: '正價票',
       inputSeat: 'A區',
@@ -425,6 +410,7 @@ export default {
           tempCartIds.forEach((id) => {
             allData.data[id] = this.tempCart[id]
           })
+          this.loader = this.$loading.show()
           const addCartRes = await apiClientAddCart(allData)
           // Clear tempCart and all input quantity
           this.tempCart = {}
@@ -454,7 +440,7 @@ export default {
           allData.data.product_id = this.eventId
           // Qty will be accumulated if that event is already added in the cart before
           // To avoid accumulation, use update cart API
-
+          this.loader = this.$loading.show()
           const updateCartRes = await apiClientUpdateCart(
             existingCartItem.id,
             allData
@@ -472,6 +458,8 @@ export default {
         this.$showError('加入購物車失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
   },
