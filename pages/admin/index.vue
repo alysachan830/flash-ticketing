@@ -27,7 +27,7 @@
             >
           </td>
           <td>
-            <a href="#" @click.prevent="deleteEvent(event.id)"
+            <a href="#" @click.prevent="deleteEvent(event)"
               ><span class="material-icons"> clear </span></a
             >
           </td>
@@ -49,15 +49,6 @@ export default {
   },
   mounted() {
     this.getAllEvents()
-    // try {
-    //   const token = this.$cookies.get('flashTicketingAuth').token
-    //   await this.$store.dispatch('adminGetAllEvents', token)
-    //   this.events = this.$store.getters.adminEvents
-    // } catch (error) {
-    //   this.$showError('載入節目活動資料失敗')
-    //   // eslint-disable-next-line no-console
-    //   console.log(error)
-    // }
   },
   methods: {
     async getAllEvents() {
@@ -80,7 +71,6 @@ export default {
     },
     ticketPriceFormat(ticketPrice) {
       if (typeof ticketPrice === 'object') {
-        // return Object.keys(ticketPrice).join(',')
         return Object.keys(ticketPrice).reduce(
           (acc, curr) => `${acc}<li>${curr}區：$${ticketPrice[curr]}</li>`,
           ``
@@ -89,12 +79,14 @@ export default {
         return `<li>${ticketPrice}</li>`
       }
     },
-    async deleteEvent(id) {
+    async deleteEvent(event) {
       try {
-        const confirmDelete = await this.$showConfirm('是否確定刪除此節目？')
+        const confirmDelete = await this.$showConfirm(
+          `是否確定刪除${event.title}？`
+        )
         if (!confirmDelete) return
         const token = this.$cookies.get('flashTicketingAuth').token
-        const deleteProductRes = await apiAdminDeleteProduct(token, id)
+        const deleteProductRes = await apiAdminDeleteProduct(token, event.id)
         if (!deleteProductRes.data.success) {
           throw deleteProductRes.data.message
         }
@@ -106,8 +98,6 @@ export default {
         // eslint-disable-next-line no-console
         console.log(error)
       }
-      // apiAdminDeleteProduct()
-      // console.log(id)
     },
   },
 }
