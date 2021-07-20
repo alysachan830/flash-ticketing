@@ -115,11 +115,6 @@
           </div>
         </div>
       </div>
-      <!-- Article -->
-      <div>
-        <h2 class="font-xl mb-14">獨家點評</h2>
-        <!-- <articleCard></articleCard> -->
-      </div>
     </div>
     <!-- Related events -->
     <div class="bg-light py-18">
