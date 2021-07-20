@@ -21,78 +21,102 @@
       <!-- Form -->
       <div class="row justify-content-center">
         <div class="col-lg-8">
-          <div class="row mb-md-14">
-            <div class="col-md-6 mb-md-0 mb-14">
-              <div>
-                <label for="name" class="form-label">姓名</label>
-                <input
-                  id="name"
-                  type="text"
+          <ValidationObserver v-slot="{ handleSubmit }">
+            <form @submit.prevent="handleSubmit(submitOrder)">
+              <!-- Name -->
+              <div class="row mb-md-14">
+                <div class="col-md-6 mb-md-0 mb-14">
+                  <div>
+                    <label for="姓名" class="form-label">姓名</label>
+                    <ValidationProvider v-slot="{ errors }" rules="required">
+                      <input
+                        id="姓名"
+                        v-model="user.name"
+                        type="text"
+                        class="form-control"
+                        placeholder="請輸入姓名"
+                      />
+                      <span class="text-danger font-s">{{ errors[0] }}</span>
+                    </ValidationProvider>
+                  </div>
+                </div>
+                <!-- Email -->
+                <div class="col-md-6 mb-md-0 mb-14">
+                  <div>
+                    <label for="電郵" class="form-label">電郵</label>
+                    <ValidationProvider
+                      v-slot="{ errors }"
+                      rules="required|email"
+                    >
+                      <input
+                        id="電郵"
+                        v-model="user.email"
+                        type="email"
+                        class="form-control"
+                        placeholder="example@gmail.com"
+                      />
+                      <span class="text-danger font-s">{{ errors[0] }}</span>
+                    </ValidationProvider>
+                  </div>
+                </div>
+              </div>
+              <!-- Address -->
+              <div class="mb-14">
+                <label for="地址" class="form-label">地址</label>
+                <ValidationProvider v-slot="{ errors }" rules="required">
+                  <input
+                    id="地址"
+                    v-model="user.address"
+                    type="text"
+                    class="form-control"
+                    placeholder="請輸入地址"
+                  />
+                  <span class="text-danger font-s">{{ errors[0] }}</span>
+                </ValidationProvider>
+              </div>
+              <!-- Tel -->
+              <div class="mb-14">
+                <label for="電話" class="form-label">電話</label>
+                <ValidationProvider v-slot="{ errors }" rules="required|tel">
+                  <input
+                    id="電話"
+                    v-model="user.tel"
+                    type="text"
+                    class="form-control"
+                    placeholder="請輸入電話"
+                  />
+                  <span class="text-danger font-s">{{ errors[0] }}</span>
+                </ValidationProvider>
+              </div>
+              <!-- Comment -->
+              <div class="mb-18">
+                <label for="留言" class="form-label">留言</label>
+                <textarea
+                  id="留言"
+                  v-model="message"
                   class="form-control"
-                  placeholder="請輸入姓名"
-                />
+                  rows="3"
+                ></textarea>
               </div>
-            </div>
-            <div class="col-md-6 mb-md-0 mb-14">
-              <div>
-                <label for="email" class="form-label">電郵</label>
-                <input
-                  id="email"
-                  type="email"
-                  class="form-control"
-                  placeholder="example@gmail.com"
-                />
+              <div class="row justify-content-between mb-21">
+                <div class="col-md-2 col-4">
+                  <a href="/checkout/order"
+                    ><span class="material-icons me-3"> chevron_left </span
+                    ><span class="me-3">返回</span>
+                  </a>
+                </div>
+                <div class="col-md-2 col-4">
+                  <button
+                    type="submit"
+                    href="/checkout/result"
+                    class="btn btn-primary w-100"
+                  >
+                    確認
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="mb-14">
-            <label for="address" class="form-label">地址</label>
-            <input
-              id="address"
-              type="text"
-              class="form-control"
-              placeholder="請輸入地址"
-            />
-          </div>
-          <div class="row mb-14">
-            <div class="col-md-6 mb-md-0 mb-14">
-              <div>
-                <label for="tel" class="form-label">電話</label>
-                <input
-                  id="tel"
-                  type="text"
-                  class="form-control"
-                  placeholder="請輸入電話"
-                />
-              </div>
-            </div>
-            <div class="col-md-6 mb-md-0 mb-14">
-              <div>
-                <label for="payment" class="form-label">付款方式</label>
-                <select id="payment" class="form-select">
-                  <option value="visa">VISA</option>
-                  <option value="paypal">Paypal</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="mb-18">
-            <label for="comment" class="form-label">留言</label>
-            <textarea id="comment" class="form-control" rows="3"></textarea>
-          </div>
-          <div class="row justify-content-between mb-21">
-            <div class="col-md-2 col-4">
-              <!-- class="btn btn-outline-primary w-100" -->
-              <a href="/checkout/order"
-                ><span class="material-icons me-3"> chevron_left </span
-                ><span class="me-3">返回</span>
-                <!-- <span class="material-icons-outlined"> chevron_right </span> -->
-              </a>
-            </div>
-            <div class="col-md-2 col-4">
-              <a href="/checkout/result" class="btn btn-primary w-100">確認</a>
-            </div>
-          </div>
+            </form>
+          </ValidationObserver>
         </div>
       </div>
     </div>
@@ -100,7 +124,75 @@
 </template>
 
 <script>
-export default {}
+import { apiClientSubmitOrder } from '@/api/index'
+// Vee-validate
+import {
+  ValidationProvider,
+  ValidationObserver,
+  extend,
+  localize,
+} from 'vee-validate'
+import zh from 'vee-validate/dist/locale/zh_TW.json'
+import { required, email } from 'vee-validate/dist/rules'
+
+extend('email', email)
+extend('required', required)
+extend('tel', (value) => {
+  if (value.match(/^[0-9)(+-]+$/)) {
+    return true
+  }
+  return '電話只能是數字或 "+" 、 "-" 和括號符號'
+})
+
+localize('zh_TW', zh)
+
+export default {
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
+  middleware: 'orderForm',
+  data() {
+    return {
+      user: {
+        name: '',
+        email: '',
+        address: '',
+        tel: '',
+      },
+      message: '',
+    }
+  },
+  methods: {
+    async submitOrder() {
+      const allData = {
+        data: {
+          user: this.user,
+          message: this.message,
+        },
+      }
+
+      try {
+        const sumbitOrderRes = await apiClientSubmitOrder(allData)
+        if (!sumbitOrderRes.data.success) {
+          throw sumbitOrderRes.data.message
+        }
+        this.$showSuccess('結帳成功')
+
+        // Clear input
+        Object.keys(this.user).forEach((key) => (this.user[key] = ''))
+        this.message = ''
+
+        // redirect to success page
+        this.$router.push('/checkout/result')
+      } catch (error) {
+        this.$showError('結帳失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>

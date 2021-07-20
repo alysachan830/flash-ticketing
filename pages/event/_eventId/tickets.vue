@@ -244,7 +244,7 @@ export default {
         zone: '不適用',
         price: '免費',
         ticketType: '不適用',
-        id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime}`,
+        id: dateTime.timestamp,
         ...dateTime,
       }))
     } else if (typeof this.eventInfo.ticketPrice === 'number') {
