@@ -17,6 +17,7 @@
           <td>{{ event.title }}</td>
           <td>{{ dateTimeFormat(event.dateTime) }}</td>
           <td>
+            <!-- eslint-disable vue/no-v-html -->
             <ul v-html="ticketPriceFormat(event.ticketPrice)"></ul>
           </td>
           <td>{{ event.is_enabled ? '已啟用' : '未啟用' }}</td>

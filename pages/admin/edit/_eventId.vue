@@ -809,7 +809,6 @@ export default {
               this.dateOption === 'period' ? this.range : this.selectedDates,
             organizer: this.organizer,
             venue: this.venue,
-            // Note: 需預先判斷 ticketPrice 如果是物件，裏面是不是已經有資料
             ticketPrice:
               this.chargingOption === 'fixedPrice'
                 ? this.fixedPrice
