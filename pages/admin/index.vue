@@ -21,7 +21,9 @@
           </td>
           <td>{{ event.is_enabled ? '已啟用' : '未啟用' }}</td>
           <td>
-            <span class="material-icons"> edit </span>
+            <NuxtLink :to="`/admin/edit/${event.id}`"
+              ><span class="material-icons"> edit </span></NuxtLink
+            >
           </td>
           <td>
             <span class="material-icons"> clear </span>

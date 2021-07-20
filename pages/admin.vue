@@ -30,10 +30,7 @@
             >
             節目活動</NuxtLink
           >
-          <NuxtLink
-            class="py-7 ps-16 pe-20 text-nowrap"
-            to="/admin/create-event"
-          >
+          <NuxtLink class="py-7 ps-16 pe-20 text-nowrap" to="/admin/edit/new">
             <i class="material-icons text-white align-bottom me-2">add</i>
             新增節目活動</NuxtLink
           >
