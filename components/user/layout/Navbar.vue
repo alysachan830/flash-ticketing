@@ -100,56 +100,59 @@
       tabindex="-1"
       aria-labelledby="offcanvasExampleLabel"
     >
-      <div class="offcanvas-header">
-        <p class="offcanvas-title font-l">購物車</p>
-        <button
-          type="button"
-          class="btn-close text-reset"
-          data-bs-dismiss="offcanvas"
-          aria-label="Close"
-        ></button>
+      <div class="offcanvas-header d-block">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <p class="offcanvas-title font-l">購物車</p>
+          <button
+            type="button"
+            class="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <NuxtLink to="/checkout/order" class="font-s text-primary"
+          >前往編輯更多內容
+          <span class="material-icons align-middle font-base">
+            chevron_right
+          </span>
+        </NuxtLink>
       </div>
       <div class="offcanvas-body">
-        <div v-for="n in 10" :key="n" class="d-flex px-2 border-top py-5">
-          <img
-            class="offCanvas-img-size me-12 rounded-2"
-            src="https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/1625172152483.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=A6g2dOim3jb8EcodT4ceEsWkJ70%2FxnSUcM9kBmsVYu6D7N4yJ2gRrmnuD6qzBA4N7CvKczPW5%2FXRQ4R%2FobN5EKw9bLMY7cLEFvQ0EC1bmi%2Bsopo%2FuQj5PeflPgo3DudOUV4qyAl4d3y4J5fVJQJzTPwP70L4vp094v8A%2BbRtgNQ15LpPo2%2FMK39FQcgZEgkJej1BYd4syzhcdsP3Oftq45wfGw27LlOgjEQmUAvTQVj%2B9cPE43LAUGRGL4sHU%2Fi8Iecx7sSM0n6J6%2B7tXx3%2Fcn1BWKE%2Bf2lY5eBIt4Ln1JyN3rFvCEbmMGRcTHvZrBKCLnIAHAeTxE3UEKStXr8p3A%3D%3D"
-            alt="cart image"
-          />
-          <div class="d-flex justify-content-between w-100">
-            <div>
-              <p class="fw-bold mb-6">胡桃夾子與他的王國</p>
-              <!-- <ul class="text-info font-s">
-                <li>
-                  <span class="material-icons font-base me-3">
-                    confirmation_number </span
-                  >票種：學生票
-                </li>
-                <li>
-                  <span class="material-icons font-base me-2"> local_offer </span>
-                  數量：1
-                </li>
-                <li>
-                  <span class="material-icons font-base me-3"> paid </span>價錢：1
-                </li>
-              </ul> -->
-              <ul class="text-info font-s">
-                <li>
-                  <span class="material-icons font-base me-3">
-                    confirmation_number </span
-                  >學生票 x 1
-                </li>
-                <li>
-                  <span class="material-icons font-base me-3"> paid </span>HKD
-                  300
-                </li>
-              </ul>
+        <div v-if="carts.length > 0">
+          <div
+            v-for="item in carts"
+            :key="item.id"
+            class="d-flex px-2 border-top py-5"
+          >
+            <img
+              class="offCanvas-img-size me-12 rounded-2"
+              :src="item.product.imageUrl"
+              alt="cart image"
+            />
+            <div class="d-flex justify-content-between w-100">
+              <div>
+                <p class="fw-bold mb-6">{{ item.product.title }}</p>
+                <ul class="text-info font-s">
+                  <li>
+                    <span class="material-icons font-base me-3">
+                      confirmation_number </span
+                    >票卷數量： {{ countTotalTickets(item) }}
+                  </li>
+                  <li>
+                    <span class="material-icons font-base me-3"> paid </span>HKD
+                    {{ item.total }}
+                  </li>
+                </ul>
+              </div>
+              <a href="#">
+                <span class="material-icons" @click="deleteCart(item)">
+                  close
+                </span>
+              </a>
             </div>
-            <a href="#">
-              <span class="material-icons"> close </span>
-            </a>
           </div>
         </div>
+        <p v-else>{{ cartLoadingMsg }}</p>
       </div>
     </div>
 
@@ -206,13 +209,15 @@
             </div>
           </div>
         </div>
-        <div v-else>{{ favouriteAlert }}</div>
+        <p v-else>{{ favouriteLoadingMsg }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { apiClientDeleteCart } from '@/api/index'
+
 let bootstrap
 
 if (process.browser) {
@@ -225,13 +230,18 @@ export default {
       bsCartOffcanvas: {},
       bsFavouriteOffcanvas: {},
       favourites: [],
-      favouriteAlert: '載入我的收藏中...',
+      carts: [],
+      favouriteLoadingMsg: '載入我的收藏中...',
+      cartLoadingMsg: '載入我的購物車中...',
     }
   },
   watch: {
     favourites() {
       if (this.favourites.length === 0) {
-        this.favouriteAlert = '目前沒有收藏任何活動'
+        this.favouriteLoadingMsg = '目前沒有收藏任何活動'
+      }
+      if (this.carts.length === 0) {
+        this.cartLoadingMsg = '目前購物車沒有資料'
       }
     },
   },
@@ -244,10 +254,56 @@ export default {
   methods: {
     showCart() {
       this.bsCartOffcanvas.show()
+      this.getCart()
     },
     showFavourite() {
       this.bsFavouriteOffcanvas.show()
       this.getMyFavourite()
+    },
+    async getCart() {
+      try {
+        await this.$store.dispatch('getCart')
+        const { carts } = this.$store.getters
+        this.carts = carts
+      } catch (error) {
+        this.$showError('載入我的購物車失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
+    },
+    countTotalTickets(cartItem) {
+      const validTicketIds = Object.keys(cartItem)
+        .filter((key) => {
+          return (
+            key !== 'final_total' &&
+            key !== 'id' &&
+            key !== 'product' &&
+            key !== 'product_id' &&
+            key !== 'qty' &&
+            key !== 'total' &&
+            key !== 'coupon'
+            // if user applies coupon, a 'coupon' object will be automatically added to the cart item,
+            // so we have to filter out 'coupon'
+          )
+        })
+        .filter((ticketId) => cartItem[ticketId] !== 0)
+      // Filter out ticket with 0 qty
+      // tickets with 0 qty are tickets that were once added to cart but then deleted by the user
+      console.log(validTicketIds)
+      return validTicketIds.length
+    },
+    async deleteCart(item) {
+      try {
+        const confirmDelete = await this.$showConfirm(
+          `是否確定刪除${item.product.title}的票卷？`
+        )
+        if (!confirmDelete) return
+        await apiClientDeleteCart(item.id)
+        // Refresh cart
+        this.getCart()
+      } catch (error) {
+        this.$showError('刪除購物車資料失敗')
+      }
     },
     async getMyFavourite() {
       const favouritesId = this.$getFavourite()
@@ -259,6 +315,8 @@ export default {
         )
       } catch (error) {
         this.$showError('載入我的收藏失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
       }
     },
     dateTimeTemplate(dateTime) {
