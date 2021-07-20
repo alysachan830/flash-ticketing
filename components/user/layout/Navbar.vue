@@ -152,7 +152,7 @@
             </div>
           </div>
         </div>
-        <p v-else>{{ cartAlert }}</p>
+        <p v-else>{{ cartLoadingMsg }}</p>
       </div>
     </div>
 
@@ -209,7 +209,7 @@
             </div>
           </div>
         </div>
-        <p v-else>{{ favouriteAlert }}</p>
+        <p v-else>{{ favouriteLoadingMsg }}</p>
       </div>
     </div>
   </div>
@@ -231,17 +231,17 @@ export default {
       bsFavouriteOffcanvas: {},
       favourites: [],
       carts: [],
-      favouriteAlert: '載入我的收藏中...',
-      cartAlert: '載入我的購物車中...',
+      favouriteLoadingMsg: '載入我的收藏中...',
+      cartLoadingMsg: '載入我的購物車中...',
     }
   },
   watch: {
     favourites() {
       if (this.favourites.length === 0) {
-        this.favouriteAlert = '目前沒有收藏任何活動'
+        this.favouriteLoadingMsg = '目前沒有收藏任何活動'
       }
       if (this.carts.length === 0) {
-        this.cartAlert = '目前購物車沒有資料'
+        this.cartLoadingMsg = '目前購物車沒有資料'
       }
     },
   },
