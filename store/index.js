@@ -2,7 +2,7 @@ import {
   apiClientGetAllEvents,
   apiClientGetCart,
   apiAdminSignIn,
-  apiAdminGetProducts,
+  apiAdminGetAllProducts,
 } from '@/api/index'
 
 export const state = () => ({
@@ -45,10 +45,10 @@ export const actions = {
       throw new Error(error)
     }
   },
-  async adminGetEvents({ commit }, payload) {
-    const { token, pageNum } = payload
+  async adminGetAllEvents({ commit }, token) {
+    // const { token, pageNum } = payload
     try {
-      const getProductsRes = await apiAdminGetProducts(token, pageNum)
+      const getProductsRes = await apiAdminGetAllProducts(token)
       if (!getProductsRes.data.success) {
         throw new Error(getProductsRes.data.message)
       }
@@ -90,7 +90,10 @@ export const mutations = {
     state.isSignIn = hasCookie
   },
   SetAdminEvents(state, getProductsRes) {
-    state.adminEvents = getProductsRes.data.products
+    const allEvents = Object.keys(getProductsRes.data.products).map(
+      (key) => getProductsRes.data.products[key]
+    )
+    state.adminEvents = allEvents
   },
 }
 

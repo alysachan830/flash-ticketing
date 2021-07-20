@@ -86,11 +86,14 @@ export const apiAdminSignIn = (data) => adminSignIn.post('/admin/signin', data)
 export const apiCheckSignIn = () => adminSignIn.post('/api/user/check')
 export const apiAdminLogout = () => adminSignIn.post('/admin/logout')
 export const apiAdminCheckSignIn = () => adminSignIn.post('/api/user/check')
-export const apiAdminGetProducts = (token, pageNum) => {
+// export const apiAdminGetProducts = (token, pageNum) => {
+//   adminRequest.defaults.headers.common.Authorization = token
+//   return adminRequest.get(`/products?page=${pageNum}`)
+// }
+export const apiAdminGetAllProducts = (token) => {
   adminRequest.defaults.headers.common.Authorization = token
-  return adminRequest.get(`/products?page=${pageNum}`)
+  return adminRequest.get('/products/all')
 }
-export const apiAdminGetAllProducts = () => adminRequest.get(`/products/all`)
 export const apiAdminAddProduct = (data) => adminRequest.post(`/product`, data)
 export const apiAdminEditProduct = (id, data) =>
   adminRequest.put(`/product/${id}`, data)

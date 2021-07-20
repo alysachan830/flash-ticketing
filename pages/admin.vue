@@ -134,8 +134,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/stylesheets/all';
+
 a {
   color: #fff;
+  transition: 0.2s background;
+  &:hover {
+    color: #fff !important;
+    background: rgba($secondary, 0.2);
+  }
+}
+
+.nuxt-link-exact-active.nuxt-link-active {
+  background: rgba($secondary, 0.2);
 }
 
 .avatar {
