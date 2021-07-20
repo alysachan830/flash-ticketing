@@ -810,7 +810,10 @@ export default {
             organizer: this.organizer,
             venue: this.venue,
             // Note: 需預先判斷 ticketPrice 如果是物件，裏面是不是已經有資料
-            ticketPrice: this.ticketPrice,
+            ticketPrice:
+              this.chargingOption === 'fixedPrice'
+                ? this.fixedPrice
+                : this.ticketPrice,
             discount: this.discount,
             tag: this.tag,
             // origin_price is required by the API, but it will not be used in this project
