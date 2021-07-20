@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h2 class="font-xl mb-13">所有優惠劵</h2>
+    <div class="d-flex justify-content-between align-items-start">
+      <h2 class="font-xl mb-13">所有優惠劵</h2>
+      <button class="btn btn-primary" @click="addCoupon">新增優惠券</button>
+    </div>
     <table v-if="coupons.length > 0" class="table">
       <thead>
         <tr>
@@ -79,6 +82,9 @@ export default {
     editCoupon(coupon) {
       this.$store.dispatch('adminEditCoupon', coupon)
       this.$router.push(`/admin/coupon/${coupon.id}`)
+    },
+    addCoupon() {
+      this.$router.push('/admin/coupon/new')
     },
   },
 }

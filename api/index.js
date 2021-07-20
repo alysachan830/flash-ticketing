@@ -132,6 +132,11 @@ export const apiAdminGetCoupons = (token, pageNum) => {
   return adminRequest.get(`/coupons?page=${pageNum}`)
 }
 
+export const apiAdminAddCoupon = (token, data) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.post('/coupon', data)
+}
+
 export const apiAdminEditCoupon = (token, id, data) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.put(`/coupon/${id}`, data)
