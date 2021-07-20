@@ -302,9 +302,14 @@ export default {
       this.isDelete = true
       try {
         await this.updateCart(ticketId)
+        this.$showSuccess('已刪除此票卷')
         this.isDelete = false
         await this.$nuxt.$emit('refreshCart', this.cartItem.id, this.ticketIds)
-      } catch (error) {}
+      } catch (error) {
+        this.$showError('刪除此票卷失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
     },
   },
 }
