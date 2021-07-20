@@ -118,38 +118,41 @@
         </NuxtLink>
       </div>
       <div class="offcanvas-body">
-        <div
-          v-for="item in carts"
-          :key="item.id"
-          class="d-flex px-2 border-top py-5"
-        >
-          <img
-            class="offCanvas-img-size me-12 rounded-2"
-            :src="item.product.imageUrl"
-            alt="cart image"
-          />
-          <div class="d-flex justify-content-between w-100">
-            <div>
-              <p class="fw-bold mb-6">{{ item.product.title }}</p>
-              <ul class="text-info font-s">
-                <li>
-                  <span class="material-icons font-base me-3">
-                    confirmation_number </span
-                  >票卷數量： {{ countTotalTickets(item) }}
-                </li>
-                <li>
-                  <span class="material-icons font-base me-3"> paid </span>HKD
-                  {{ item.total }}
-                </li>
-              </ul>
+        <div v-if="carts.length > 0">
+          <div
+            v-for="item in carts"
+            :key="item.id"
+            class="d-flex px-2 border-top py-5"
+          >
+            <img
+              class="offCanvas-img-size me-12 rounded-2"
+              :src="item.product.imageUrl"
+              alt="cart image"
+            />
+            <div class="d-flex justify-content-between w-100">
+              <div>
+                <p class="fw-bold mb-6">{{ item.product.title }}</p>
+                <ul class="text-info font-s">
+                  <li>
+                    <span class="material-icons font-base me-3">
+                      confirmation_number </span
+                    >票卷數量： {{ countTotalTickets(item) }}
+                  </li>
+                  <li>
+                    <span class="material-icons font-base me-3"> paid </span>HKD
+                    {{ item.total }}
+                  </li>
+                </ul>
+              </div>
+              <a href="#">
+                <span class="material-icons" @click="deleteCart(item)">
+                  close
+                </span>
+              </a>
             </div>
-            <a href="#">
-              <span class="material-icons" @click="deleteCart(item)">
-                close
-              </span>
-            </a>
           </div>
         </div>
+        <p v-else>{{ cartAlert }}</p>
       </div>
     </div>
 
@@ -206,7 +209,7 @@
             </div>
           </div>
         </div>
-        <div v-else>{{ favouriteAlert }}</div>
+        <p v-else>{{ favouriteAlert }}</p>
       </div>
     </div>
   </div>
@@ -229,12 +232,16 @@ export default {
       favourites: [],
       carts: [],
       favouriteAlert: '載入我的收藏中...',
+      cartAlert: '載入我的購物車中...',
     }
   },
   watch: {
     favourites() {
       if (this.favourites.length === 0) {
         this.favouriteAlert = '目前沒有收藏任何活動'
+      }
+      if (this.carts.length === 0) {
+        this.cartAlert = '目前購物車沒有資料'
       }
     },
   },
