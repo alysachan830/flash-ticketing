@@ -34,7 +34,12 @@
             國際展覽中心一號展場
           </p>
         </div>
-        <button class="btn btn-primary btn-lg px-10">搶先購票</button>
+        <NuxtLink
+          to="/event/-Mdm05StW8ZACYsw82zh"
+          class="btn btn-primary btn-lg px-10"
+          >搶先購票</NuxtLink
+        >
+        <!-- <button class="btn btn-primary btn-lg px-10">搶先購票</button> -->
       </div>
     </div>
 
@@ -72,11 +77,12 @@
             </div>
           </div>
           <div class="text-center">
-            <button
+            <NuxtLink
+              to="/events/all"
               class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
             >
               更多節目
-            </button>
+            </NuxtLink>
           </div>
         </div>
       </client-only>
@@ -113,7 +119,11 @@
                   香港表演藝術大學三樓演奏廳
                 </p>
               </div>
-              <button class="btn btn-primary btn-lg px-10">搶先購票</button>
+              <NuxtLink
+                to="/event/-MeDhhevaeV5e8wUDUuS"
+                class="btn btn-primary btn-lg px-10"
+                >搶先購票</NuxtLink
+              >
             </div>
           </span>
         </a>
@@ -140,11 +150,12 @@
             </div>
           </div>
           <div class="text-center">
-            <button
+            <NuxtLink
+              to="/events/all"
               class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
             >
               更多節目
-            </button>
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -152,7 +163,16 @@
     <!-- Footer banner -->
     <div class="footer-banner d-flex justify-content-center align-items-center">
       <div class="row justify-content-center">
-        <h3 class="text-white font-2xl text-center mb-10 fw-normal lh-base">
+        <h3
+          class="
+            text-white
+            font-l font-md-xl font-lg-2xl
+            text-center
+            mb-10
+            fw-normal
+            lh-base
+          "
+        >
           訂閱最新消息 <br />
           率先享受最新節目
         </h3>
@@ -161,14 +181,13 @@
             <div class="input-group input-group-lg mb-3">
               <input
                 type="text"
-                class="form-control"
+                class="form-control font-s font-lg-m"
                 placeholder="您的電郵"
                 aria-label="您的電郵"
-                aria-describedby="button-addon2"
               />
               <button
                 id="subscribe"
-                class="btn btn-outline-secondary"
+                class="btn btn-outline-secondary font-s font-lg-m"
                 type="button"
               >
                 訂閱
