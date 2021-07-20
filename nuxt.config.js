@@ -17,19 +17,11 @@ export default {
         rel: 'stylesheet',
       },
     ],
-    // metaInfo: {
-    //   link: [
-    //     {
-    //       rel: 'stylesheet',
-    //       href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
-    //     },
-    //   ],
-    // },
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['@/assets/stylesheets/all.scss'],
-
+  loading: false,
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~plugins/cookie.js' },
@@ -44,15 +36,6 @@ export default {
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: false,
-  // components: {
-  //   dirs: [
-  //     '~/components',
-  //     '~/components/common',
-  //     '~/components/admin',
-  //     '~/components/user',
-  //     '~/components/user/layout',
-  //   ],
-  // },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
@@ -93,8 +76,4 @@ export default {
     apiBaseUrl: process.env.API_BASE_URL,
     apiPath: process.env.API_PATH,
   },
-  // privateRuntimeConfig: {
-  //   apiBaseUrl: process.env.API_BASE_URL,
-  //   apiPath: process.env.API_PATH
-  // }
 }

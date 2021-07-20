@@ -289,7 +289,6 @@ export default {
         .filter((ticketId) => cartItem[ticketId] !== 0)
       // Filter out ticket with 0 qty
       // tickets with 0 qty are tickets that were once added to cart but then deleted by the user
-      console.log(validTicketIds)
       return validTicketIds.length
     },
     async deleteCart(item) {
