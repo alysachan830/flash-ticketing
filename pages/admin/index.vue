@@ -17,6 +17,7 @@
           <td>{{ event.title }}</td>
           <td>{{ dateTimeFormat(event.dateTime) }}</td>
           <td>
+            <!-- eslint-disable vue/no-v-html -->
             <ul v-html="ticketPriceFormat(event.ticketPrice)"></ul>
           </td>
           <td>{{ event.is_enabled ? '已啟用' : '未啟用' }}</td>
@@ -26,7 +27,9 @@
             >
           </td>
           <td>
-            <span class="material-icons"> clear </span>
+            <a href="#" @click.prevent="deleteEvent(event.id)"
+              ><span class="material-icons"> clear </span></a
+            >
           </td>
         </tr>
       </tbody>
@@ -35,6 +38,8 @@
 </template>
 
 <script>
+import { apiAdminDeleteProduct } from '@/api/index'
+
 export default {
   layout: 'empty',
   data() {
@@ -42,18 +47,30 @@ export default {
       events: [],
     }
   },
-  async mounted() {
-    try {
-      const token = this.$cookies.get('flashTicketingAuth').token
-      await this.$store.dispatch('adminGetAllEvents', token)
-      this.events = this.$store.getters.adminEvents
-    } catch (error) {
-      this.$showError('載入節目活動資料失敗')
-      // eslint-disable-next-line no-console
-      console.log(error)
-    }
+  mounted() {
+    this.getAllEvents()
+    // try {
+    //   const token = this.$cookies.get('flashTicketingAuth').token
+    //   await this.$store.dispatch('adminGetAllEvents', token)
+    //   this.events = this.$store.getters.adminEvents
+    // } catch (error) {
+    //   this.$showError('載入節目活動資料失敗')
+    //   // eslint-disable-next-line no-console
+    //   console.log(error)
+    // }
   },
   methods: {
+    async getAllEvents() {
+      try {
+        const token = this.$cookies.get('flashTicketingAuth').token
+        await this.$store.dispatch('adminGetAllEvents', token)
+        this.events = this.$store.getters.adminEvents
+      } catch (error) {
+        this.$showError('載入節目活動資料失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
+    },
     dateTimeFormat(dateTime) {
       if (Array.isArray(dateTime)) {
         return dateTime.map((item) => item.date).join(', ')
@@ -71,6 +88,26 @@ export default {
       } else {
         return `<li>${ticketPrice}</li>`
       }
+    },
+    async deleteEvent(id) {
+      try {
+        const confirmDelete = await this.$showConfirm('是否確定刪除此節目？')
+        if (!confirmDelete) return
+        const token = this.$cookies.get('flashTicketingAuth').token
+        const deleteProductRes = await apiAdminDeleteProduct(token, id)
+        if (!deleteProductRes.data.success) {
+          throw deleteProductRes.data.message
+        }
+        this.$showSuccess('成功刪除此節目')
+        // Refresh all events table
+        this.getAllEvents()
+      } catch (error) {
+        this.$showError('刪除節目失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
+      // apiAdminDeleteProduct()
+      // console.log(id)
     },
   },
 }
