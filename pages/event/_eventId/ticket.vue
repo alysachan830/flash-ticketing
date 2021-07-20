@@ -201,7 +201,6 @@ export default {
 
     // Listen for emit
     this.$nuxt.$on('clickAdd', (id) => {
-      // if (process.server) return
       if (this.tempCart[id] === undefined) {
         this.tempCart[id] = 1
       } else {
@@ -330,7 +329,6 @@ export default {
             allData.data.product_id = this.eventId
           } else {
             tempCartIds.forEach((id) => {
-              // existingCartItem[id] !== undefined && id !== this.eventId
               if (existingCartItem[id] !== undefined) {
                 // This ticket is already in the current cart
                 // Accumulate the quantity
