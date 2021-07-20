@@ -13,6 +13,7 @@ export const state = () => ({
   isSignIn: false,
   adminEvents: [],
   adminEditingOrder: {},
+  adminEditingCoupon: {},
 })
 
 export const actions = {
@@ -70,6 +71,9 @@ export const actions = {
   adminEditOrder({ commit }, order) {
     commit('SetAdminEditingOrder', order)
   },
+  adminEditCoupon({ commit }, coupon) {
+    commit('SetAdminEditingCoupon', coupon)
+  },
 }
 
 export const mutations = {
@@ -102,6 +106,9 @@ export const mutations = {
   SetAdminEditingOrder(state, order) {
     state.adminEditingOrder = JSON.parse(JSON.stringify(order))
   },
+  SetAdminEditingCoupon(state, coupon) {
+    state.adminEditingCoupon = JSON.parse(JSON.stringify(coupon))
+  },
 }
 
 export const getters = {
@@ -113,4 +120,5 @@ export const getters = {
   signInStatus: (state) => state.isSignIn,
   adminEvents: (state) => state.adminEvents,
   adminEditingOrder: (state) => state.adminEditingOrder,
+  adminEditingCoupon: (state) => state.adminEditingCoupon,
 }

@@ -127,3 +127,12 @@ export const apiAdminDeleteAllOrders = (token) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.delete('/orders/all')
 }
+export const apiAdminGetCoupons = (token, pageNum) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.get(`/coupons?page=${pageNum}`)
+}
+
+export const apiAdminEditCoupon = (token, id, data) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.put(`/coupon/${id}`, data)
+}
