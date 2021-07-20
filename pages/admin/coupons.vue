@@ -34,7 +34,7 @@
             >
           </td>
           <td>
-            <a href="#" @click.prevent="deleteOrder(order.id)"
+            <a href="#" @click.prevent="deleteCoupon(coupon)"
               ><span class="material-icons"> clear </span></a
             >
           </td>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { apiAdminGetCoupons } from '@/api/index'
+import { apiAdminGetCoupons, apiAdminDeleteCoupon } from '@/api/index'
 import moment from 'moment'
 
 export default {
@@ -64,18 +64,21 @@ export default {
       }
     },
   },
-  async mounted() {
-    const token = this.$cookies.get('flashTicketingAuth').token
-    try {
-      const getCouponRes = await apiAdminGetCoupons(token, this.pageNum)
-      this.coupons = getCouponRes.data.coupons
-    } catch (error) {
-      this.$showError('載入優惠劵資料失敗')
-      // eslint-disable-next-line no-console
-      console.log(error)
-    }
+  mounted() {
+    this.getCoupons()
   },
   methods: {
+    async getCoupons() {
+      const token = this.$cookies.get('flashTicketingAuth').token
+      try {
+        const getCouponRes = await apiAdminGetCoupons(token, this.pageNum)
+        this.coupons = getCouponRes.data.coupons
+      } catch (error) {
+        this.$showError('載入優惠劵資料失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
+    },
     dateFormat(timestamp) {
       return moment.unix(timestamp).format('DD-MM-YYYY')
     },
@@ -85,6 +88,26 @@ export default {
     },
     addCoupon() {
       this.$router.push('/admin/coupon/new')
+    },
+    async deleteCoupon(coupon) {
+      try {
+        const confirmDelete = await this.$showConfirm(
+          `是否確定刪除${coupon.title}？`
+        )
+        if (!confirmDelete) return
+        const token = this.$cookies.get('flashTicketingAuth').token
+        const deleteCouponRes = await apiAdminDeleteCoupon(token, coupon.id)
+        if (!deleteCouponRes.data.success) {
+          throw deleteCouponRes.data.message
+        }
+        this.$showSuccess('已成功刪除此優惠劵')
+        // Refresh all coupons table
+        this.getCoupons()
+      } catch (error) {
+        this.$showError(error)
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
     },
   },
 }

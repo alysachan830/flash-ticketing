@@ -141,3 +141,8 @@ export const apiAdminEditCoupon = (token, id, data) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.put(`/coupon/${id}`, data)
 }
+
+export const apiAdminDeleteCoupon = (token, id) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.delete(`/coupon/${id}`)
+}
