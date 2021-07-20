@@ -8,29 +8,24 @@
           ticketing
         </h1>
       </NuxtLink>
-      <p class="text-white font-s">此網站僅作學習用途，無任何商業用途。</p>
+      <p class="text-white font-xs font-md-s">
+        此網站僅作學習用途，無任何商業用途。
+      </p>
       <div class="d-lg-block d-none">
         <!-- Nuxt links -->
         <div class="d-flex">
           <NuxtLink
-            class="text-nowrap text-white me-8 hover__filter--darken"
-            to="events"
+            class="text-white me-8 hover__filter--darken"
+            to="/events/all"
             >所有節目</NuxtLink
           >
           <NuxtLink
-            class="text-nowrap text-white me-8 hover__filter--darken"
-            to="articles"
-            >節目點評</NuxtLink
+            class="text-white me-8 hover__filter--darken"
+            to="/checkout/order"
+            >我的購物車</NuxtLink
           >
-          <NuxtLink
-            class="text-nowrap text-white me-8 hover__filter--darken"
-            to="contact"
-            >聯絡我們</NuxtLink
-          >
-          <NuxtLink
-            class="text-nowrap text-white me-8 hover__filter--darken"
-            to="faq"
-            >常見問題</NuxtLink
+          <NuxtLink class="text-white me-8 hover__filter--darken" to="/login"
+            >後台登入</NuxtLink
           >
           <a
             href="https://github.com/alysachan830/flash-ticketing"
