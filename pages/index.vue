@@ -149,25 +149,6 @@
         </div>
       </div>
     </client-only>
-    <!-- Recommendation -->
-    <div class="mb-23 container">
-      <div class="mb-19">
-        <h2 class="font-xl mb-4">獨家推薦</h2>
-        <p>各界知名藝評人為您推薦最高質的節目。</p>
-      </div>
-      <client-only>
-        <div class="mb-16">
-          <ArticleCard v-for="n in 4" :key="n" class="mb-10"></ArticleCard>
-        </div>
-      </client-only>
-      <div class="text-center">
-        <button
-          class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
-        >
-          更多評論
-        </button>
-      </div>
-    </div>
     <!-- Footer banner -->
     <div class="footer-banner d-flex justify-content-center align-items-center">
       <div class="row justify-content-center">
@@ -204,14 +185,12 @@
 import Categories from '@/components/user/Categories.vue'
 import EventCard from '@/components/user/EventCard.vue'
 import SwiperHotEvents from '@/components/user/swiper/HotEvents.vue'
-import ArticleCard from '@/components/user/article/ArticleCard.vue'
 
 export default {
   components: {
     Categories,
     EventCard,
     SwiperHotEvents,
-    ArticleCard,
   },
   async asyncData(context) {
     try {
