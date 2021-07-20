@@ -1,14 +1,18 @@
 <template>
   <div>
-    <h2 class="font-xl mb-13">所有訂單</h2>
-    <table class="table">
+    <div class="d-flex justify-content-between align-items-start">
+      <h2 class="font-xl mb-13">所有訂單</h2>
+      <button class="btn btn-outline-primary" @click="deleteAllOrders">
+        刪除所有訂單
+      </button>
+    </div>
+    <table v-if="orders.length > 0" class="table">
       <thead>
         <tr>
           <th scope="col">下單時間</th>
           <th scope="col">編號</th>
           <th scope="col">買家姓名</th>
           <th scope="col">付款狀態</th>
-          <!-- <th scope="col">購買票卷</th> -->
           <th scope="col">總額</th>
           <th scope="col">修改或查看</th>
           <th scope="col">刪除</th>
@@ -39,11 +43,16 @@
         </tr>
       </tbody>
     </table>
+    <p>{{ alertSentence }}</p>
   </div>
 </template>
 
 <script>
-import { apiAdminGetOrders, apiAdminDeleteOrder } from '@/api/index'
+import {
+  apiAdminGetOrders,
+  apiAdminDeleteOrder,
+  apiAdminDeleteAllOrders,
+} from '@/api/index'
 import moment from 'moment'
 
 export default {
@@ -52,7 +61,15 @@ export default {
     return {
       orders: [],
       pageNum: 1,
+      alertSentence: '',
     }
+  },
+  watch: {
+    orders() {
+      if (this.orders.length === 0) {
+        this.alertSentence = '目前沒有訂單'
+      }
+    },
   },
   mounted() {
     this.getOrders()
@@ -86,6 +103,28 @@ export default {
           throw deleteOrderRes.data.message
         }
         this.$showSuccess('已成功刪除此訂單')
+        // Refresh all orders table
+        this.getOrders()
+      } catch (error) {
+        this.$showError(error)
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
+    },
+    async deleteAllOrders() {
+      if (this.orders.length === 0) {
+        this.$showError('目前沒有訂單')
+        return
+      }
+      try {
+        const confirmDelete = await this.$showConfirm('是否確定刪除全部訂單？')
+        if (!confirmDelete) return
+        const token = this.$cookies.get('flashTicketingAuth').token
+        const deleteAllOrdersRes = await apiAdminDeleteAllOrders(token)
+        if (!deleteAllOrdersRes.data.success) {
+          throw deleteAllOrdersRes.data.message
+        }
+        this.$showSuccess('已成功刪除全部訂單')
         // Refresh all orders table
         this.getOrders()
       } catch (error) {

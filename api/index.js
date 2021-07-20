@@ -123,3 +123,7 @@ export const apiAdminDeleteOrder = (token, id) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.delete(`/order/${id}`)
 }
+export const apiAdminDeleteAllOrders = (token) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.delete('/orders/all')
+}
