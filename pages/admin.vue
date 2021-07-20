@@ -30,10 +30,6 @@
             >
             節目活動</NuxtLink
           >
-          <NuxtLink class="py-7 ps-16 pe-20 text-nowrap" to="/admin/edit/new">
-            <i class="material-icons text-white align-bottom me-2">add</i>
-            新增節目活動</NuxtLink
-          >
           <NuxtLink class="py-7 ps-16 pe-20" to="/admin/orders">
             <i class="material-icons text-white align-bottom me-2"
               >format_list_bulleted</i
@@ -45,15 +41,6 @@
               >confirmation_number</i
             >
             優惠劵</NuxtLink
-          >
-          <NuxtLink class="py-7 ps-16 pe-20" to="/admin/articles">
-            <i class="material-icons text-white align-bottom me-4"
-              >description</i
-            >評論文章</NuxtLink
-          >
-          <NuxtLink class="py-7 ps-16 pe-20" to="/admin/create-article">
-            <i class="material-icons text-white align-bottom me-2">edit</i>
-            新增文章</NuxtLink
           >
         </div>
         <!-- Avatar -->
