@@ -32,20 +32,15 @@
                 >
                   {{ eventInfo.category }}
                 </span>
-                <ul class="d-flex">
-                  <li>
-                    <a href="#">
-                      <span class="me-2 text-info material-icons">
-                        bookmark_border
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <span class="text-info material-icons"> share </span>
-                    </a>
-                  </li>
-                </ul>
+                <a href="#">
+                  <span
+                    class="me-2 material-icons font-xl"
+                    :class="[isFavourite ? 'text-primary' : 'text-info']"
+                    @click.prevent="addFavourite(eventInfo.id)"
+                  >
+                    {{ isFavourite ? 'bookmark' : 'bookmark_border' }}
+                  </span>
+                </a>
               </div>
               <div class="mb-15">
                 <h2 class="mb-6">{{ eventInfo.title }}</h2>
@@ -74,6 +69,7 @@
                   <span class="text-primary material-icons font-m me-4">
                     paid
                   </span>
+                  <!-- eslint-disable-next-line vue/no-v-html -->
                   <ul v-html="ticketPriceFormat"></ul>
                 </li>
                 <li
@@ -166,9 +162,13 @@ export default {
   data() {
     return {
       dateTimeTemplate: '',
+      myFavouriteItems: [],
     }
   },
   computed: {
+    isFavourite() {
+      return this.myFavouriteItems.includes(this.eventInfo.id)
+    },
     isMultipleDates() {
       if (Array.isArray(this.eventInfo.dateTime)) {
         return `/event/${this.eventId}/tickets`
@@ -203,12 +203,26 @@ export default {
     },
   },
   mounted() {
+    this.$bus.$on(
+      'getFavourite',
+      () => (this.myFavouriteItems = this.$getFavourite())
+    )
+    this.myFavouriteItems = this.$getFavourite()
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
       // eslint-disable-next-line no-console
       console.error(this.errorMsg)
     }
+  },
+  methods: {
+    addFavourite(id) {
+      this.$addFavourite(id)
+      // refresh my favourite items data
+      this.$nextTick().then(
+        () => (this.myFavouriteItems = this.$getFavourite())
+      )
+    },
   },
 }
 </script>
