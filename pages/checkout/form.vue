@@ -154,6 +154,7 @@ export default {
   middleware: 'orderForm',
   data() {
     return {
+      loader: {},
       user: {
         name: '',
         email: '',
@@ -173,6 +174,7 @@ export default {
       }
 
       try {
+        this.loader = this.$loading.show()
         const sumbitOrderRes = await apiClientSubmitOrder(allData)
         if (!sumbitOrderRes.data.success) {
           throw sumbitOrderRes.data.message
@@ -189,6 +191,8 @@ export default {
         this.$showError('結帳失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
   },
