@@ -18,52 +18,69 @@
         </div>
       </div>
       <!-- Coupon button -->
-      <div class="row mb-18 justify-content-between align-items-end">
-        <div class="col-md-6 col-lg-4">
-          <label for="coupon" class="mb-2">優惠劵</label>
-          <ul class="form-text mb-6 font-xs">
-            <li>*套用優惠劵「flash2021」，可享有80%折扣優惠</li>
-            <li>*優惠劵只能使用一次</li>
-          </ul>
-          <div class="input-group mb-3">
-            <input v-model="couponCode" type="text" class="form-control" />
-            <button
-              id="coupon"
-              class="btn btn-primary"
-              type="button"
-              @click="applyCoupon"
+      <div class="d-md-flex justify-content-between align-items-end mb-18">
+        <div class="row w-100 mb-8 mb-md-0">
+          <div class="col-md-6 col-lg-4">
+            <label for="coupon" class="mb-2">優惠劵</label>
+            <ul class="form-text mb-6 font-xs">
+              <li>*套用優惠劵「flash2021」，可享有80%折扣優惠</li>
+              <li>*優惠劵只能使用一次</li>
+            </ul>
+            <div class="input-group">
+              <input v-model="couponCode" type="text" class="form-control" />
+              <button
+                id="coupon"
+                class="btn btn-primary"
+                type="button"
+                @click="applyCoupon"
+              >
+                套用
+              </button>
+            </div>
+          </div>
+        </div>
+        <button
+          class="btn btn-outline-primary text-nowrap"
+          @click="deleteAllCart"
+        >
+          刪除全部購物車內容
+        </button>
+      </div>
+
+      <div v-if="carts.length > 0">
+        <CartCard
+          v-for="item in carts"
+          :key="item.id"
+          :cart-item="item"
+        ></CartCard>
+        <!-- </div> -->
+        <div class="d-flex justify-content-end mb-18">
+          <Pagination></Pagination>
+        </div>
+        <!-- Total -->
+        <div class="row justify-content-between mb-21">
+          <div
+            class="
+              col-md-3
+              d-flex
+              justify-content-between
+              align-items-end
+              mb-6 mb-md-0
+            "
+          >
+            <p class="font-l">總計</p>
+            <p class="font-l fw-bold text-primary">
+              ${{ cartFinalTotal.toFixed(1) }}
+            </p>
+          </div>
+          <div class="col-md-2 col-4 offset-8 offset-md-0">
+            <NuxtLink to="/checkout/form" class="btn btn-primary w-100"
+              >確認</NuxtLink
             >
-              套用
-            </button>
           </div>
         </div>
       </div>
-      <CartCard
-        v-for="item in carts"
-        :key="item.id"
-        :cart-item="item"
-      ></CartCard>
-      <div class="d-flex justify-content-end mb-18">
-        <Pagination></Pagination>
-      </div>
-      <!-- Total -->
-      <div class="row justify-content-between mb-21">
-        <div
-          class="
-            col-md-3
-            d-flex
-            justify-content-between
-            align-items-end
-            mb-6 mb-md-0
-          "
-        >
-          <p class="font-l">總計</p>
-          <p class="font-l fw-bold text-primary">${{ cartFinalTotal }}</p>
-        </div>
-        <div class="col-md-2 col-4 offset-8 offset-md-0">
-          <a href="/checkout/form" class="btn btn-primary w-100">確認</a>
-        </div>
-      </div>
+      <p v-else class="vh-100">目前購物車為空</p>
     </div>
     <div></div>
   </div>
@@ -72,7 +89,11 @@
 <script>
 import CartCard from '@/components/user/cart/CartCard.vue'
 import Pagination from '@/components/common/Pagination.vue'
-import { apiClientApplyCoupon } from '@/api/index'
+import {
+  apiClientApplyCoupon,
+  apiClientDeleteAllCart,
+  apiClientDeleteCart,
+} from '@/api/index'
 
 export default {
   components: {
@@ -97,17 +118,14 @@ export default {
     }
   },
   created() {
-    this.$nuxt.$on('refreshCart', async () => {
-      try {
-        await this.$store.dispatch('getCart')
-        const { carts, cartFinalTotal } = this.$store.getters
-        this.carts = carts
-        this.cartFinalTotal = cartFinalTotal
-      } catch (error) {
-        const errorMsg = error.message
-        this.$showError('載入購物車失敗')
-        // eslint-disable-next-line no-console
-        console.log(errorMsg)
+    this.$nuxt.$on('refreshCart', async (cartId, ticketIds) => {
+      await this.getCart()
+      if (cartId && ticketIds) {
+        const cartItem = this.carts.find((item) => item.id === cartId)
+        const isEmpty = ticketIds.every((ticketId) => cartItem[ticketId] === 0)
+        if (isEmpty) {
+          this.deleteCart(cartId)
+        }
       }
     })
   },
@@ -120,6 +138,42 @@ export default {
     }
   },
   methods: {
+    async getCart() {
+      try {
+        await this.$store.dispatch('getCart')
+        const { carts, cartFinalTotal } = this.$store.getters
+        this.carts = carts
+        this.cartFinalTotal = cartFinalTotal
+      } catch (error) {
+        const errorMsg = error.message
+        this.$showError('載入購物車失敗')
+        // eslint-disable-next-line no-console
+        console.log(errorMsg)
+      }
+    },
+    async deleteAllCart() {
+      if (this.carts.length === 0) {
+        this.$showError('無法刪除！購物車目前為空')
+        return
+      }
+      try {
+        const confirmDelete = await this.$showConfirm(
+          '是否確定刪除全部購物車內容？'
+        )
+        if (!confirmDelete) return
+        const deleteAllCartRes = await apiClientDeleteAllCart()
+        if (!deleteAllCartRes.data.success) {
+          throw deleteAllCartRes.data.message
+        }
+        this.$showSuccess('成功刪除所有購物車內容')
+        // Refresh cart
+        this.getCart()
+      } catch (error) {
+        this.$showError(error)
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
+    },
     async applyCoupon() {
       if (this.carts.length === 0) {
         this.$showError('目前購物車是空')
@@ -152,6 +206,17 @@ export default {
         } else {
           this.$showError('套用優惠劵失敗')
         }
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
+    },
+    async deleteCart(cartId) {
+      try {
+        await apiClientDeleteCart(cartId)
+        this.$showSuccess('已刪除購物車內此節目的所有票卷')
+        this.getCart()
+      } catch (error) {
+        this.$showError('刪除單一購物車資料失敗')
         // eslint-disable-next-line no-console
         console.log(error)
       }

@@ -33,7 +33,7 @@
                 v-model.number="inputQty"
                 type="number"
                 class="edit-input form-control w-25 me-0"
-                @blur="updateCart(id)"
+                @blur="updatePurchase(id)"
               />
               <p v-else class="text-primary me-6 font-base font-md-m">
                 {{ cartItem[id] }}
@@ -61,8 +61,6 @@
 </template>
 
 <script>
-import { apiClientUpdateCart } from '@/api/index'
-
 export default {
   props: {
     cartItem: {
@@ -169,21 +167,13 @@ export default {
       })
     },
     countPrice(ticketId, perTicketPrice) {
-      console.log('---- in couting ----')
       const oldQty = this.cartItem[ticketId]
       const oldPrice = perTicketPrice * oldQty
-      const oldTotal = this.cartItem.total
-      console.log('oldPrice => ' + oldPrice)
-      console.log('oldTotal => ' + oldTotal)
-      let updatedTotal
       if (this.isDelete) {
-        updatedTotal = oldTotal - oldPrice
-      } else {
-        updatedTotal = oldTotal - oldPrice + perTicketPrice * this.inputQty
+        return -oldPrice
       }
-      // const updatedTotal = oldTotal - oldPrice + perTicketPrice * this.inputQty
-      console.log('updatedTotal => ' + updatedTotal)
-      return updatedTotal
+      // Get the different between the old price and the updated price
+      return perTicketPrice * this.inputQty - oldPrice
     },
     countQtyEdit(ticketId) {
       const ticketIdInfo = ticketId.split(',')
@@ -192,7 +182,6 @@ export default {
           return 0
         }
         case 2: {
-          console.log('--- in case 2---')
           const ticketType = ticketIdInfo[1]
           let perTicketPrice
           if (ticketType === '優惠票') {
@@ -202,40 +191,32 @@ export default {
           } else {
             perTicketPrice = this.cartItem.product.price
           }
-          console.log('---- before go counting ----')
-          console.log('perTicketPrice => ' + perTicketPrice)
+          //   const updatedTotal = perTicketPrice * this.inputQty
           const updatedTotal = this.countPrice(ticketId, perTicketPrice)
-          const qty = updatedTotal / this.cartItem.product.price
-          console.log('qty => ' + qty)
-          return qty
+
+          return updatedTotal
+          //   const qty = updatedTotal / this.cartItem.product.price
+          //   console.log('qty => ' + qty)
+          //   return qty
         }
         case 3: {
-          console.log('--- in case 3---')
           const ticketType = ticketIdInfo[2]
           const zone = ticketIdInfo[1][0]
           let perTicketPrice
           perTicketPrice = this.cartItem.product.ticketPrice[zone]
-          console.log('perTicketPrice with zone => ' + perTicketPrice)
           if (ticketType === '優惠票') {
             perTicketPrice =
               perTicketPrice * (this.cartItem.product.discount / 100)
-            console.log(
-              '優惠票, DISCOUNT: ' + this.cartItem.product.discount / 100
-            )
-            console.log(perTicketPrice)
-          } else {
-            perTicketPrice = this.cartItem.product.price
           }
-          console.log('---- before go counting ----')
-          console.log('perTicketPrice => ' + perTicketPrice)
           const updatedTotal = this.countPrice(ticketId, perTicketPrice)
-          const qty = updatedTotal / this.cartItem.product.price
-          console.log('qty => ' + qty)
-          return qty
+
+          return updatedTotal
+          //   const updatedTotal = perTicketPrice * this.inputQty
+          //   return updatedTotal
         }
       }
     },
-    async updateCart(ticketId) {
+    updatePurchase(ticketId) {
       // If isDelete is false, the user is editing cart, not deleting
       if (!this.isDelete) {
         if (this.inputQty === this.cartItem[ticketId]) {
@@ -254,40 +235,13 @@ export default {
           return
         }
       }
-      const allData = {
-        data: {
-          product_id: this.cartItem.id,
-          qty: this.countQtyEdit(ticketId),
-        },
-      }
-      if (this.isDelete) {
-        // Set qty to 0 as a way to disable this ticket in cart
-        allData.data[ticketId] = 0
-      } else {
-        allData.data[ticketId] = this.inputQty
-      }
-      console.log(allData)
-
-      try {
-        const updateCartRes = await apiClientUpdateCart(
-          this.cartItem.id,
-          allData
-        )
-        console.log('---- API -----')
-        console.log(updateCartRes.data)
-        if (!updateCartRes.data.success) {
-          throw updateCartRes.data.message.join()
-        }
-        // Stop running code below if user is deleting item, not editing item
-        // We will call update cart API in removeTicket
-        if (this.isDelete) return
-        await this.$nuxt.$emit('refreshCart')
-        this.$showSuccess('已更新購物車')
-      } catch (error) {
-        this.$showError('更新購物車失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
-      }
+      const ticketTotal = this.countQtyEdit(ticketId)
+      this.$nuxt.$emit('updateQty', {
+        ticketTotal,
+        ticketId,
+        eventId: this.cartItem.id,
+        inputQty: this.inputQty,
+      })
 
       // Clear input
       this.editingId = ''
@@ -296,11 +250,7 @@ export default {
       const confirmDelete = await this.$showConfirm('是否確定刪除此票卷？')
       if (!confirmDelete) return
       this.isDelete = true
-      try {
-        await this.updateCart(ticketId)
-        this.isDelete = false
-        await this.$nuxt.$emit('refreshCart', this.cartItem.id, this.ticketIds)
-      } catch (error) {}
+      this.updatePurchase(ticketId)
     },
   },
 }
