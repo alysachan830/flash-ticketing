@@ -1,10 +1,19 @@
-import { apiClientGetAllEvents, apiClientGetCart } from '@/api/index'
+import {
+  apiClientGetAllEvents,
+  apiClientGetCart,
+  apiAdminSignIn,
+  apiAdminGetAllProducts,
+} from '@/api/index'
 
 export const state = () => ({
   events: [],
   hotEvents: [],
   newEvents: [],
   carts: [],
+  isSignIn: false,
+  adminEvents: [],
+  adminEditingOrder: {},
+  adminEditingCoupon: {},
 })
 
 export const actions = {
@@ -26,24 +35,45 @@ export const actions = {
       throw new Error(error)
     }
   },
+  checkSignIn({ commit }, hasCookie) {
+    commit('SetSignInStatus', hasCookie)
+  },
+  async signIn({ commit }, payload) {
+    try {
+      const { username, password } = payload
+      const signInRes = await apiAdminSignIn({ username, password })
+      commit('SetAuth', signInRes)
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+  async adminGetAllEvents({ commit }, token) {
+    // const { token, pageNum } = payload
+    try {
+      const getProductsRes = await apiAdminGetAllProducts(token)
+      if (!getProductsRes.data.success) {
+        throw new Error(getProductsRes.data.message)
+      }
+      commit('SetAdminEvents', getProductsRes)
+    } catch (error) {
+      // Something wrong with user's token
+      // User's token may be expired or user deleted the token
+      // It means that user has not signed in yet
 
-  // async getEvent({ commit }) {
-  //   try {
-  //     const eventRes = await apiClientGetEvent()
-  //     commit({ type: 'AddAllEvents', list: allEventsRes.data.products })
-  //   } catch (error) {
-  //     throw new Error(error)
-  //   }
-  // },
+      // Reset isSignIn to false
+      commit('SetSignInStatus', false)
 
-  // async getEvent({ commit }) {
-  //   try {
-  //     const allEventsRes = await apiClientGetAllEvents()
-  //     commit({ type: 'AddAllEvents', list: allEventsRes.data.products })
-  //   } catch (error) {
-  //     throw new Error(error)
-  //   }
-  // },
+      // Remove all cookie
+      this.$cookies.removeAll()
+      this.$router.push('/login')
+    }
+  },
+  adminEditOrder({ commit }, order) {
+    commit('SetAdminEditingOrder', order)
+  },
+  adminEditCoupon({ commit }, coupon) {
+    commit('SetAdminEditingCoupon', coupon)
+  },
 }
 
 export const mutations = {
@@ -56,6 +86,29 @@ export const mutations = {
     state.cartFinalTotal = payload.cartInfo.final_total
     state.carts = [...payload.cartInfo.carts]
   },
+  SetAuth(state, signInRes) {
+    this.$cookies.set(
+      'flashTicketingAuth',
+      { token: signInRes.data.token },
+      { expires: signInRes.data.expired }
+    )
+    state.isSignIn = true
+  },
+  SetSignInStatus(state, hasCookie) {
+    state.isSignIn = hasCookie
+  },
+  SetAdminEvents(state, getProductsRes) {
+    const allEvents = Object.keys(getProductsRes.data.products).map(
+      (key) => getProductsRes.data.products[key]
+    )
+    state.adminEvents = allEvents
+  },
+  SetAdminEditingOrder(state, order) {
+    state.adminEditingOrder = JSON.parse(JSON.stringify(order))
+  },
+  SetAdminEditingCoupon(state, coupon) {
+    state.adminEditingCoupon = JSON.parse(JSON.stringify(coupon))
+  },
 }
 
 export const getters = {
@@ -64,4 +117,8 @@ export const getters = {
   newEvents: (state) => state.events.filter((event) => event.tag === 'newest'),
   carts: (state) => state.carts,
   cartFinalTotal: (state) => state.cartFinalTotal,
+  signInStatus: (state) => state.isSignIn,
+  adminEvents: (state) => state.adminEvents,
+  adminEditingOrder: (state) => state.adminEditingOrder,
+  adminEditingCoupon: (state) => state.adminEditingCoupon,
 }

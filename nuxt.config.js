@@ -32,6 +32,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '~plugins/cookie.js' },
     { src: '~plugins/bus.js' },
     { src: '~plugins/v-calendar.js', ssr: false },
     { src: '~plugins/ckeditor.js', ssr: false },
@@ -73,7 +74,7 @@ export default {
   },
   proxy: {
     '/api': {
-      target: 'https://vue3-course-api.hexschool.io', //'http://example.com',
+      target: 'https://vue3-course-api.hexschool.io',
       pathRewrite: {
         '^/api': '/',
       },

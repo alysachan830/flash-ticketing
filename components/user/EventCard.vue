@@ -29,7 +29,7 @@
         </span>
       </div>
       <span class="badge font-lg-s font-xs bg-secondary text-black mb-4">
-        {{ tag }}
+        {{ formatTag }}
       </span>
     </div>
   </NuxtLink>
@@ -68,6 +68,16 @@ export default {
   computed: {
     isFavourite() {
       return this.myFavouriteItems.includes(this.id)
+    },
+    formatTag() {
+      let tagZh
+      if (this.tag === 'hottest') {
+        tagZh = '最熱門'
+      }
+      if (this.tag === 'newest') {
+        tagZh = '最新'
+      }
+      return tagZh
     },
   },
   create() {

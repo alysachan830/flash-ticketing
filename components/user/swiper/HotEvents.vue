@@ -9,12 +9,12 @@
         :key="event.title"
         class="swiper-slide position-relative"
       >
-        <a
-          href="#"
+        <NuxtLink
+          :to="`/event/${event.id}`"
           class="slide-img-bg hover__filter--darken rounded-4"
           :style="`background-image:url(${event.imageUrl})`"
         >
-        </a>
+        </NuxtLink>
         <div class="slide-title-wrap position-absolute">
           <span class="badge font-s bg-secondary text-black mb-4">
             {{ event.category }}

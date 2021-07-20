@@ -74,7 +74,9 @@
             </p>
           </div>
           <div class="col-md-2 col-4 offset-8 offset-md-0">
-            <a href="/checkout/form" class="btn btn-primary w-100">確認</a>
+            <NuxtLink to="/checkout/form" class="btn btn-primary w-100"
+              >確認</NuxtLink
+            >
           </div>
         </div>
       </div>
@@ -179,6 +181,7 @@ export default {
       }
       if (
         this.carts.length > 0 &&
+        this.carts[0].coupon &&
         this.carts[0].coupon.code === this.couponCode
       ) {
         this.$showError('此優惠劵已被使用')
@@ -196,8 +199,9 @@ export default {
         this.$showSuccess('成功套用優惠劵')
         // Update total price
         await this.$store.dispatch('getCart')
-        const { cartFinalTotal } = this.$store.getters
+        const { cartFinalTotal, carts } = this.$store.getters
         this.cartFinalTotal = cartFinalTotal
+        this.carts = carts
       } catch (error) {
         if (typeof error === 'string') {
           this.$showError(error)
