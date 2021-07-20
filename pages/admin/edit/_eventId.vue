@@ -157,8 +157,7 @@
                           <!-- User cannot delete existing zones -->
                           <a
                             v-if="
-                              !isNew &&
-                              eventInfo.ticketPrice[zone] === undefined
+                              isNew || eventInfo.ticketPrice[zone] === undefined
                             "
                             href="#"
                             @click.prevent="deleteSeatPrice(zone)"
@@ -385,7 +384,7 @@
                     >
                     <a
                       v-if="
-                        !isNew &&
+                        isNew ||
                         eventInfo.dateTime.find(
                           (item) =>
                             item.timestamp === selectedDateTime.timestamp
@@ -432,7 +431,7 @@
           </div>
           <span class="badge mb-6">主圖片</span>
 
-          <div v-if="mainImage !== ''" class="d-flex">
+          <div v-if="imageUrl !== ''" class="d-flex">
             <img :src="mainImagePreview" alt="" class="preview-image-h mb-6" />
             <a href="#" @click.prevent="deleteImage">
               <span class="material-icons"> clear </span>
@@ -499,7 +498,11 @@
 
 <script>
 import moment from 'moment'
-import { apiClientGetEvent, apiAdminUploadImage } from '@/api/index'
+import {
+  apiClientGetEvent,
+  apiAdminUploadImage,
+  apiAdminAddProduct,
+} from '@/api/index'
 // import vCalendar from 'v-calendar'
 
 export default {
@@ -717,7 +720,6 @@ export default {
         }
         this.mainImagePreview = uploadImageRes.data.imageUrl
         this.imageUrl = uploadImageRes.data.imageUrl
-        console.log(uploadImageRes.data)
         // Clear input
         this.mainImage = ''
         this.$refs.mainImage.value = ''
@@ -744,7 +746,6 @@ export default {
           throw uploadImageRes.data.message
         }
         this.imagesUrl.push(uploadImageRes.data.imageUrl)
-        console.log(uploadImageRes.data)
         // Clear input
         this.subImage = ''
         this.$refs.subImage.value = ''
@@ -754,7 +755,11 @@ export default {
         console.log(error)
       }
     },
-    submitEvent() {
+    async submitEvent() {
+      if (!this.isNew) {
+        this.editEvent()
+        return
+      }
       if (this.dateOption === 'period') {
         if (typeof this.range.start !== 'string') {
           this.range.start = moment().format('YYYY-MM-DD')
@@ -762,75 +767,77 @@ export default {
           this.range.end = moment().format('YYYY-MM-DD')
         }
       }
-      const info = {
-        data: {
-          title: this.title,
-          category: this.category,
-          description: this.description,
-          is_enabled: Number(this.is_enabled),
-          imageUrl: this.imageUrl,
-          imagesUrl: this.imagesUrl,
-          dateTime:
-            this.dateOption === 'period' ? this.range : this.selectedDates,
-          organizer: this.organizer,
-          venue: this.venue,
-          // Note: 需預先判斷 ticketPrice 如果是物件，裏面是不是已經有資料
-          ticketPrice: this.ticketPrice,
-          discount: this.discount,
-          tag: this.tag,
-          // origin_price is required by the API, but it will not be used in this project
-          origin_price: 0,
-          // Get the lowest price if ticketPrice is an object
-          price:
-            typeof this.ticketPrice === 'object'
-              ? Math.min(...Object.values(this.ticketPrice))
-              : this.ticketPrice,
-          unit: '張',
-        },
-      }
-      console.log(info)
-      if (info.data.title === '') {
+
+      if (this.title === '') {
         this.$showError('請輸入標題')
         return
       }
 
-      if (
-        Array.isArray(info.data.dateTime) &&
-        info.data.dateTime.length === 0
-      ) {
+      if (Array.isArray(this.dateOption) && this.dateOption.length === 0) {
         this.$showError('請選擇節目時段')
         return
       }
 
       if (
-        !Array.isArray(info.data.dateTime) &&
-        Object.values(info.data.dateTime).includes('')
+        !Array.isArray(this.dateOption) &&
+        Object.values(this.dateOption).includes('')
       ) {
         this.$showError('請選擇節目時段')
         return
       }
 
-      if (info.data.imagesUrl.length < 2) {
+      if (this.imagesUrl.length < 2) {
         this.$showError('最少要上載兩張其他圖片')
         return
       }
 
-      if (info.data.imageUrl === '') {
+      if (this.imageUrl === '') {
         this.$showError('必需上載主圖片')
         return
       }
 
-      console.log('check')
-      //   const AUTH_TOKEN =
-      //     'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI1NDA5MTg4LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjU0MDkxODgsImV4cCI6MTYyNTg0MTE4OCwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.aquUuQ1goSLkyJKcwWKx4LDj37f8ajbfL9jC5P7JGBeGM2PV0QHfQavxpmyX2Bw46wYQ5DuN7FPQFqGVR7jDZtqaxZddHOE52Ht_pbBStrM89-f2ALgIrR8nOAwCXJjIEChDGBjAQi0jM_GTzREbz3UzuFydZgRRazuo9Ctc1qidt9qEnkY1G6yqBxoO50RGX-h9oYVXJTvmblxw2hEPUkx4jtF4-Zt5cICSQe1IT_IMiJef2JbTLpVKP2InLYh0YQJkg656aUdY6GXYTGZi6F3SZHCVg0x-cLG_wEZpzx7fzvQhiYD5pSC4kIcxuucuXdT1r7kbk9I9JGAvJ6CxYg'
-      //   axios.defaults.headers.common.Authorization = AUTH_TOKEN
-      //   axios
-      //     .post(
-      //       `https://vue3-course-api.hexschool.io/api/${process.env.API_PATH}/admin/product`,
-      //       info
-      //     )
-      //     .then((res) => console.log(res.data))
-      //     .catch((err) => console.log(err))
+      try {
+        const info = {
+          data: {
+            title: this.title,
+            category: this.category,
+            description: this.description,
+            is_enabled: Number(this.is_enabled),
+            imageUrl: this.imageUrl,
+            imagesUrl: this.imagesUrl,
+            dateTime:
+              this.dateOption === 'period' ? this.range : this.selectedDates,
+            organizer: this.organizer,
+            venue: this.venue,
+            // Note: 需預先判斷 ticketPrice 如果是物件，裏面是不是已經有資料
+            ticketPrice: this.ticketPrice,
+            discount: this.discount,
+            tag: this.tag,
+            // origin_price is required by the API, but it will not be used in this project
+            origin_price: 0,
+            // Get the lowest price if ticketPrice is an object
+            price:
+              typeof this.ticketPrice === 'object'
+                ? Math.min(...Object.values(this.ticketPrice))
+                : this.ticketPrice,
+            unit: '張',
+          },
+        }
+
+        console.log(info)
+        const token = this.$cookies.get('flashTicketingAuth').token
+        const addProductRes = await apiAdminAddProduct(token, info)
+        if (!addProductRes.data.success) {
+          throw addProductRes.data.message
+        }
+        this.$showSuccess('已成功建立活動')
+        // Clear input
+        window.location.reload()
+      } catch (error) {
+        this.$showError('建立節目活動失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
     },
   },
 }
