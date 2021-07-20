@@ -114,6 +114,7 @@ export default {
   },
   data() {
     return {
+      loader: {},
       couponCode: 'flash2021',
     }
   },
@@ -161,6 +162,7 @@ export default {
           '是否確定刪除全部購物車內容？'
         )
         if (!confirmDelete) return
+        this.loader = this.$loading.show()
         const deleteAllCartRes = await apiClientDeleteAllCart()
         if (!deleteAllCartRes.data.success) {
           throw deleteAllCartRes.data.message
@@ -172,6 +174,8 @@ export default {
         this.$showError(error)
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
     async applyCoupon() {
@@ -188,6 +192,7 @@ export default {
         return
       }
       try {
+        this.loader = this.$loading.show()
         const applyCouponRes = await apiClientApplyCoupon({
           data: {
             code: this.couponCode,
@@ -210,10 +215,13 @@ export default {
         }
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
     async deleteCart(cartId) {
       try {
+        this.loader = this.$loading.show()
         await apiClientDeleteCart(cartId)
         this.$showSuccess('已刪除購物車內此節目的所有票卷')
         this.getCart()
@@ -221,6 +229,8 @@ export default {
         this.$showError('刪除單一購物車資料失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
   },

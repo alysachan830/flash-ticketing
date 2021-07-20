@@ -72,6 +72,7 @@ export default {
   },
   data() {
     return {
+      loader: {},
       editingId: '',
       inputQty: 0,
       isDelete: false,
@@ -269,6 +270,7 @@ export default {
       console.log(allData)
 
       try {
+        this.loader = this.$loading.show()
         const updateCartRes = await apiClientUpdateCart(
           this.cartItem.id,
           allData
@@ -287,6 +289,8 @@ export default {
         this.$showError('更新購物車失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
 
       // Clear input
