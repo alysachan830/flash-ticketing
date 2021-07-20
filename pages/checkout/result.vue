@@ -6,15 +6,15 @@
         <div class="stepper w-100 bg-primary mt-23"></div>
         <div class="stepper-step-start position-absolute">
           <div class="stepper-circle m-auto mb-3"></div>
-          <p class="text-primary font-m">確認訂單</p>
+          <p class="text-primary">確認訂單</p>
         </div>
         <div class="stepper-step-middle position-absolute">
           <div class="stepper-circle m-auto mb-3"></div>
-          <p class="text-primary font-m">個人資料</p>
+          <p class="text-primary">個人資料</p>
         </div>
         <div class="stepper-step-end position-absolute">
           <div class="stepper-circle m-auto mb-3 bg-primary"></div>
-          <p class="text-primary font-m">完成購票</p>
+          <p class="text-primary">完成購票</p>
         </div>
       </div>
       <div class="row justify-content-center">
@@ -41,34 +41,29 @@ export default {
 @import '@/assets/stylesheets/all';
 
 .stepper {
-  height: 3px;
+  height: 2px;
 
   &-circle {
     border-radius: 50%;
-    border: 3px solid $primary;
-    height: 24px;
-    width: 24px;
+    border: 2px solid $primary;
+    height: 16px;
+    width: 16px;
     background: #fff;
-
-    // &-start {
-    //   @extend .stepper-circle;
-    //   transform: translate(0, -50%);
-    // }
   }
 
   &-step-start {
-    transform: translate(0, -25%);
+    transform: translate(0, -20%);
     left: 10%;
   }
 
   &-step-middle {
     left: 50%;
-    transform: translate(-50%, -25%);
+    transform: translate(-50%, -20%);
   }
 
   &-step-end {
     right: 10%;
-    transform: translate(0, -25%);
+    transform: translate(0, -20%);
   }
 }
 </style>
