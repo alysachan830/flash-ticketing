@@ -21,7 +21,7 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['@/assets/stylesheets/all.scss'],
-  loading: false,
+  loading: '~/components/LoadingBar.vue',
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~plugins/cookie.js' },
