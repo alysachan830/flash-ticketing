@@ -63,6 +63,7 @@
               class="col-lg-3 col-6"
             >
               <EventCard
+                :id="event.id"
                 :title="event.title"
                 :image="event.imageUrl"
                 :date-time="event.dateTime"
@@ -130,6 +131,7 @@
               class="col-lg-3 col-6"
             >
               <EventCard
+                :id="event.id"
                 :title="event.title"
                 :image="event.imageUrl"
                 :date-time="event.dateTime"
