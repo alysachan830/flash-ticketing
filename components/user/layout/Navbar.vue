@@ -2,8 +2,9 @@
   <div>
     <nav class="nav-h bg-primary fixed-top w-100">
       <div class="container">
-        <div class="row w-100 align-items-center justify-content-center">
-          <div class="col-2">
+        <div class="w-100 d-flex align-items-center justify-content-between">
+          <!-- <div class="row w-100 align-items-center justify-content-center"> -->
+          <!-- <div class="col-2">
             <NuxtLink to="/" class="d-flex align-items-center me-10 text-white">
               <i class="material-icons font-xl me-2">offline_bolt</i>
               <h1 class="text-uppercase font-s text-start" href="#">
@@ -11,9 +12,9 @@
                 ticketing
               </h1>
             </NuxtLink>
-          </div>
-          <div class="col-3">
-            <!-- Search bar -->
+          </div> -->
+          <!-- Search bar -->
+          <!-- <div class="col-3">
             <div
               class="
                 search-bar-w
@@ -39,54 +40,48 @@
                 </span>
               </button>
             </div>
-          </div>
-          <div class="offset-1 col-5">
-            <div class="d-flex justify-content-end align-items-center">
-              <!-- Nuxt links -->
-              <div class="d-lg-flex d-none me-5">
-                <NuxtLink
-                  class="font-s text-nowrap text-white me-8"
-                  to="/events/all"
-                  >所有節目</NuxtLink
-                >
-                <NuxtLink
-                  class="font-s text-nowrap text-white me-8"
-                  to="articles"
-                  >節目點評</NuxtLink
-                >
-                <NuxtLink
-                  class="font-s text-nowrap text-white me-8"
-                  to="contact"
-                  >聯絡我們</NuxtLink
-                >
-                <NuxtLink class="font-s text-nowrap text-white me-8" to="faq"
-                  >常見問題</NuxtLink
-                >
-              </div>
-              <!-- Shop cart, bookmark, toggle button -->
-              <div class="d-flex">
-                <a href="#" class="me-4" @click="showCart">
-                  <span class="material-icons text-white align-middle">
-                    shopping_cart
-                  </span>
-                </a>
-                <a href="#" class="me-4" @click="showFavourite">
-                  <span class="material-icons text-white align-middle">
-                    bookmark
-                  </span>
-                </a>
-                <a
-                  class="d-lg-none"
-                  href="#"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasExample"
-                  aria-controls="offcanvasExample"
-                >
-                  <span class="material-icons text-white align-middle">
-                    menu
-                  </span>
-                </a>
-              </div>
+          </div> -->
+          <NuxtLink to="/" class="d-flex align-items-center me-10 text-white">
+            <i class="material-icons font-xl me-2">offline_bolt</i>
+            <h1 class="text-uppercase font-s text-start" href="#">
+              flash <br />
+              ticketing
+            </h1>
+          </NuxtLink>
+          <div class="d-flex justify-content-end align-items-center">
+            <!-- Nuxt links -->
+            <div class="d-lg-flex d-none me-5">
+              <NuxtLink class="text-white me-8" to="/events/all"
+                >所有節目</NuxtLink
+              >
+              <NuxtLink class="text-white me-8" to="/checkout/order"
+                >我的購物車</NuxtLink
+              >
+              <NuxtLink class="text-white me-8" to="/login">後台登入</NuxtLink>
+            </div>
+            <!-- Shop cart, bookmark, toggle button -->
+            <div class="d-flex">
+              <a href="#" class="me-4" @click="showCart">
+                <span class="material-icons text-white align-middle">
+                  shopping_cart
+                </span>
+              </a>
+              <a href="#" class="me-4" @click="showFavourite">
+                <span class="material-icons text-white align-middle">
+                  bookmark
+                </span>
+              </a>
+              <a
+                class="d-lg-none"
+                href="#"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasExample"
+                aria-controls="offcanvasExample"
+              >
+                <span class="material-icons text-white align-middle">
+                  menu
+                </span>
+              </a>
             </div>
           </div>
         </div>
@@ -122,17 +117,14 @@
       <div class="offcanvas-body">
         <div>
           <!-- Nuxt links -->
-          <NuxtLink class="font-m py-5 text-nowrap me-8" to="events"
+          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/events/all"
             >所有節目</NuxtLink
           >
-          <NuxtLink class="font-m py-5 text-nowrap me-8" to="articles"
-            >節目點評</NuxtLink
+          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/checkout/order"
+            >我的購物車</NuxtLink
           >
-          <NuxtLink class="font-m py-5 text-nowrap me-8" to="contact"
-            >聯絡我們</NuxtLink
-          >
-          <NuxtLink class="font-m py-5 text-nowrap me-8" to="faq"
-            >常見問題</NuxtLink
+          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/login"
+            >後台登入</NuxtLink
           >
         </div>
       </div>
