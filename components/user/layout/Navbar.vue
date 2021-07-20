@@ -271,6 +271,8 @@ export default {
     deleteFavourite(id) {
       this.$deleteFavourite(id)
       this.getMyFavourite()
+      // Refresh bookmark icon in EventCard component
+      this.$bus.$emit('getFavourite')
     },
   },
 }

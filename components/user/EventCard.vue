@@ -80,10 +80,12 @@ export default {
       return tagZh
     },
   },
-  create() {
-    this.myFavouriteItems = this.$getFavourite()
-  },
   mounted() {
+    this.$bus.$on(
+      'getFavourite',
+      () => (this.myFavouriteItems = this.$getFavourite())
+    )
+    this.myFavouriteItems = this.$getFavourite()
     if (Array.isArray(this.dateTime)) {
       this.dateTimeTemplate = `${this.dateTime[0].date} - ${
         this.dateTime[this.dateTime.length - 1].date
