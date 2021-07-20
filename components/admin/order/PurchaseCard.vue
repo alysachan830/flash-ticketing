@@ -61,8 +61,6 @@
 </template>
 
 <script>
-// import { apiClientUpdateCart } from '@/api/index'
-
 export default {
   props: {
     cartItem: {
@@ -169,27 +167,13 @@ export default {
       })
     },
     countPrice(ticketId, perTicketPrice) {
-      //   console.log('---- in couting ----')
       const oldQty = this.cartItem[ticketId]
       const oldPrice = perTicketPrice * oldQty
       if (this.isDelete) {
-        console.log(-oldPrice)
         return -oldPrice
       }
-      //   const oldTotal = this.cartItem.total
       // Get the different between the old price and the updated price
       return perTicketPrice * this.inputQty - oldPrice
-      //   console.log('oldPrice => ' + oldPrice)
-      //   console.log('oldTotal => ' + oldTotal)
-      //   let updatedTotal
-      //   if (this.isDelete) {
-      //     updatedTotal = oldTotal - oldPrice
-      //   } else {
-      //     updatedTotal = oldTotal - oldPrice + perTicketPrice * this.inputQty
-      //   }
-      //   // const updatedTotal = oldTotal - oldPrice + perTicketPrice * this.inputQty
-      //   //   console.log('updatedTotal => ' + updatedTotal)
-      //   return updatedTotal
     },
     countQtyEdit(ticketId) {
       const ticketIdInfo = ticketId.split(',')
@@ -198,7 +182,6 @@ export default {
           return 0
         }
         case 2: {
-          console.log('--- in case 2---')
           const ticketType = ticketIdInfo[1]
           let perTicketPrice
           if (ticketType === '優惠票') {
@@ -208,8 +191,6 @@ export default {
           } else {
             perTicketPrice = this.cartItem.product.price
           }
-          console.log('---- before go counting ----')
-          console.log('perTicketPrice => ' + perTicketPrice)
           //   const updatedTotal = perTicketPrice * this.inputQty
           const updatedTotal = this.countPrice(ticketId, perTicketPrice)
 
@@ -219,18 +200,14 @@ export default {
           //   return qty
         }
         case 3: {
-          console.log('--- in case 3---')
           const ticketType = ticketIdInfo[2]
           const zone = ticketIdInfo[1][0]
           let perTicketPrice
           perTicketPrice = this.cartItem.product.ticketPrice[zone]
-          console.log('perTicketPrice with zone => ' + perTicketPrice)
           if (ticketType === '優惠票') {
             perTicketPrice =
               perTicketPrice * (this.cartItem.product.discount / 100)
           }
-          console.log('---- before go counting ----')
-          console.log('perTicketPrice => ' + perTicketPrice)
           const updatedTotal = this.countPrice(ticketId, perTicketPrice)
 
           return updatedTotal
@@ -265,41 +242,6 @@ export default {
         eventId: this.cartItem.id,
         inputQty: this.inputQty,
       })
-      //   const allData = {
-      //     data: {
-      //       product_id: this.cartItem.id,
-      //       qty: this.countQtyEdit(ticketId),
-      //     },
-      //   }
-      //   this.$nuxt.$emit('updateQty', { inputQty: this.inputQty, totalUpdate: this.})
-      //   if (this.isDelete) {
-      //     // Set qty to 0 as a way to disable this ticket in cart
-      //     allData.data[ticketId] = 0
-      //   } else {
-      //     allData.data[ticketId] = this.inputQty
-      //   }
-      //   console.log(allData)
-
-      //   try {
-      //     const updateCartRes = await apiClientUpdateCart(
-      //       this.cartItem.id,
-      //       allData
-      //     )
-      //     console.log('---- API -----')
-      //     console.log(updateCartRes.data)
-      //     if (!updateCartRes.data.success) {
-      //       throw updateCartRes.data.message.join()
-      //     }
-      //     // Stop running code below if user is deleting item, not editing item
-      //     // We will call update cart API in removeTicket
-      //     if (this.isDelete) return
-      //     await this.$nuxt.$emit('refreshCart')
-      //     this.$showSuccess('已更新購物車')
-      //   } catch (error) {
-      //     this.$showError('更新購物車失敗')
-      //     // eslint-disable-next-line no-console
-      //     console.log(error)
-      //   }
 
       // Clear input
       this.editingId = ''
@@ -309,11 +251,6 @@ export default {
       if (!confirmDelete) return
       this.isDelete = true
       this.updatePurchase(ticketId)
-      //   try {
-      //     await this.updateCart(ticketId)
-      //     this.isDelete = false
-      //     await this.$nuxt.$emit('refreshCart', this.cartItem.id, this.ticketIds)
-      //   } catch (error) {}
     },
   },
 }

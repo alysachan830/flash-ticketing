@@ -50,21 +50,6 @@ clientRequest.interceptors.request.use(
   }
 )
 
-// adminRequest.interceptors.request.use(
-//   function (config) {
-//     // Do something before request is sent
-//     config.headers = {
-//       Authorization:
-//         'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI0ODc4MzU1LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjQ4NzgzNTUsImV4cCI6MTYyNTMxMDM1NSwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.TAAlAiRfBLVc5mtnKc1i9YvzLLW3ZUyDu8M0E6Ar4jtHPGsNy_InzKWGqJ4vc368ccFtOCLsLRye2myyvkJDriMQrh-Tv2H4ad34YZekYd6Y-KhapafslZm0sboUrCj56sAPKSk1kAuB0k9vCMv5bnWl0jIIdU-Q-nFWdAgw3XjxeG0HFjalQ0WAM6h0BtG8pB94MSzgn2S4xvtG2KxbpSCI64RRGRqDwoJYx5cqUmGh7qWuMdvYRoVyd6vc7-EvIyf7509Cabdc0DoxbIkPnDLJywBfZ_BwN1rmtu3l9I7qOYmq1SJZsADin3u3HkGa0RhTIDh88UD-k8KWFgPQPA',
-//     }
-//     return config
-//   },
-//   function (error) {
-//     // Do something with request error
-//     return Promise.reject(error)
-//   }
-// )
-
 // Forestage API
 // export const apiClientGetProduct = clientGetProduct()
 export const apiClientGetProduct = clientGetProduct
@@ -86,10 +71,7 @@ export const apiAdminSignIn = (data) => adminSignIn.post('/admin/signin', data)
 export const apiCheckSignIn = () => adminSignIn.post('/api/user/check')
 export const apiAdminLogout = () => adminSignIn.post('/admin/logout')
 export const apiAdminCheckSignIn = () => adminSignIn.post('/api/user/check')
-// export const apiAdminGetProducts = (token, pageNum) => {
-//   adminRequest.defaults.headers.common.Authorization = token
-//   return adminRequest.get(`/products?page=${pageNum}`)
-// }
+
 export const apiAdminGetAllProducts = (token) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.get('/products/all')
@@ -106,7 +88,7 @@ export const apiAdminDeleteProduct = (token, id) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.delete(`/product/${id}`)
 }
-export const apiAdminAddArticle = (data) => adminRequest.post(`/article`, data)
+// export const apiAdminAddArticle = (data) => adminRequest.post(`/article`, data)
 export const apiAdminUploadImage = (token, formData) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.post('/upload', formData)
