@@ -127,3 +127,22 @@ export const apiAdminDeleteAllOrders = (token) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.delete('/orders/all')
 }
+export const apiAdminGetCoupons = (token, pageNum) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.get(`/coupons?page=${pageNum}`)
+}
+
+export const apiAdminAddCoupon = (token, data) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.post('/coupon', data)
+}
+
+export const apiAdminEditCoupon = (token, id, data) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.put(`/coupon/${id}`, data)
+}
+
+export const apiAdminDeleteCoupon = (token, id) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.delete(`/coupon/${id}`)
+}
