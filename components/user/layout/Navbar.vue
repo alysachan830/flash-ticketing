@@ -3,44 +3,6 @@
     <nav class="nav-h bg-primary fixed-top w-100">
       <div class="container">
         <div class="w-100 d-flex align-items-center justify-content-between">
-          <!-- <div class="row w-100 align-items-center justify-content-center"> -->
-          <!-- <div class="col-2">
-            <NuxtLink to="/" class="d-flex align-items-center me-10 text-white">
-              <i class="material-icons font-xl me-2">offline_bolt</i>
-              <h1 class="text-uppercase font-s text-start" href="#">
-                flash <br />
-                ticketing
-              </h1>
-            </NuxtLink>
-          </div> -->
-          <!-- Search bar -->
-          <!-- <div class="col-3">
-            <div
-              class="
-                search-bar-w
-                d-lg-flex d-none
-                me-12
-                input-group input-group-sm
-              "
-            >
-              <input
-                type="text"
-                class="form-control font-s"
-                placeholder="節目名稱 / 演出者 "
-                aria-label="節目名稱 / 演出者 "
-                aria-describedby="button-addon2"
-              />
-              <button
-                id="button-addon2"
-                class="btn btn-secondary"
-                type="button"
-              >
-                <span class="material-icons align-middle text-primary">
-                  search
-                </span>
-              </button>
-            </div>
-          </div> -->
           <NuxtLink to="/" class="d-flex align-items-center me-10 text-white">
             <i class="material-icons font-xl me-2">offline_bolt</i>
             <h1 class="text-uppercase font-s text-start" href="#">
@@ -209,34 +171,42 @@
         ></button>
       </div>
       <div class="offcanvas-body">
-        <div v-for="n in 10" :key="n" class="d-flex px-2 border-top py-5">
-          <img
-            class="offCanvas-img-size me-12 rounded-2"
-            src="https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/1625173434912.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=da8BPRMDF5JnemX4M5y5mBwKq1vDshpwDkoT01dU5RwXUTyMoacAlk5j9PH7O2kkGBJRVMFQFn0YlEs5NNIEB9zTiKgvz30%2BXJhY1M4PVNKrJcErhKNHUNhlKFijNOEVflBHAeTWvhjMWrQvCa11pdgvTpKzlqQqtdo5B4dUk0C4OL4tGG7ULJ%2FFJDjXCiR5DrpL7wgYvZUj6ByyTD1FLOfsQuBmS%2FpzAl9MuwgQKFaaLywSijBjjaIhieIJ%2Bv5CnJZPI0Iv8IIndeJAFzbxvsCsPclptlTe%2Fy5Hl%2F8vXVr6lM6yUcdGgSN%2B2i%2B14YE2Z4Sbh6mjE37XLmm2KC1%2BGA%3D%3D"
-            alt="cart image"
-          />
-          <div class="d-flex justify-content-between w-100">
-            <div>
-              <p class="fw-bold mb-6">胡桃夾子與他的王國</p>
-              <ul class="text-info font-s">
-                <li>
-                  <span class="material-icons font-base me-3">
-                    calendar_today
-                  </span>
-                  2021-06-30 - 2021-07-15
-                </li>
-                <li>
-                  <span class="material-icons font-base me-3">
-                    location_on </span
-                  >香港電競動漫中心
-                </li>
-              </ul>
+        <div v-if="favourites.length > 0">
+          <div
+            v-for="event in favourites"
+            :key="event.id"
+            class="d-flex px-2 border-top py-5"
+          >
+            <img
+              class="offCanvas-img-size me-12 rounded-2"
+              :src="event.imageUrl"
+              alt="cart image"
+            />
+            <div class="d-flex justify-content-between w-100">
+              <div>
+                <p class="fw-bold mb-6">{{ event.title }}</p>
+                <ul class="text-info font-s">
+                  <li>
+                    <span class="material-icons font-base me-3">
+                      calendar_today
+                    </span>
+                    {{ dateTimeTemplate(event.dateTime) }}
+                  </li>
+                  <li>
+                    <span class="material-icons font-base me-3">
+                      location_on
+                    </span>
+                    {{ event.venue }}
+                  </li>
+                </ul>
+              </div>
+              <a href="#" @click.prevent="deleteFavourite(event.id)">
+                <span class="material-icons"> close </span>
+              </a>
             </div>
-            <a href="#">
-              <span class="material-icons"> close </span>
-            </a>
           </div>
         </div>
+        <div v-else>{{ favouriteAlert }}</div>
       </div>
     </div>
   </div>
@@ -254,7 +224,16 @@ export default {
     return {
       bsCartOffcanvas: {},
       bsFavouriteOffcanvas: {},
+      favourites: [],
+      favouriteAlert: '載入我的收藏中...',
     }
+  },
+  watch: {
+    favourites() {
+      if (this.favourites.length === 0) {
+        this.favouriteAlert = '目前沒有收藏任何活動'
+      }
+    },
   },
   mounted() {
     this.bsCartOffcanvas = new bootstrap.Offcanvas(this.$refs.cartOffcanvas)
@@ -268,6 +247,32 @@ export default {
     },
     showFavourite() {
       this.bsFavouriteOffcanvas.show()
+      this.getMyFavourite()
+    },
+    async getMyFavourite() {
+      const favouritesId = this.$getFavourite()
+      try {
+        await this.$store.dispatch('getAllEvents')
+        const { allEvents } = this.$store.getters
+        this.favourites = allEvents.filter((event) =>
+          favouritesId.includes(event.id)
+        )
+      } catch (error) {
+        this.$showError('載入我的收藏失敗')
+      }
+    },
+    dateTimeTemplate(dateTime) {
+      if (Array.isArray(dateTime)) {
+        return `${dateTime[0].date} - ${dateTime[dateTime.length - 1].date}`
+      } else {
+        return `${dateTime.start} - ${dateTime.end}`
+      }
+    },
+    deleteFavourite(id) {
+      this.$deleteFavourite(id)
+      this.getMyFavourite()
+      // Refresh bookmark icon in EventCard component
+      this.$bus.$emit('getFavourite')
     },
   },
 }

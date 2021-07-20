@@ -1,6 +1,6 @@
 function deleteFavourite(id) {
   const items = JSON.parse(localStorage.getItem('flashTicketing'))
-  const deleteIdx = items[id]
+  const deleteIdx = items.indexOf(id)
   items.splice(deleteIdx, 1)
   const newItems = JSON.stringify(items)
   localStorage.setItem('flashTicketing', newItems)
