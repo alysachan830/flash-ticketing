@@ -1,15 +1,19 @@
 <template>
-  <div class="card-bg mb-15 p-10 rounded-3 border">
+  <div class="card-bg mb-15 p-7 p-md-10 rounded-3 border">
     <h2 class="font-m mb-6">{{ cartItem.product.title }}</h2>
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">日期</th>
-          <th scope="col">時間</th>
-          <th scope="col" class="text-nowrap">座位區域</th>
-          <th scope="col" class="text-nowrap">價錢</th>
-          <th scope="col">數量</th>
-          <th scope="col" :class="{ 'd-none': editingId !== '' }"></th>
+          <th class="font-s">日期</th>
+          <th class="font-s">時間</th>
+          <th class="font-s text-nowrap">座位</th>
+          <th class="font-s">價錢</th>
+          <th class="font-s">數量</th>
+          <th
+            scope="col"
+            :class="{ 'd-none': editingId !== '' }"
+            class="font-s"
+          ></th>
         </tr>
       </thead>
       <tbody>
@@ -316,6 +320,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/stylesheets/all';
+
 .edit-input {
   width: 60px !important;
 }
@@ -326,6 +332,18 @@ export default {
   transition: filter 0.3s;
   &:hover {
     filter: drop-shadow(0.5px 0.5px 3px #e0e0e0);
+  }
+}
+
+.table > :not(caption) > * > * {
+  padding: 6px 4px !important;
+
+  @include media-breakpoint-up(sm) {
+    padding: 6px !important;
+  }
+
+  @include media-breakpoint-up(md) {
+    padding: 16px !important;
   }
 }
 </style>
