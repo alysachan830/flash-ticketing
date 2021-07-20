@@ -105,6 +105,7 @@ export default {
   },
   data() {
     return {
+      loader: {},
       inputDateTime: '',
       inputTicketType: '正價票',
       inputSeat: 'A區',
@@ -305,6 +306,7 @@ export default {
           tempCartIds.forEach((id) => {
             allData.data[id] = this.tempCart[id]
           })
+          this.loader = this.$loading.show()
           const addCartRes = await apiClientAddCart(allData)
           // Clear tempCart and all input quantity
           this.tempCart = {}
@@ -342,7 +344,7 @@ export default {
             allData.data.qty = this.countQty(allData.data, existingCartItem)
             allData.data.product_id = this.eventId
           }
-
+          this.loader = this.$loading.show()
           const updateCartRes = await apiClientUpdateCart(
             existingCartItem.id,
             allData
@@ -360,6 +362,8 @@ export default {
         this.$showError('加入購物車失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
   },
