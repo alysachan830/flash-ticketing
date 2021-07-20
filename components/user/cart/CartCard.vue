@@ -174,20 +174,15 @@ export default {
       })
     },
     countPrice(ticketId, perTicketPrice) {
-      console.log('---- in couting ----')
       const oldQty = this.cartItem[ticketId]
       const oldPrice = perTicketPrice * oldQty
       const oldTotal = this.cartItem.total
-      console.log('oldPrice => ' + oldPrice)
-      console.log('oldTotal => ' + oldTotal)
       let updatedTotal
       if (this.isDelete) {
         updatedTotal = oldTotal - oldPrice
       } else {
         updatedTotal = oldTotal - oldPrice + perTicketPrice * this.inputQty
       }
-      // const updatedTotal = oldTotal - oldPrice + perTicketPrice * this.inputQty
-      console.log('updatedTotal => ' + updatedTotal)
       return updatedTotal
     },
     countQtyEdit(ticketId) {
@@ -197,7 +192,6 @@ export default {
           return 0
         }
         case 2: {
-          console.log('--- in case 2---')
           const ticketType = ticketIdInfo[1]
           let perTicketPrice
           if (ticketType === '優惠票') {
@@ -207,35 +201,23 @@ export default {
           } else {
             perTicketPrice = this.cartItem.product.price
           }
-          console.log('---- before go counting ----')
-          console.log('perTicketPrice => ' + perTicketPrice)
           const updatedTotal = this.countPrice(ticketId, perTicketPrice)
           const qty = updatedTotal / this.cartItem.product.price
-          console.log('qty => ' + qty)
           return qty
         }
         case 3: {
-          console.log('--- in case 3---')
           const ticketType = ticketIdInfo[2]
           const zone = ticketIdInfo[1][0]
           let perTicketPrice
           perTicketPrice = this.cartItem.product.ticketPrice[zone]
-          console.log('perTicketPrice with zone => ' + perTicketPrice)
           if (ticketType === '優惠票') {
             perTicketPrice =
               perTicketPrice * (this.cartItem.product.discount / 100)
-            console.log(
-              '優惠票, DISCOUNT: ' + this.cartItem.product.discount / 100
-            )
-            console.log(perTicketPrice)
           } else {
             perTicketPrice = this.cartItem.product.price
           }
-          console.log('---- before go counting ----')
-          console.log('perTicketPrice => ' + perTicketPrice)
           const updatedTotal = this.countPrice(ticketId, perTicketPrice)
           const qty = updatedTotal / this.cartItem.product.price
-          console.log('qty => ' + qty)
           return qty
         }
       }
@@ -271,7 +253,6 @@ export default {
       } else {
         allData.data[ticketId] = this.inputQty
       }
-      console.log(allData)
 
       try {
         this.loader = this.$loading.show()
@@ -279,8 +260,6 @@ export default {
           this.cartItem.id,
           allData
         )
-        console.log('---- API -----')
-        console.log(updateCartRes.data)
         if (!updateCartRes.data.success) {
           throw updateCartRes.data.message.join()
         }
