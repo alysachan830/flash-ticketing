@@ -238,7 +238,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$loading)
     const loader = this.$loading.show()
     setTimeout(() => {
       loader.hide()
