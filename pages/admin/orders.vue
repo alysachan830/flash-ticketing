@@ -22,7 +22,12 @@
           <td>${{ order.total }}</td>
           <!-- <td>{{ order.user }}</td> -->
           <td>
-            <span class="material-icons"> edit </span>
+            <!-- <NuxtLink :to="`/admin/order/${order.id}`"
+              ><span class="material-icons"> edit </span></NuxtLink
+            > -->
+            <a href="#" @click.prevent="editOrder(order)"
+              ><span class="material-icons"> edit </span></a
+            >
           </td>
           <td>
             <a href="#"><span class="material-icons"> clear </span></a>
@@ -62,6 +67,10 @@ export default {
     },
     formatDate(timestamp) {
       return moment.unix(timestamp).format('DD-MM-YYYY')
+    },
+    editOrder(order) {
+      this.$store.dispatch('adminEditOrder', order)
+      this.$router.push(`/admin/order/${order.id}`)
     },
   },
 }

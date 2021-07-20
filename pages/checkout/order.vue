@@ -74,7 +74,9 @@
             </p>
           </div>
           <div class="col-md-2 col-4 offset-8 offset-md-0">
-            <a href="/checkout/form" class="btn btn-primary w-100">確認</a>
+            <NuxtLink to="/checkout/form" class="btn btn-primary w-100"
+              >確認</NuxtLink
+            >
           </div>
         </div>
       </div>
