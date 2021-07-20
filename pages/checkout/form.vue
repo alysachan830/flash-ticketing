@@ -1,6 +1,6 @@
 <template>
   <div class="pt-18">
-    <div class="container">
+    <div class="container vh-100">
       <!-- Stepper -->
       <div class="position-relative mb-23">
         <div class="stepper w-100 bg-primary mt-23"></div>
