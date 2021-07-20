@@ -504,9 +504,8 @@
 </template>
 
 <script>
-import axios from 'axios'
 import moment from 'moment'
-import { apiClientGetEvent } from '@/api/index'
+import { apiClientGetEvent, apiAdminUploadImage } from '@/api/index'
 // import vCalendar from 'v-calendar'
 
 export default {
@@ -602,6 +601,7 @@ export default {
       this.tag = this.eventInfo.tag
       this.description = this.eventInfo.description
       this.mainImagePreview = this.eventInfo.imageUrl
+      this.imageUrl = this.eventInfo.imageUrl
       this.imagesUrl = this.eventInfo.imagesUrl
       if (typeof this.eventInfo.ticketPrice === 'number') {
         this.chargingOption = 'fixedPrice'
@@ -634,7 +634,7 @@ export default {
         this.selectedDate.endTime === '' ||
         this.selectedDate.startTime === ''
       ) {
-        alert('請選擇單一日期和時段')
+        this.$showError('請選擇單一日期和時段')
         return
       }
       // By default, date will be today,
@@ -679,7 +679,7 @@ export default {
     // end of v-calendar
     addTicketPrice() {
       if (this.seatZone === '' || this.seatZonePrice === 0) {
-        alert('請填寫區域和票價！')
+        this.$showError('請填寫區域和票價！')
         return
       }
       this.$set(this.ticketPrice, this.seatZone, this.seatZonePrice)
@@ -691,7 +691,7 @@ export default {
     },
     validateDateTime() {
       if (Object.values(this.dateTime).includes('')) {
-        alert('請填寫節目日期、開始和結束時間')
+        this.$showError('請填寫節目日期、開始和結束時間')
         return
       }
       this.dateTime = {
@@ -705,58 +705,80 @@ export default {
     },
     addImage(e) {
       this.mainImage = e.target.files[0]
-      console.log(e.target.files[0])
+      // console.log(e.target.files[0])
     },
-    uploadImage() {
+    async uploadImage() {
       if (this.mainImage === '') {
-        console.log('請選擇圖片')
+        this.$showError('請選擇圖片')
         return
       }
       const form = new FormData()
       form.append('', this.mainImage)
-      const AUTH_TOKEN =
-        'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI1NDA5MTg4LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjU0MDkxODgsImV4cCI6MTYyNTg0MTE4OCwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.aquUuQ1goSLkyJKcwWKx4LDj37f8ajbfL9jC5P7JGBeGM2PV0QHfQavxpmyX2Bw46wYQ5DuN7FPQFqGVR7jDZtqaxZddHOE52Ht_pbBStrM89-f2ALgIrR8nOAwCXJjIEChDGBjAQi0jM_GTzREbz3UzuFydZgRRazuo9Ctc1qidt9qEnkY1G6yqBxoO50RGX-h9oYVXJTvmblxw2hEPUkx4jtF4-Zt5cICSQe1IT_IMiJef2JbTLpVKP2InLYh0YQJkg656aUdY6GXYTGZi6F3SZHCVg0x-cLG_wEZpzx7fzvQhiYD5pSC4kIcxuucuXdT1r7kbk9I9JGAvJ6CxYg'
-      axios.defaults.headers.common.Authorization = AUTH_TOKEN
-      axios
-        .post(
-          `https://vue3-course-api.hexschool.io/api/${process.env.API_PATH}/admin/upload`,
-          form
-        )
-        .then((res) => {
-          console.log(res)
-          this.mainImage = ''
-          this.$refs.mainImage.value = ''
-          this.mainImagePreview = res.data.imageUrl
-          this.imageUrl = res.data.imageUrl
-        })
-        .catch((err) => console.log(err))
+      const token = this.$cookies.get('flashTicketingAuth').token
+      try {
+        const uploadImageRes = await apiAdminUploadImage(token, form)
+        if (!uploadImageRes.data.success) {
+          throw uploadImageRes.data.message
+        }
+        this.mainImagePreview = uploadImageRes.data.imageUrl
+        this.imageUrl = uploadImageRes.data.imageUrl
+        console.log(uploadImageRes.data)
+        // Clear input
+        this.mainImage = ''
+        this.$refs.mainImage.value = ''
+      } catch (error) {
+        this.$showError('上載圖片失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
     },
     addSubImage(e) {
       this.subImage = e.target.files[0]
-      console.log(e.target.files[0])
     },
-    uploadSubImage() {
+    async uploadSubImage() {
       if (this.subImage === '') {
-        console.log('請選擇圖片')
+        this.$showError('請選擇圖片')
         return
       }
       const form = new FormData()
       form.append('', this.subImage)
-      const AUTH_TOKEN =
-        'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI1NDA5MTg4LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjU0MDkxODgsImV4cCI6MTYyNTg0MTE4OCwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.aquUuQ1goSLkyJKcwWKx4LDj37f8ajbfL9jC5P7JGBeGM2PV0QHfQavxpmyX2Bw46wYQ5DuN7FPQFqGVR7jDZtqaxZddHOE52Ht_pbBStrM89-f2ALgIrR8nOAwCXJjIEChDGBjAQi0jM_GTzREbz3UzuFydZgRRazuo9Ctc1qidt9qEnkY1G6yqBxoO50RGX-h9oYVXJTvmblxw2hEPUkx4jtF4-Zt5cICSQe1IT_IMiJef2JbTLpVKP2InLYh0YQJkg656aUdY6GXYTGZi6F3SZHCVg0x-cLG_wEZpzx7fzvQhiYD5pSC4kIcxuucuXdT1r7kbk9I9JGAvJ6CxYg'
-      axios.defaults.headers.common.Authorization = AUTH_TOKEN
-      axios
-        .post(
-          `https://vue3-course-api.hexschool.io/api/${process.env.API_PATH}/admin/upload`,
-          form
-        )
-        .then((res) => {
-          console.log(res)
-          this.subImage = ''
-          this.$refs.subImage.value = ''
-          this.imagesUrl.push(res.data.imageUrl)
-        })
-        .catch((err) => console.log(err))
+      const token = this.$cookies.get('flashTicketingAuth').token
+      try {
+        const uploadImageRes = await apiAdminUploadImage(token, form)
+        if (!uploadImageRes.data.success) {
+          throw uploadImageRes.data.message
+        }
+        this.imagesUrl.push(uploadImageRes.data.imageUrl)
+        console.log(uploadImageRes.data)
+        // Clear input
+        this.subImage = ''
+        this.$refs.subImage.value = ''
+      } catch (error) {
+        this.$showError('上載圖片失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
+      // if (this.subImage === '') {
+      //   console.log('請選擇圖片')
+      //   return
+      // }
+      // const form = new FormData()
+      // form.append('', this.subImage)
+      // const AUTH_TOKEN =
+      //   'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI1NDA5MTg4LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjU0MDkxODgsImV4cCI6MTYyNTg0MTE4OCwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.aquUuQ1goSLkyJKcwWKx4LDj37f8ajbfL9jC5P7JGBeGM2PV0QHfQavxpmyX2Bw46wYQ5DuN7FPQFqGVR7jDZtqaxZddHOE52Ht_pbBStrM89-f2ALgIrR8nOAwCXJjIEChDGBjAQi0jM_GTzREbz3UzuFydZgRRazuo9Ctc1qidt9qEnkY1G6yqBxoO50RGX-h9oYVXJTvmblxw2hEPUkx4jtF4-Zt5cICSQe1IT_IMiJef2JbTLpVKP2InLYh0YQJkg656aUdY6GXYTGZi6F3SZHCVg0x-cLG_wEZpzx7fzvQhiYD5pSC4kIcxuucuXdT1r7kbk9I9JGAvJ6CxYg'
+      // axios.defaults.headers.common.Authorization = AUTH_TOKEN
+      // axios
+      //   .post(
+      //     `https://vue3-course-api.hexschool.io/api/${process.env.API_PATH}/admin/upload`,
+      //     form
+      //   )
+      //   .then((res) => {
+      //     console.log(res)
+      //     this.subImage = ''
+      //     this.$refs.subImage.value = ''
+      //     this.imagesUrl.push(res.data.imageUrl)
+      //   })
+      //   .catch((err) => console.log(err))
     },
     submitEvent() {
       if (this.dateOption === 'period') {
@@ -783,24 +805,49 @@ export default {
           ticketPrice: this.ticketPrice,
           discount: this.discount,
           tag: this.tag,
-          // 以下資料雖然將不會使用，但是這些也是API必須要傳的參數
+          // origin_price is required by the API, but it will not be used in this project
           origin_price: 0,
-          price: 0,
+          // Get the lowest price if ticketPrice is an object
+          price:
+            typeof this.ticketPrice === 'object'
+              ? Math.min(...Object.values(this.ticketPrice))
+              : this.ticketPrice,
           unit: '張',
         },
       }
       console.log(info)
+      if (info.data.title === '') {
+        this.$showError('請輸入標題')
+        return
+      }
 
-      const AUTH_TOKEN =
-        'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI1NDA5MTg4LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjU0MDkxODgsImV4cCI6MTYyNTg0MTE4OCwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.aquUuQ1goSLkyJKcwWKx4LDj37f8ajbfL9jC5P7JGBeGM2PV0QHfQavxpmyX2Bw46wYQ5DuN7FPQFqGVR7jDZtqaxZddHOE52Ht_pbBStrM89-f2ALgIrR8nOAwCXJjIEChDGBjAQi0jM_GTzREbz3UzuFydZgRRazuo9Ctc1qidt9qEnkY1G6yqBxoO50RGX-h9oYVXJTvmblxw2hEPUkx4jtF4-Zt5cICSQe1IT_IMiJef2JbTLpVKP2InLYh0YQJkg656aUdY6GXYTGZi6F3SZHCVg0x-cLG_wEZpzx7fzvQhiYD5pSC4kIcxuucuXdT1r7kbk9I9JGAvJ6CxYg'
-      axios.defaults.headers.common.Authorization = AUTH_TOKEN
-      axios
-        .post(
-          `https://vue3-course-api.hexschool.io/api/${process.env.API_PATH}/admin/product`,
-          info
-        )
-        .then((res) => console.log(res.data))
-        .catch((err) => console.log(err))
+      if (
+        Array.isArray(info.data.dateTime) &&
+        info.data.dateTime.length === 0
+      ) {
+        this.$showError('請選擇節目時段')
+        return
+      }
+
+      if (
+        !Array.isArray(info.data.dateTime) &&
+        Object.values(info.data.dateTime).includes('')
+      ) {
+        this.$showError('請選擇節目時段')
+        return
+      }
+
+      console.log('check')
+      //   const AUTH_TOKEN =
+      //     'eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS92dWUtY291cnNlLWFwaSIsImF1ZCI6InZ1ZS1jb3Vyc2UtYXBpIiwiYXV0aF90aW1lIjoxNjI1NDA5MTg4LCJ1c2VyX2lkIjoiR3BVME9VZU1JYk9WSGo4b1E3RVkzc0lONmRKMiIsInN1YiI6IkdwVTBPVWVNSWJPVkhqOG9RN0VZM3NJTjZkSjIiLCJpYXQiOjE2MjU0MDkxODgsImV4cCI6MTYyNTg0MTE4OCwiZW1haWwiOiJhbHlzYWNoYW44MzBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWx5c2FjaGFuODMwQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.aquUuQ1goSLkyJKcwWKx4LDj37f8ajbfL9jC5P7JGBeGM2PV0QHfQavxpmyX2Bw46wYQ5DuN7FPQFqGVR7jDZtqaxZddHOE52Ht_pbBStrM89-f2ALgIrR8nOAwCXJjIEChDGBjAQi0jM_GTzREbz3UzuFydZgRRazuo9Ctc1qidt9qEnkY1G6yqBxoO50RGX-h9oYVXJTvmblxw2hEPUkx4jtF4-Zt5cICSQe1IT_IMiJef2JbTLpVKP2InLYh0YQJkg656aUdY6GXYTGZi6F3SZHCVg0x-cLG_wEZpzx7fzvQhiYD5pSC4kIcxuucuXdT1r7kbk9I9JGAvJ6CxYg'
+      //   axios.defaults.headers.common.Authorization = AUTH_TOKEN
+      //   axios
+      //     .post(
+      //       `https://vue3-course-api.hexschool.io/api/${process.env.API_PATH}/admin/product`,
+      //       info
+      //     )
+      //     .then((res) => console.log(res.data))
+      //     .catch((err) => console.log(err))
     },
   },
 }
