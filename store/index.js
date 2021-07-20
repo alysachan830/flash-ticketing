@@ -12,6 +12,7 @@ export const state = () => ({
   carts: [],
   isSignIn: false,
   adminEvents: [],
+  adminEditingOrder: {},
 })
 
 export const actions = {
@@ -66,6 +67,9 @@ export const actions = {
       this.$router.push('/login')
     }
   },
+  adminEditOrder({ commit }, order) {
+    commit('SetAdminEditingOrder', order)
+  },
 }
 
 export const mutations = {
@@ -95,6 +99,9 @@ export const mutations = {
     )
     state.adminEvents = allEvents
   },
+  SetAdminEditingOrder(state, order) {
+    state.adminEditingOrder = JSON.parse(JSON.stringify(order))
+  },
 }
 
 export const getters = {
@@ -105,4 +112,5 @@ export const getters = {
   cartFinalTotal: (state) => state.cartFinalTotal,
   signInStatus: (state) => state.isSignIn,
   adminEvents: (state) => state.adminEvents,
+  adminEditingOrder: (state) => state.adminEditingOrder,
 }

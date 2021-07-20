@@ -111,3 +111,19 @@ export const apiAdminUploadImage = (token, formData) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.post('/upload', formData)
 }
+export const apiAdminGetOrders = (token, pageNum) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.get(`/orders?page=${pageNum}`)
+}
+export const apiAdminEditOrder = (token, id, data) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.put(`/order/${id}`, data)
+}
+export const apiAdminDeleteOrder = (token, id) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.delete(`/order/${id}`)
+}
+export const apiAdminDeleteAllOrders = (token) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.delete('/orders/all')
+}
