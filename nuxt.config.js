@@ -34,6 +34,7 @@ export default {
   plugins: [
     { src: '~plugins/cookie.js' },
     { src: '~plugins/bus.js' },
+    { src: '~plugins/vue-loading.js', ssr: false },
     { src: '~plugins/v-calendar.js', ssr: false },
     { src: '~plugins/ckeditor.js', ssr: false },
     { src: '~plugins/myFavourite.js', ssr: false },

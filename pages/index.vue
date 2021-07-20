@@ -238,6 +238,11 @@ export default {
     },
   },
   mounted() {
+    console.log(this.$loading)
+    const loader = this.$loading.show()
+    setTimeout(() => {
+      loader.hide()
+    }, 5000)
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
