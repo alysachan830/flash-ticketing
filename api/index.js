@@ -102,8 +102,10 @@ export const apiAdminEditProduct = (token, id, data) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.put(`/product/${id}`, data)
 }
-export const apiAdminDeleteProduct = (id) =>
-  adminRequest.delete(`/product/${id}`)
+export const apiAdminDeleteProduct = (token, id) => {
+  adminRequest.defaults.headers.common.Authorization = token
+  return adminRequest.delete(`/product/${id}`)
+}
 export const apiAdminAddArticle = (data) => adminRequest.post(`/article`, data)
 export const apiAdminUploadImage = (token, formData) => {
   adminRequest.defaults.headers.common.Authorization = token

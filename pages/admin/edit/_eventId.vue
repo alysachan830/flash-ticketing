@@ -826,7 +826,6 @@ export default {
           },
         }
 
-        console.log(info)
         const token = this.$cookies.get('flashTicketingAuth').token
         if (this.isNew) {
           const addProductRes = await apiAdminAddProduct(token, info)
