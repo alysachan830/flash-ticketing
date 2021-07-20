@@ -147,7 +147,6 @@ export default {
         const editOrderRes = await apiAdminEditOrder(token, this.order.id, {
           data: this.inputData,
         })
-        console.log(editOrderRes.data)
         if (!editOrderRes.data.success) {
           throw editOrderRes.data.message
         }
