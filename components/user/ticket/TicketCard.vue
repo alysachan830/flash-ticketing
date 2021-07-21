@@ -15,7 +15,7 @@
         <p class="text-info font-s mb-1">座位區域</p>
         <p>{{ item.zone }}</p>
       </li>
-      <li class="pb-6" v-if="item.end && item.start">
+      <li v-if="item.end && item.start" class="pb-6">
         <p class="text-info font-s mb-1">節目日期</p>
         <p>{{ item.start }} - {{ item.end }}</p>
       </li>
@@ -68,14 +68,12 @@ export default {
   },
   created() {
     this.$bus.$on('clearInputQuantity', () => {
-      console.log('clear input quantity!')
       this.quantity = 0
     })
   },
   methods: {
     addCart() {
       this.quantity += 1
-      //   if (process.server) return
       this.$nuxt.$emit('clickAdd', this.item.id)
     },
     removeCart() {

@@ -6,15 +6,15 @@
         <div class="stepper w-100 bg-primary mt-23"></div>
         <div class="stepper-step-start position-absolute">
           <div class="stepper-circle m-auto mb-3 bg-primary"></div>
-          <p class="text-primary font-m">確認訂單</p>
+          <p class="text-primary">確認訂單</p>
         </div>
         <div class="stepper-step-middle position-absolute">
           <div class="stepper-circle m-auto mb-3"></div>
-          <p class="text-primary font-m">個人資料</p>
+          <p class="text-primary">個人資料</p>
         </div>
         <div class="stepper-step-end position-absolute">
           <div class="stepper-circle m-auto mb-3"></div>
-          <p class="text-primary font-m">完成購票</p>
+          <p class="text-primary">完成購票</p>
         </div>
       </div>
       <!-- Coupon button -->
@@ -49,13 +49,13 @@
 
       <div v-if="carts.length > 0">
         <CartCard
-          v-for="item in carts"
+          v-for="item in filterCarts"
           :key="item.id"
           :cart-item="item"
         ></CartCard>
         <!-- </div> -->
         <div class="d-flex justify-content-end mb-18">
-          <Pagination></Pagination>
+          <Pagination :total-pages="Math.ceil(carts.length / 4)"></Pagination>
         </div>
         <!-- Total -->
         <div class="row justify-content-between mb-21">
@@ -114,10 +114,27 @@ export default {
   },
   data() {
     return {
+      loader: {},
+      currentPage: 1,
       couponCode: 'flash2021',
     }
   },
+  computed: {
+    filterCarts() {
+      return this.carts.slice(
+        (this.currentPage - 1) * 4,
+        (this.currentPage - 1) * 4 + 4
+      )
+    },
+  },
   created() {
+    this.$nuxt.$on('clickPageNum', (n) => {
+      this.currentPage = n
+    })
+    this.$bus.$on('clearPageNum', () => {
+      this.currentPage = 1
+    })
+
     this.$nuxt.$on('refreshCart', async (cartId, ticketIds) => {
       await this.getCart()
       if (cartId && ticketIds) {
@@ -161,6 +178,7 @@ export default {
           '是否確定刪除全部購物車內容？'
         )
         if (!confirmDelete) return
+        this.loader = this.$loading.show()
         const deleteAllCartRes = await apiClientDeleteAllCart()
         if (!deleteAllCartRes.data.success) {
           throw deleteAllCartRes.data.message
@@ -172,6 +190,8 @@ export default {
         this.$showError(error)
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
     async applyCoupon() {
@@ -181,12 +201,14 @@ export default {
       }
       if (
         this.carts.length > 0 &&
+        this.carts[0].coupon &&
         this.carts[0].coupon.code === this.couponCode
       ) {
         this.$showError('此優惠劵已被使用')
         return
       }
       try {
+        this.loader = this.$loading.show()
         const applyCouponRes = await apiClientApplyCoupon({
           data: {
             code: this.couponCode,
@@ -198,8 +220,9 @@ export default {
         this.$showSuccess('成功套用優惠劵')
         // Update total price
         await this.$store.dispatch('getCart')
-        const { cartFinalTotal } = this.$store.getters
+        const { cartFinalTotal, carts } = this.$store.getters
         this.cartFinalTotal = cartFinalTotal
+        this.carts = carts
       } catch (error) {
         if (typeof error === 'string') {
           this.$showError(error)
@@ -208,10 +231,13 @@ export default {
         }
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
     async deleteCart(cartId) {
       try {
+        this.loader = this.$loading.show()
         await apiClientDeleteCart(cartId)
         this.$showSuccess('已刪除購物車內此節目的所有票卷')
         this.getCart()
@@ -219,6 +245,8 @@ export default {
         this.$showError('刪除單一購物車資料失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
   },
@@ -229,34 +257,29 @@ export default {
 @import '@/assets/stylesheets/all';
 
 .stepper {
-  height: 3px;
+  height: 2px;
 
   &-circle {
     border-radius: 50%;
-    border: 3px solid $primary;
-    height: 24px;
-    width: 24px;
+    border: 2px solid $primary;
+    height: 16px;
+    width: 16px;
     background: #fff;
-
-    // &-start {
-    //   @extend .stepper-circle;
-    //   transform: translate(0, -50%);
-    // }
   }
 
   &-step-start {
-    transform: translate(0, -25%);
+    transform: translate(0, -20%);
     left: 10%;
   }
 
   &-step-middle {
     left: 50%;
-    transform: translate(-50%, -25%);
+    transform: translate(-50%, -20%);
   }
 
   &-step-end {
     right: 10%;
-    transform: translate(0, -25%);
+    transform: translate(0, -20%);
   }
 }
 </style>

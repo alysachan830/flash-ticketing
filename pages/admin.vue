@@ -16,7 +16,7 @@
         <!-- Sidebar link -->
         <div>
           <NuxtLink
-            class="py-7 ps-16 pe-20 mb-17 d-flex align-items-center"
+            class="logo py-7 ps-16 pe-20 mb-17 d-flex align-items-center"
             to="/admin"
           >
             <i class="material-icons font-2xl text-white me-2">offline_bolt</i>
@@ -24,19 +24,19 @@
               flash <br />ticketing
             </h1>
           </NuxtLink>
-          <NuxtLink class="py-7 ps-16 pe-20" to="/admin">
+          <NuxtLink class="sidebar-item py-7 ps-16 pe-20" to="/admin">
             <i class="material-icons text-white align-bottom me-2"
               >smart_display</i
             >
             節目活動</NuxtLink
           >
-          <NuxtLink class="py-7 ps-16 pe-20" to="/admin/orders">
+          <NuxtLink class="sidebar-item py-7 ps-16 pe-20" to="/admin/orders">
             <i class="material-icons text-white align-bottom me-2"
               >format_list_bulleted</i
             >
             訂單</NuxtLink
           >
-          <NuxtLink class="py-7 ps-16 pe-20" to="/admin/coupons">
+          <NuxtLink class="sidebar-item py-7 ps-16 pe-20" to="/admin/coupons">
             <i class="material-icons text-white align-bottom me-2"
               >confirmation_number</i
             >
@@ -122,6 +122,9 @@ export default {
 
 a {
   color: #fff;
+}
+
+.sidebar-item {
   transition: 0.2s background;
   &:hover {
     color: #fff !important;
@@ -131,6 +134,14 @@ a {
 
 .nuxt-link-exact-active.nuxt-link-active {
   background: rgba($secondary, 0.2);
+}
+
+.nuxt-link-exact-active.nuxt-link-active.logo {
+  background: none !important;
+  &:hover {
+    color: #fff !important;
+    background: none;
+  }
 }
 
 .avatar {

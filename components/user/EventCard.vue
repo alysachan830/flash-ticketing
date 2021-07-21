@@ -29,7 +29,7 @@
         </span>
       </div>
       <span class="badge font-lg-s font-xs bg-secondary text-black mb-4">
-        {{ tag }}
+        {{ formatTag }}
       </span>
     </div>
   </NuxtLink>
@@ -69,11 +69,23 @@ export default {
     isFavourite() {
       return this.myFavouriteItems.includes(this.id)
     },
-  },
-  create() {
-    this.myFavouriteItems = this.$getFavourite()
+    formatTag() {
+      let tagZh
+      if (this.tag === 'hottest') {
+        tagZh = '最熱門'
+      }
+      if (this.tag === 'newest') {
+        tagZh = '最新'
+      }
+      return tagZh
+    },
   },
   mounted() {
+    this.$bus.$on(
+      'getFavourite',
+      () => (this.myFavouriteItems = this.$getFavourite())
+    )
+    this.myFavouriteItems = this.$getFavourite()
     if (Array.isArray(this.dateTime)) {
       this.dateTimeTemplate = `${this.dateTime[0].date} - ${
         this.dateTime[this.dateTime.length - 1].date

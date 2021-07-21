@@ -34,7 +34,12 @@
             國際展覽中心一號展場
           </p>
         </div>
-        <button class="btn btn-primary btn-lg px-10">搶先購票</button>
+        <NuxtLink
+          to="/event/-Mdm05StW8ZACYsw82zh"
+          class="btn btn-primary btn-lg px-10"
+          >搶先購票</NuxtLink
+        >
+        <!-- <button class="btn btn-primary btn-lg px-10">搶先購票</button> -->
       </div>
     </div>
 
@@ -63,6 +68,7 @@
               class="col-lg-3 col-6"
             >
               <EventCard
+                :id="event.id"
                 :title="event.title"
                 :image="event.imageUrl"
                 :date-time="event.dateTime"
@@ -71,11 +77,12 @@
             </div>
           </div>
           <div class="text-center">
-            <button
+            <NuxtLink
+              to="/events/all"
               class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
             >
               更多節目
-            </button>
+            </NuxtLink>
           </div>
         </div>
       </client-only>
@@ -112,7 +119,11 @@
                   香港表演藝術大學三樓演奏廳
                 </p>
               </div>
-              <button class="btn btn-primary btn-lg px-10">搶先購票</button>
+              <NuxtLink
+                to="/event/-MeDhhevaeV5e8wUDUuS"
+                class="btn btn-primary btn-lg px-10"
+                >搶先購票</NuxtLink
+              >
             </div>
           </span>
         </a>
@@ -130,6 +141,7 @@
               class="col-lg-3 col-6"
             >
               <EventCard
+                :id="event.id"
                 :title="event.title"
                 :image="event.imageUrl"
                 :date-time="event.dateTime"
@@ -138,38 +150,29 @@
             </div>
           </div>
           <div class="text-center">
-            <button
+            <NuxtLink
+              to="/events/all"
               class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
             >
               更多節目
-            </button>
+            </NuxtLink>
           </div>
         </div>
       </div>
     </client-only>
-    <!-- Recommendation -->
-    <div class="mb-23 container">
-      <div class="mb-19">
-        <h2 class="font-xl mb-4">獨家推薦</h2>
-        <p>各界知名藝評人為您推薦最高質的節目。</p>
-      </div>
-      <client-only>
-        <div class="mb-16">
-          <ArticleCard v-for="n in 4" :key="n" class="mb-10"></ArticleCard>
-        </div>
-      </client-only>
-      <div class="text-center">
-        <button
-          class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
-        >
-          更多評論
-        </button>
-      </div>
-    </div>
     <!-- Footer banner -->
     <div class="footer-banner d-flex justify-content-center align-items-center">
       <div class="row justify-content-center">
-        <h3 class="text-white font-2xl text-center mb-10 fw-normal lh-base">
+        <h3
+          class="
+            text-white
+            font-l font-md-xl font-lg-2xl
+            text-center
+            mb-10
+            fw-normal
+            lh-base
+          "
+        >
           訂閱最新消息 <br />
           率先享受最新節目
         </h3>
@@ -178,14 +181,13 @@
             <div class="input-group input-group-lg mb-3">
               <input
                 type="text"
-                class="form-control"
+                class="form-control font-s font-lg-m"
                 placeholder="您的電郵"
                 aria-label="您的電郵"
-                aria-describedby="button-addon2"
               />
               <button
                 id="subscribe"
-                class="btn btn-outline-secondary"
+                class="btn btn-outline-secondary font-s font-lg-m"
                 type="button"
               >
                 訂閱
@@ -202,14 +204,12 @@
 import Categories from '@/components/user/Categories.vue'
 import EventCard from '@/components/user/EventCard.vue'
 import SwiperHotEvents from '@/components/user/swiper/HotEvents.vue'
-import ArticleCard from '@/components/user/article/ArticleCard.vue'
 
 export default {
   components: {
     Categories,
     EventCard,
     SwiperHotEvents,
-    ArticleCard,
   },
   async asyncData(context) {
     try {
@@ -238,6 +238,10 @@ export default {
     },
   },
   mounted() {
+    const loader = this.$loading.show()
+    setTimeout(() => {
+      loader.hide()
+    }, 5000)
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')

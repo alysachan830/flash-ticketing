@@ -1,15 +1,19 @@
 <template>
-  <div class="card-bg mb-15 p-10 rounded-3 border">
+  <div class="card-bg mb-15 p-7 p-md-10 rounded-3 border">
     <h2 class="font-m mb-6">{{ cartItem.product.title }}</h2>
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">日期</th>
-          <th scope="col">時間</th>
-          <th scope="col" class="text-nowrap">座位區域</th>
-          <th scope="col" class="text-nowrap">價錢</th>
-          <th scope="col">數量</th>
-          <th scope="col" :class="{ 'd-none': editingId !== '' }"></th>
+          <th class="font-s">日期</th>
+          <th class="font-s">時間</th>
+          <th class="font-s text-nowrap">座位</th>
+          <th class="font-s">價錢</th>
+          <th class="font-s">數量</th>
+          <th
+            scope="col"
+            :class="{ 'd-none': editingId !== '' }"
+            class="font-s"
+          ></th>
         </tr>
       </thead>
       <tbody>
@@ -72,6 +76,7 @@ export default {
   },
   data() {
     return {
+      loader: {},
       editingId: '',
       inputQty: 0,
       isDelete: false,
@@ -169,20 +174,15 @@ export default {
       })
     },
     countPrice(ticketId, perTicketPrice) {
-      console.log('---- in couting ----')
       const oldQty = this.cartItem[ticketId]
       const oldPrice = perTicketPrice * oldQty
       const oldTotal = this.cartItem.total
-      console.log('oldPrice => ' + oldPrice)
-      console.log('oldTotal => ' + oldTotal)
       let updatedTotal
       if (this.isDelete) {
         updatedTotal = oldTotal - oldPrice
       } else {
         updatedTotal = oldTotal - oldPrice + perTicketPrice * this.inputQty
       }
-      // const updatedTotal = oldTotal - oldPrice + perTicketPrice * this.inputQty
-      console.log('updatedTotal => ' + updatedTotal)
       return updatedTotal
     },
     countQtyEdit(ticketId) {
@@ -192,7 +192,6 @@ export default {
           return 0
         }
         case 2: {
-          console.log('--- in case 2---')
           const ticketType = ticketIdInfo[1]
           let perTicketPrice
           if (ticketType === '優惠票') {
@@ -202,35 +201,23 @@ export default {
           } else {
             perTicketPrice = this.cartItem.product.price
           }
-          console.log('---- before go counting ----')
-          console.log('perTicketPrice => ' + perTicketPrice)
           const updatedTotal = this.countPrice(ticketId, perTicketPrice)
           const qty = updatedTotal / this.cartItem.product.price
-          console.log('qty => ' + qty)
           return qty
         }
         case 3: {
-          console.log('--- in case 3---')
           const ticketType = ticketIdInfo[2]
           const zone = ticketIdInfo[1][0]
           let perTicketPrice
           perTicketPrice = this.cartItem.product.ticketPrice[zone]
-          console.log('perTicketPrice with zone => ' + perTicketPrice)
           if (ticketType === '優惠票') {
             perTicketPrice =
               perTicketPrice * (this.cartItem.product.discount / 100)
-            console.log(
-              '優惠票, DISCOUNT: ' + this.cartItem.product.discount / 100
-            )
-            console.log(perTicketPrice)
           } else {
             perTicketPrice = this.cartItem.product.price
           }
-          console.log('---- before go counting ----')
-          console.log('perTicketPrice => ' + perTicketPrice)
           const updatedTotal = this.countPrice(ticketId, perTicketPrice)
           const qty = updatedTotal / this.cartItem.product.price
-          console.log('qty => ' + qty)
           return qty
         }
       }
@@ -266,15 +253,13 @@ export default {
       } else {
         allData.data[ticketId] = this.inputQty
       }
-      console.log(allData)
 
       try {
+        this.loader = this.$loading.show()
         const updateCartRes = await apiClientUpdateCart(
           this.cartItem.id,
           allData
         )
-        console.log('---- API -----')
-        console.log(updateCartRes.data)
         if (!updateCartRes.data.success) {
           throw updateCartRes.data.message.join()
         }
@@ -287,6 +272,8 @@ export default {
         this.$showError('更新購物車失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
 
       // Clear input
@@ -298,15 +285,22 @@ export default {
       this.isDelete = true
       try {
         await this.updateCart(ticketId)
+        this.$showSuccess('已刪除此票卷')
         this.isDelete = false
         await this.$nuxt.$emit('refreshCart', this.cartItem.id, this.ticketIds)
-      } catch (error) {}
+      } catch (error) {
+        this.$showError('刪除此票卷失敗')
+        // eslint-disable-next-line no-console
+        console.log(error)
+      }
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/stylesheets/all';
+
 .edit-input {
   width: 60px !important;
 }
@@ -317,6 +311,18 @@ export default {
   transition: filter 0.3s;
   &:hover {
     filter: drop-shadow(0.5px 0.5px 3px #e0e0e0);
+  }
+}
+
+.table > :not(caption) > * > * {
+  padding: 6px 4px !important;
+
+  @include media-breakpoint-up(sm) {
+    padding: 6px !important;
+  }
+
+  @include media-breakpoint-up(md) {
+    padding: 16px !important;
   }
 }
 </style>

@@ -32,20 +32,15 @@
                 >
                   {{ eventInfo.category }}
                 </span>
-                <ul class="d-flex">
-                  <li>
-                    <a href="#">
-                      <span class="me-2 text-info material-icons">
-                        bookmark_border
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <span class="text-info material-icons"> share </span>
-                    </a>
-                  </li>
-                </ul>
+                <a href="#">
+                  <span
+                    class="me-2 material-icons font-xl"
+                    :class="[isFavourite ? 'text-primary' : 'text-info']"
+                    @click.prevent="addFavourite(eventInfo.id)"
+                  >
+                    {{ isFavourite ? 'bookmark' : 'bookmark_border' }}
+                  </span>
+                </a>
               </div>
               <div class="mb-15">
                 <h2 class="mb-6">{{ eventInfo.title }}</h2>
@@ -74,6 +69,7 @@
                   <span class="text-primary material-icons font-m me-4">
                     paid
                   </span>
+                  <!-- eslint-disable-next-line vue/no-v-html -->
                   <ul v-html="ticketPriceFormat"></ul>
                 </li>
                 <li
@@ -119,11 +115,6 @@
           </div>
         </div>
       </div>
-      <!-- Article -->
-      <div>
-        <h2 class="font-xl mb-14">獨家點評</h2>
-        <!-- <articleCard></articleCard> -->
-      </div>
     </div>
     <!-- Related events -->
     <div class="bg-light py-18">
@@ -165,11 +156,14 @@ export default {
   },
   data() {
     return {
-      // img1: `https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/1625172152483.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=A6g2dOim3jb8EcodT4ceEsWkJ70%2FxnSUcM9kBmsVYu6D7N4yJ2gRrmnuD6qzBA4N7CvKczPW5%2FXRQ4R%2FobN5EKw9bLMY7cLEFvQ0EC1bmi%2Bsopo%2FuQj5PeflPgo3DudOUV4qyAl4d3y4J5fVJQJzTPwP70L4vp094v8A%2BbRtgNQ15LpPo2%2FMK39FQcgZEgkJej1BYd4syzhcdsP3Oftq45wfGw27LlOgjEQmUAvTQVj%2B9cPE43LAUGRGL4sHU%2Fi8Iecx7sSM0n6J6%2B7tXx3%2Fcn1BWKE%2Bf2lY5eBIt4Ln1JyN3rFvCEbmMGRcTHvZrBKCLnIAHAeTxE3UEKStXr8p3A%3D%3D`,
       dateTimeTemplate: '',
+      myFavouriteItems: [],
     }
   },
   computed: {
+    isFavourite() {
+      return this.myFavouriteItems.includes(this.eventInfo.id)
+    },
     isMultipleDates() {
       if (Array.isArray(this.eventInfo.dateTime)) {
         return `/event/${this.eventId}/tickets`
@@ -204,13 +198,26 @@ export default {
     },
   },
   mounted() {
-    console.log(this.eventInfo)
+    this.$bus.$on(
+      'getFavourite',
+      () => (this.myFavouriteItems = this.$getFavourite())
+    )
+    this.myFavouriteItems = this.$getFavourite()
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
       // eslint-disable-next-line no-console
       console.error(this.errorMsg)
     }
+  },
+  methods: {
+    addFavourite(id) {
+      this.$addFavourite(id)
+      // refresh my favourite items data
+      this.$nextTick().then(
+        () => (this.myFavouriteItems = this.$getFavourite())
+      )
+    },
   },
 }
 </script>
