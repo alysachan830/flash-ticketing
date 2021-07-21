@@ -6,25 +6,9 @@
           <img class="rounded-4" :src="eventInfo.imageUrl" alt="event image" />
         </div>
         <div class="col-lg-3 offset-lg-1">
-          <div class="d-flex justify-content-between mb-6">
-            <span class="badge font-lg-s font-xs bg-secondary text-black mb-4">
-              {{ eventInfo.category }}
-            </span>
-            <ul class="d-flex">
-              <li>
-                <a href="#">
-                  <span class="me-2 text-info material-icons">
-                    bookmark_border
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="text-info material-icons"> share </span>
-                </a>
-              </li>
-            </ul>
-          </div>
+          <span class="badge font-lg-s font-xs bg-secondary text-black mb-6">
+            {{ eventInfo.category }}
+          </span>
           <div class="mb-15">
             <h2 class="mb-6">{{ eventInfo.title }}</h2>
             <p>{{ eventInfo.organizer }}</p>
@@ -52,6 +36,7 @@
               <span class="text-primary material-icons font-m me-4">
                 paid
               </span>
+              <!-- eslint-disable-next-line vue/no-v-html -->
               <ul v-html="ticketPriceFormat"></ul>
             </li>
             <li
@@ -67,13 +52,10 @@
           </ul>
         </div>
       </div>
-      <!-- <div class="d-flex justify-content-between mb-15"> -->
       <div class="mb-15">
         <h3 class="font-l mb-2">選擇時段、座位與票種</h3>
         <p class="text-muted mb-2 font-s">請到主辦方官方網站查看座位劃分</p>
       </div>
-      <!-- <button class="btn btn-outline-primary">查看座位區域劃分</button> -->
-      <!-- </div> -->
       <p class="text-muted mb-2 font-s">*優惠票適用於學生、長者、殘疾人士</p>
       <!-- Selects -->
       <div class="bg-secondary p-12 rounded-4 mb-md-21 mb-16">
@@ -156,14 +138,10 @@
           <TicketCard :item="item"></TicketCard>
         </div>
       </div>
-      <div class="d-flex justify-content-end">
-        <!-- <Pagination class="mb-17"></Pagination> -->
-      </div>
       <!-- Add to cart -->
       <div class="row justify-content-center mb-21">
         <div class="col-4">
           <button class="btn btn-primary w-100 py-4" @click="addCart">
-            <!-- :disabled="Object.keys(tempCart).length === 0 ? true : false" -->
             加入購物車
           </button>
         </div>
@@ -178,7 +156,6 @@ import {
   apiClientAddCart,
   apiClientUpdateCart,
 } from '@/api/index'
-// import { apiClientGetEvent } from '@/api/index'
 import TicketCard from '@/components/user/ticket/TicketCard.vue'
 
 export default {
@@ -201,6 +178,7 @@ export default {
   },
   data() {
     return {
+      loader: {},
       inputDateTime: '',
       inputTicketType: '正價票',
       inputSeat: 'A區',
@@ -248,14 +226,12 @@ export default {
         ...dateTime,
       }))
     } else if (typeof this.eventInfo.ticketPrice === 'number') {
-      // if (typeof this.eventInfo.ticketPrice === 'number') {
       allTickets = this.eventInfo.dateTime
         .map((dateTime) => {
           return {
             zone: '不適用',
             price: this.eventInfo.ticketPrice,
             ticketType: '正價票',
-            // id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime},${zone}區,正價票`,
             id: `${dateTime.timestamp},正價票`,
             ...dateTime,
           }
@@ -281,7 +257,6 @@ export default {
               zone: `${zone}區`,
               price: this.eventInfo.ticketPrice[zone],
               ticketType: '正價票',
-              // id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime},${zone}區,正價票`,
               id: `${dateTime.timestamp},${zone}區,正價票`,
               ...dateTime,
             }
@@ -301,32 +276,6 @@ export default {
         allTickets = [...allTickets, ...allDiscountTickets]
       }
     }
-    // allTickets = Object.keys(this.eventInfo.ticketPrice)
-    //   .map((zone) => {
-    //     return this.eventInfo.dateTime.map((dateTime) => {
-    //       return {
-    //         zone: `${zone}區`,
-    //         price: this.eventInfo.ticketPrice[zone],
-    //         ticketType: '正價票',
-    //         // id: `${dateTime.date},${dateTime.startTime}-${dateTime.endTime},${zone}區,正價票`,
-    //         id: `${dateTime.timestamp},${zone}區,正價票`,
-    //         ...dateTime,
-    //       }
-    //     })
-    //   })
-    //   .flat()
-
-    // if (this.eventInfo.discount > 0) {
-    //   const allDiscountTickets = JSON.parse(JSON.stringify(allTickets)).map(
-    //     (ticket) => {
-    //       ticket.price = ticket.price * (this.eventInfo.discount / 100)
-    //       ticket.ticketType = '優惠票'
-    //       ticket.id = `${ticket.id.split(',').slice(0, 2).join(',')},優惠票`
-    //       return ticket
-    //     }
-    //   )
-    //   allTickets = [...allTickets, ...allDiscountTickets]
-    // }
 
     // Copy the result since it will be reused in searching function
     this.ticketInfoFormat = allTickets
@@ -337,7 +286,6 @@ export default {
 
     // Listen for emit
     this.$nuxt.$on('clickAdd', (id) => {
-      // if (process.server) return
       if (this.tempCart[id] === undefined) {
         this.tempCart[id] = 1
       } else {
@@ -346,24 +294,12 @@ export default {
     })
 
     this.$nuxt.$on('clickRemove', (id) => {
-      // if (process.server) return
       this.tempCart[id] -= 1
       if (this.tempCart[id] === 0) {
         delete this.tempCart[id]
       }
     })
   },
-  // mounted() {
-  //   // Set default inputSeat
-  //   if (typeof this.ticketPrice === 'number') {
-  //     this.$nextTick().then(() => (this.inputSeat = ''))
-  //   }
-
-  //   // Set default input ticketType
-  //   if (this.ticketPrice === 0) {
-  //     this.$nextTick().then(() => (this.inputTicketType = ''))
-  //   }
-  // },
   methods: {
     // Search function
     searchTicket() {
@@ -380,8 +316,6 @@ export default {
           ticketInfo.date === searchDate &&
           ticketInfo.startTime === searchStart &&
           ticketInfo.endTime === searchEnd
-        // ticketInfo.zone === this.inputSeat &&
-        // ticketInfo.ticketType === this.inputTicketType
       )
 
       // If zones are provided and ticketPrice is not 0
@@ -405,7 +339,6 @@ export default {
       } else {
         this.inputSeat = ''
       }
-      // this.inputSeat = 'A區'
       this.ticketInfoFormat = [...this.allTicketInfoFormat]
     },
     countQty(accumulatedItems, originalItem) {
@@ -415,8 +348,6 @@ export default {
         let ids
         let updatedItems
         if (accumulatedItems) {
-          console.log('----accmulated items----')
-          console.log(accumulatedItems)
           const newIds = Object.keys(accumulatedItems)
           // Filter out the replaced items
           const exisitingIds = Object.keys(originalItem)
@@ -424,14 +355,11 @@ export default {
             .filter((item) => item.includes('票'))
           const exisitingItems = {}
           exisitingIds.forEach((id) => (exisitingItems[id] = originalItem[id]))
-          console.log('updateItems')
           updatedItems = { ...accumulatedItems, ...exisitingItems }
           ids = Object.keys(updatedItems)
-          console.log(updatedItems)
         } else {
           ids = Object.keys(this.tempCart)
         }
-        // const ids = Object.keys(this.tempCart)
         const totalPrice = ids.reduce((acc, id) => {
           let perTicketPrice
           let zone
@@ -446,55 +374,19 @@ export default {
           if (ticketType === '優惠票') {
             perTicketPrice = perTicketPrice * (this.eventInfo.discount / 100)
           }
-          console.log('----perTicketPrice---')
-          console.log(perTicketPrice)
           let subTotal
           if (accumulatedItems) {
             subTotal = perTicketPrice * updatedItems[id]
           } else {
             subTotal = perTicketPrice * this.tempCart[id]
           }
-          // console.log('----subTotal---')
-          // console.log(subTotal)
-          // console.log(acc)
           return acc + subTotal
         }, 0)
-        console.log(totalPrice)
         const qty = totalPrice / this.eventInfo.price
-        // if (accumulatedItems) {
-        //   // To accumulate qty, we have to add the original qty and deduct the replaced ticket qty
-        //   // calculate the old qty
-        //   originalItem[]
-        //   // qty = qty + originalItem.qty - originalItem[]
-        // }
         return qty
       }
     },
     async addCart() {
-      // const allTickets = Object.keys(this.tempCart).map((tempItem) => {
-      //   const [timestamp, zone, ticketType] = tempItem.split(',')
-      //   const dateTime = this.eventInfo.dateTime.find(
-      //     (item) => item.timestamp === timestamp
-      //   )
-      //   return {
-      //     zone,
-      //     ticketType,
-      //     dateTime,
-      //     product_id: this.eventId,
-      //     qty: this.tempCart[tempItem],
-      //   }
-      // })
-
-      // const data = {
-      //   data: {
-      //     product_id: '-MeBVWJEY7ntu4Cz0a1T',
-      //     qty: 4.75,
-      //     // '1625854073524,C區,優惠票': 1,
-      //     '1625854614761,A區,正價票': 1,
-      //     '1625854614761,B區,正價票': 2,
-      //   },
-      // }
-
       try {
         if (Object.keys(this.tempCart).length === 0) {
           this.$showError('請選購票卷！')
@@ -506,22 +398,19 @@ export default {
         const existingCartItem = carts.find(
           (item) => item.product_id === this.eventId
         )
-        console.log(carts)
         // User has not added this event before
         if (!existingCartItem) {
-          console.log('還沒有此活動!')
           const allData = {
             data: {
               product_id: this.eventId,
               qty: this.countQty(),
             },
           }
-          // console.log(allData)
 
           tempCartIds.forEach((id) => {
             allData.data[id] = this.tempCart[id]
           })
-          console.log(allData)
+          this.loader = this.$loading.show()
           const addCartRes = await apiClientAddCart(allData)
           // Clear tempCart and all input quantity
           this.tempCart = {}
@@ -529,27 +418,20 @@ export default {
           if (!addCartRes.data.success) {
             throw addCartRes.data.message.join()
           }
-          console.log(addCartRes.data)
           this.$showSuccess('已加入購物車')
         } else {
-          console.log('之前已有加這 event !')
           // User has added this event before
           // Check if this event item contains the same event period
           // If yes, We have to accumulate the quantity
           // This approach avoids overwritting the same object key and value that are added in the cart before
           const allData = {
-            data: {
-              // product_id: this.eventId,
-              // qty: this.countQty(),
-            },
+            data: {},
           }
           tempCartIds.forEach((id) => {
             if (existingCartItem[id] !== undefined) {
-              console.log('有此時段，要累加！')
               // Accumulate the quantity
               allData.data[id] = existingCartItem[id] + this.tempCart[id]
             } else {
-              console.log('沒有此時段，不用累加！')
               // If not, add the key and value to allData
               allData.data[id] = this.tempCart[id]
             }
@@ -558,8 +440,7 @@ export default {
           allData.data.product_id = this.eventId
           // Qty will be accumulated if that event is already added in the cart before
           // To avoid accumulation, use update cart API
-
-          console.log(allData)
+          this.loader = this.$loading.show()
           const updateCartRes = await apiClientUpdateCart(
             existingCartItem.id,
             allData
@@ -571,20 +452,14 @@ export default {
           if (!updateCartRes.data.success) {
             throw updateCartRes.data.message.join()
           }
-          console.log(updateCartRes.data)
           this.$showSuccess('已加入購物車')
         }
-
-        // const addCartRes = await apiClientAddCart(data)
-        // console.log(addCartRes.data)
-        // this.$showError('已加入購物車')
-
-        // tempCartIds.forEach( tempCartId => {
-
-        // })
       } catch (error) {
         this.$showError('加入購物車失敗')
+        // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
   },
