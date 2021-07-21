@@ -13,7 +13,7 @@
                 id="email"
                 v-model="username"
                 type="email"
-                class="signIn-input form-control"
+                class="form-control"
               />
             </div>
             <div class="mb-16">
@@ -22,10 +22,13 @@
                 id="password"
                 v-model="password"
                 type="password"
-                class="signIn-input form-control"
+                class="form-control"
               />
             </div>
-            <button type="submit" class="btn btn-secondary text-primary w-100">
+            <button
+              type="submit"
+              class="login-btn btn btn-outline-secondary w-100"
+            >
               登入
             </button>
           </form>
@@ -80,8 +83,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.signIn-input {
-  background-color: transparent !important;
-  color: #ffffff;
+@import '@/assets/stylesheets/all';
+
+.login-btn {
+  &:hover {
+    color: $primary;
+  }
 }
 </style>
