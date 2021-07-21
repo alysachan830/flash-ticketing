@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
 import { clientGetProduct } from './clientGetProduct'
-// const apiPath = process.env.API_PATH
-// const apiBaseUrl = process.env.API_BASE_URL
 const apiPath = process.env.apiPath
 const apiBaseUrl = process.env.apiBaseUrl
 
@@ -43,16 +41,11 @@ clientRequest.interceptors.request.use(
     return config
   },
   function (error) {
-    // Do something with request error
-    // console.log('it has error:')
-    // console.log(error)
     return Promise.reject(error)
   }
 )
 
 // Forestage API
-// export const apiClientGetProduct = clientGetProduct()
-export const apiClientGetProduct = clientGetProduct
 export const apiClientGetAllEvents = () => clientRequest.get('/products/all')
 export const apiClientGetEvent = (id) => clientRequest.get(`/product/${id}`)
 export const apiClientGetCart = () => clientRequest.get('/cart')
