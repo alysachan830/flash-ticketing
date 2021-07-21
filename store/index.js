@@ -28,8 +28,6 @@ export const actions = {
   async getCart({ commit }) {
     try {
       const cartRes = await apiClientGetCart()
-      // console.log('---- in vuex----')
-      // console.log(cartRes.data.data.carts)
       commit({ type: 'SetCart', cartInfo: cartRes.data.data })
     } catch (error) {
       throw new Error(error)
@@ -51,7 +49,6 @@ export const actions = {
     }
   },
   async adminGetAllEvents({ commit }, token) {
-    // const { token, pageNum } = payload
     try {
       const getProductsRes = await apiAdminGetAllProducts(token)
       if (!getProductsRes.data.success) {
