@@ -13,7 +13,7 @@
                 id="email"
                 v-model="username"
                 type="email"
-                class="signIn-input form-control"
+                class="form-control"
               />
             </div>
             <div class="mb-16">
@@ -22,10 +22,13 @@
                 id="password"
                 v-model="password"
                 type="password"
-                class="signIn-input form-control"
+                class="form-control"
               />
             </div>
-            <button type="submit" class="btn btn-secondary text-primary w-100">
+            <button
+              type="submit"
+              class="login-btn btn btn-outline-secondary w-100"
+            >
               登入
             </button>
           </form>
@@ -50,6 +53,7 @@ export default {
   layout: 'empty',
   data() {
     return {
+      // loader: {},
       username: '',
       password: '',
     }
@@ -58,21 +62,33 @@ export default {
     // When user access the page, check if user has cookie
     // If yes, set the sign in state in Vuex to true
     if (this.$cookies.get('flashTicketingAuth')?.token) {
-      this.$store.dispatch('checkSignIn', true)
+      // Use setTimeout to prevent crashing with the global loading effect (vue loading overlay)
+      setTimeout(() => {
+        this.$store.dispatch('checkSignIn', true)
+        this.$router.push('/admin')
+      }, 2000)
     }
   },
   methods: {
     async signIn() {
+      if (this.username === '' || this.password === '') {
+        this.$showError('請輸入帳號和密碼')
+        return
+      }
       const allData = {
         username: this.username,
         password: this.password,
       }
       try {
+        this.loader = this.$loading.show()
         await this.$store.dispatch('signIn', allData)
         this.$router.push('/admin')
       } catch (error) {
+        this.$showError('登入失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
   },
@@ -80,8 +96,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.signIn-input {
-  background-color: transparent !important;
-  color: #ffffff;
+@import '@/assets/stylesheets/all';
+
+.login-btn {
+  &:hover {
+    color: $primary;
+  }
 }
 </style>

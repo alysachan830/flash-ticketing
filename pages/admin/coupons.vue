@@ -22,13 +22,8 @@
           <td>{{ coupon.id }}</td>
           <td>{{ coupon.title }}</td>
           <td>{{ coupon.is_enabled ? '已啟用' : '未啟用' }}</td>
-          <!-- <td>{{ order.products }}</td> -->
           <td>{{ coupon.percent }}%</td>
-          <!-- <td>{{ order.user }}</td> -->
           <td>
-            <!-- <NuxtLink :to="`/admin/order/${order.id}`"
-              ><span class="material-icons"> edit </span></NuxtLink
-            > -->
             <a href="#" @click.prevent="editCoupon(coupon)"
               ><span class="material-icons"> edit </span></a
             >
@@ -41,19 +36,27 @@
         </tr>
       </tbody>
     </table>
+    <Pagination :total-pages="couponsPagination"></Pagination>
     <p>{{ alertSentence }}</p>
   </div>
 </template>
 
 <script>
 import { apiAdminGetCoupons, apiAdminDeleteCoupon } from '@/api/index'
+import Pagination from '@/components/common/Pagination.vue'
 import moment from 'moment'
 
 export default {
+  components: {
+    Pagination,
+  },
+  layout: 'empty',
   data() {
     return {
-      pageNum: 1,
+      loader: {},
+      currentPage: 1,
       coupons: [],
+      couponsPagination: 1,
       alertSentence: '',
     }
   },
@@ -63,6 +66,14 @@ export default {
         this.alertSentence = '目前沒有優惠劵'
       }
     },
+    currentPage() {
+      this.getCoupons()
+    },
+  },
+  created() {
+    this.$nuxt.$on('clickPageNum', (n) => {
+      this.currentPage = n
+    })
   },
   mounted() {
     this.getCoupons()
@@ -71,12 +82,19 @@ export default {
     async getCoupons() {
       const token = this.$cookies.get('flashTicketingAuth').token
       try {
-        const getCouponRes = await apiAdminGetCoupons(token, this.pageNum)
+        if (Object.keys(this.loader).length === 0) {
+          this.loader = this.$loading.show()
+        }
+        const getCouponRes = await apiAdminGetCoupons(token, this.currentPage)
         this.coupons = getCouponRes.data.coupons
+        this.couponsPagination = getCouponRes.data.pagination.total_pages
       } catch (error) {
         this.$showError('載入優惠劵資料失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
+        this.loader = {}
       }
     },
     dateFormat(timestamp) {
@@ -96,6 +114,7 @@ export default {
         )
         if (!confirmDelete) return
         const token = this.$cookies.get('flashTicketingAuth').token
+        this.loader = this.$loading.show()
         const deleteCouponRes = await apiAdminDeleteCoupon(token, coupon.id)
         if (!deleteCouponRes.data.success) {
           throw deleteCouponRes.data.message
@@ -107,6 +126,7 @@ export default {
         this.$showError(error)
         // eslint-disable-next-line no-console
         console.log(error)
+        this.loader.hide()
       }
     },
   },

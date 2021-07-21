@@ -42,6 +42,9 @@ export const actions = {
     try {
       const { username, password } = payload
       const signInRes = await apiAdminSignIn({ username, password })
+      if (!signInRes.data.success) {
+        throw new Error(signInRes.data.message)
+      }
       commit('SetAuth', signInRes)
     } catch (error) {
       throw new Error(error)

@@ -265,8 +265,8 @@
                     <div class="flex justify-center items-center">
                       <input
                         :value="inputValue.start"
-                        v-on="inputEvents.start"
                         class="border px-2 py-1 rounded"
+                        v-on="inputEvents.start"
                       />
                       <svg
                         style="width: 20px; height: 20px"
@@ -509,6 +509,7 @@ export default {
   layout: 'dashboard',
   data() {
     return {
+      loader: {},
       isNew: true,
       eventInfo: {},
       selectedDates: [],
@@ -574,6 +575,7 @@ export default {
     if (eventId === 'new') return
     this.isNew = false
     try {
+      this.loader = this.$loading.show()
       const getEventRes = await apiClientGetEvent(eventId)
       this.eventInfo = getEventRes.data.product
       this.setInput()
@@ -584,6 +586,8 @@ export default {
       this.$showError('載入節目資料失敗')
       // eslint-disable-next-line no-console
       console.log(error)
+    } finally {
+      this.loader.hide()
     }
   },
   methods: {
@@ -718,6 +722,7 @@ export default {
       form.append('', this.mainImage)
       const token = this.$cookies.get('flashTicketingAuth').token
       try {
+        this.loader = this.$loading.show()
         const uploadImageRes = await apiAdminUploadImage(token, form)
         if (!uploadImageRes.data.success) {
           throw uploadImageRes.data.message
@@ -731,6 +736,8 @@ export default {
         this.$showError('上載圖片失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
     addSubImage(e) {
@@ -745,6 +752,7 @@ export default {
       form.append('', this.subImage)
       const token = this.$cookies.get('flashTicketingAuth').token
       try {
+        this.loader = this.$loading.show()
         const uploadImageRes = await apiAdminUploadImage(token, form)
         if (!uploadImageRes.data.success) {
           throw uploadImageRes.data.message
@@ -757,13 +765,16 @@ export default {
         this.$showError('上載圖片失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
     async submitEvent() {
       if (this.dateOption === 'period') {
         if (typeof this.range.start !== 'string') {
           this.range.start = moment().format('YYYY-MM-DD')
-        } else if (typeof this.range.end !== 'string') {
+        }
+        if (typeof this.range.end !== 'string') {
           this.range.end = moment().format('YYYY-MM-DD')
         }
       }
@@ -828,12 +839,14 @@ export default {
 
         const token = this.$cookies.get('flashTicketingAuth').token
         if (this.isNew) {
+          this.loader = this.$loading.show()
           const addProductRes = await apiAdminAddProduct(token, info)
           if (!addProductRes.data.success) {
             throw addProductRes.data.message
           }
           this.$showSuccess('已成功建立活動')
         } else {
+          this.loader = this.$loading.show()
           const editProductRes = await apiAdminEditProduct(
             token,
             this.eventInfo.id,
@@ -856,6 +869,8 @@ export default {
         }
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
   },
