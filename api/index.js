@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
-import { clientGetProduct } from './clientGetProduct'
 const apiPath = process.env.apiPath
 const apiBaseUrl = process.env.apiBaseUrl
 
