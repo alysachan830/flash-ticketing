@@ -59,6 +59,7 @@ export default {
   layout: 'empty',
   data() {
     return {
+      loader: {},
       orders: [],
       pageNum: 1,
       alertSentence: '',
@@ -78,12 +79,15 @@ export default {
     async getOrders() {
       const token = this.$cookies.get('flashTicketingAuth').token
       try {
+        this.loader = this.$loading.show()
         const getOrdersRes = await apiAdminGetOrders(token, this.pageNum)
         this.orders = getOrdersRes.data.orders
       } catch (error) {
         this.$showError('載入節目活動資料失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
     formatDate(timestamp) {
@@ -98,6 +102,7 @@ export default {
         const confirmDelete = await this.$showConfirm('是否確定刪除此訂單？')
         if (!confirmDelete) return
         const token = this.$cookies.get('flashTicketingAuth').token
+        this.loader = this.$loading.show()
         const deleteOrderRes = await apiAdminDeleteOrder(token, id)
         if (!deleteOrderRes.data.success) {
           throw deleteOrderRes.data.message
@@ -109,6 +114,8 @@ export default {
         this.$showError(error)
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
     async deleteAllOrders() {
@@ -120,6 +127,7 @@ export default {
         const confirmDelete = await this.$showConfirm('是否確定刪除全部訂單？')
         if (!confirmDelete) return
         const token = this.$cookies.get('flashTicketingAuth').token
+        this.loader = this.$loading.show()
         const deleteAllOrdersRes = await apiAdminDeleteAllOrders(token)
         if (!deleteAllOrdersRes.data.success) {
           throw deleteAllOrdersRes.data.message
@@ -131,6 +139,8 @@ export default {
         this.$showError(error)
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
   },
