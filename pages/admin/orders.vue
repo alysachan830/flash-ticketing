@@ -108,6 +108,7 @@ export default {
         console.log(error)
       } finally {
         this.loader.hide()
+        this.loader = {}
       }
     },
     formatDate(timestamp) {

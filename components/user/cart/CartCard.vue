@@ -288,6 +288,9 @@ export default {
         this.$showSuccess('已刪除此票卷')
         this.isDelete = false
         await this.$nuxt.$emit('refreshCart', this.cartItem.id, this.ticketIds)
+        this.$nextTick().then(() => {
+          this.$bus.$emit('refreshCartIcon')
+        })
       } catch (error) {
         this.$showError('刪除此票卷失敗')
         // eslint-disable-next-line no-console

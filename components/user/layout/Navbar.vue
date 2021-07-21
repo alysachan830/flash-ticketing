@@ -17,16 +17,21 @@
                 >所有節目</NuxtLink
               >
               <NuxtLink class="text-white me-8" to="/checkout/order"
-                >我的購物車</NuxtLink
+                >結帳付款</NuxtLink
               >
-              <NuxtLink class="text-white me-8" to="/login">後台登入</NuxtLink>
+              <NuxtLink class="text-white me-8" to="/about">關於我們</NuxtLink>
             </div>
             <!-- Shop cart, bookmark, toggle button -->
             <div class="d-flex">
-              <a href="#" class="me-4" @click.prevent="showCart">
+              <a
+                href="#"
+                class="d-flex align-items-center me-4"
+                @click.prevent="showCart"
+              >
                 <span class="material-icons text-white align-middle">
                   shopping_cart
                 </span>
+                <span class="text-white"> {{ carts.length }} </span>
               </a>
               <a href="#" class="me-4" @click.prevent="showFavourite">
                 <span class="material-icons text-white align-middle">
@@ -83,10 +88,10 @@
             >所有節目</NuxtLink
           >
           <NuxtLink class="font-m py-5 text-nowrap me-8" to="/checkout/order"
-            >我的購物車</NuxtLink
+            >結帳付款</NuxtLink
           >
-          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/login"
-            >後台登入</NuxtLink
+          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/about"
+            >關於我們</NuxtLink
           >
         </div>
       </div>
@@ -240,16 +245,22 @@ export default {
       if (this.favourites.length === 0) {
         this.favouriteLoadingMsg = '目前沒有收藏任何活動'
       }
-      if (this.carts.length === 0) {
-        this.cartLoadingMsg = '目前購物車沒有資料'
-      }
+      // if (this.carts.length === 0) {
+      //   this.cartLoadingMsg = '目前購物車沒有資料'
+      // }
     },
+  },
+  created() {
+    this.$bus.$on('refreshCartIcon', () => {
+      this.getCart()
+    })
   },
   mounted() {
     this.bsCartOffcanvas = new bootstrap.Offcanvas(this.$refs.cartOffcanvas)
     this.bsFavouriteOffcanvas = new bootstrap.Offcanvas(
       this.$refs.favouriteOffcanvas
     )
+    this.getCart()
   },
   methods: {
     showCart() {
@@ -265,6 +276,9 @@ export default {
         await this.$store.dispatch('getCart')
         const { carts } = this.$store.getters
         this.carts = carts
+        if (this.carts.length === 0) {
+          this.cartLoadingMsg = '目前購物車沒有資料'
+        }
       } catch (error) {
         this.$showError('載入我的購物車失敗')
         // eslint-disable-next-line no-console
