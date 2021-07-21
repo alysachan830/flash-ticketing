@@ -22,10 +22,10 @@
           <NuxtLink
             class="text-white me-8 hover__filter--darken"
             to="/checkout/order"
-            >我的購物車</NuxtLink
+            >結帳付款</NuxtLink
           >
-          <NuxtLink class="text-white me-8 hover__filter--darken" to="/login"
-            >後台登入</NuxtLink
+          <NuxtLink class="text-white me-8 hover__filter--darken" to="/about"
+            >關於我們</NuxtLink
           >
           <a
             href="https://github.com/alysachan830/flash-ticketing"
