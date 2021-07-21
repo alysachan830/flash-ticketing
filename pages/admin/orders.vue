@@ -43,6 +43,7 @@
         </tr>
       </tbody>
     </table>
+    <Pagination :total-pages="ordersPagination"></Pagination>
     <p>{{ alertSentence }}</p>
   </div>
 </template>
@@ -53,15 +54,20 @@ import {
   apiAdminDeleteOrder,
   apiAdminDeleteAllOrders,
 } from '@/api/index'
+import Pagination from '@/components/common/Pagination.vue'
 import moment from 'moment'
 
 export default {
+  components: {
+    Pagination,
+  },
   layout: 'empty',
   data() {
     return {
       loader: {},
       orders: [],
-      pageNum: 1,
+      ordersPagination: 1,
+      currentPage: 1,
       alertSentence: '',
     }
   },
@@ -71,6 +77,17 @@ export default {
         this.alertSentence = '目前沒有訂單'
       }
     },
+    currentPage() {
+      this.getOrders()
+    },
+  },
+  created() {
+    this.$nuxt.$on('clickPageNum', (n) => {
+      this.currentPage = n
+    })
+    // this.$bus.$on('clearPageNum', () => {
+    //   this.currentPage = 1
+    // })
   },
   mounted() {
     this.getOrders()
@@ -80,8 +97,9 @@ export default {
       const token = this.$cookies.get('flashTicketingAuth').token
       try {
         this.loader = this.$loading.show()
-        const getOrdersRes = await apiAdminGetOrders(token, this.pageNum)
+        const getOrdersRes = await apiAdminGetOrders(token, this.currentPage)
         this.orders = getOrdersRes.data.orders
+        this.ordersPagination = getOrdersRes.data.pagination.total_pages
       } catch (error) {
         this.$showError('載入節目活動資料失敗')
         // eslint-disable-next-line no-console
