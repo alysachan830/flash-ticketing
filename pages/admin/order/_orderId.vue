@@ -75,12 +75,10 @@
         :key="item.id"
         :cart-item="item"
       ></PurchaseCard>
-      <!-- <div class="d-flex justify-content-end"> -->
       <div class="d-flex font-xl">
         <p class="me-16">總額</p>
         <p class="text-primary">${{ inputData.total }}</p>
       </div>
-      <!-- </div> -->
     </div>
 
     <!-- Comment -->
@@ -112,6 +110,7 @@ export default {
   },
   data() {
     return {
+      loader: {},
       order: {},
       inputData: {
         products: {},
@@ -144,6 +143,7 @@ export default {
     async saveEdit() {
       try {
         const token = this.$cookies.get('flashTicketingAuth').token
+        this.loader = this.$loading.show()
         const editOrderRes = await apiAdminEditOrder(token, this.order.id, {
           data: this.inputData,
         })
@@ -157,6 +157,8 @@ export default {
         }, 2500)
       } catch (error) {
         this.$showError('修改訂單失敗')
+      } finally {
+        this.loader.hide()
       }
     },
   },
