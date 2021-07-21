@@ -14,6 +14,7 @@ export const state = () => ({
   adminEvents: [],
   adminEditingOrder: {},
   adminEditingCoupon: {},
+  cartInfo: {},
 })
 
 export const actions = {
@@ -83,8 +84,10 @@ export const mutations = {
     state.events = [...payload.list]
   },
   SetCart(state, payload) {
-    state.cartFinalTotal = payload.cartInfo.final_total
+    // state.cartFinalTotal = payload.cartInfo.final_total
+    state.cartFinalTotal = payload.cartInfo.total
     state.carts = [...payload.cartInfo.carts]
+    state.cartInfo = JSON.parse(JSON.stringify(payload.cartInfo))
   },
   SetAuth(state, signInRes) {
     this.$cookies.set(
@@ -121,4 +124,5 @@ export const getters = {
   adminEvents: (state) => state.adminEvents,
   adminEditingOrder: (state) => state.adminEditingOrder,
   adminEditingCoupon: (state) => state.adminEditingCoupon,
+  cartInfo: (state) => state.cartInfo,
 }
