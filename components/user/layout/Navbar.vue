@@ -31,7 +31,7 @@
                 <span class="material-icons text-white align-middle">
                   shopping_cart
                 </span>
-                <span class="text-white"> {{ carts.length }} </span>
+                <span class="text-white"> {{ cartTotalQty }} </span>
               </a>
               <a href="#" class="me-4" @click.prevent="showFavourite">
                 <span class="material-icons text-white align-middle">
@@ -239,6 +239,11 @@ export default {
       favouriteLoadingMsg: '載入我的收藏中...',
       cartLoadingMsg: '載入我的購物車中...',
     }
+  },
+  computed: {
+    cartTotalQty() {
+      return this.carts.length
+    },
   },
   watch: {
     favourites() {

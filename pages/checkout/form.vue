@@ -179,6 +179,7 @@ export default {
         if (!sumbitOrderRes.data.success) {
           throw sumbitOrderRes.data.message
         }
+        this.$bus.$emit('refreshCartIcon')
         this.$showSuccess('結帳成功')
 
         // Clear input
