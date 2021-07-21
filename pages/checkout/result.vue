@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-18 vh-100">
+  <div class="pt-18 min-vh-100">
     <div class="container">
       <!-- Stepper -->
       <div class="position-relative mb-23">
