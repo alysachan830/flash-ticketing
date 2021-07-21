@@ -1,6 +1,6 @@
 <template>
-  <div class="pt-23">
-    <div class="container vh-100">
+  <div class="py-23 min-vh-100">
+    <div class="container">
       <div class="row mb-21">
         <div class="col-md-6 mb-12 mb-md-0">
           <img
