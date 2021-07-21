@@ -260,6 +260,7 @@ export default {
           this.cartItem.id,
           allData
         )
+        await this.$store.dispatch('getCart')
         if (!updateCartRes.data.success) {
           throw updateCartRes.data.message.join()
         }

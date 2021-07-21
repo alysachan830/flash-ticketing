@@ -70,7 +70,7 @@
           >
             <p class="font-l">總計</p>
             <p class="font-l fw-bold text-primary">
-              ${{ cartFinalTotal.toFixed(1) }}
+              ${{ totalCount.toFixed(1) }}
             </p>
           </div>
           <div class="col-md-2 col-4 offset-8 offset-md-0">
@@ -103,8 +103,10 @@ export default {
   async asyncData({ store }) {
     try {
       await store.dispatch('getCart')
-      const { carts, cartFinalTotal } = store.getters
-      return { carts, cartFinalTotal }
+      // const { carts, cartFinalTotal } = store.getters
+      const { carts, cartInfo } = store.getters
+      const totalCount = cartInfo.total
+      return { carts, totalCount }
     } catch (error) {
       const errorMsg = error.message
       return {
@@ -117,6 +119,7 @@ export default {
       loader: {},
       currentPage: 1,
       couponCode: 'flash2021',
+      hasAppliedCoupon: false,
     }
   },
   computed: {
@@ -139,11 +142,15 @@ export default {
       await this.getCart()
       if (cartId && ticketIds) {
         const cartItem = this.carts.find((item) => item.id === cartId)
+        if (cartItem === undefined) {
+          return
+        }
         const isEmpty = ticketIds.every((ticketId) => cartItem[ticketId] === 0)
         if (isEmpty) {
           this.deleteCart(cartId)
         }
       }
+      await this.getCart()
     })
   },
   mounted() {
@@ -158,9 +165,13 @@ export default {
     async getCart() {
       try {
         await this.$store.dispatch('getCart')
-        const { carts, cartFinalTotal } = this.$store.getters
+        const { carts, cartInfo } = this.$store.getters
         this.carts = carts
-        this.cartFinalTotal = cartFinalTotal
+        if (this.hasAppliedCoupon) {
+          this.totalCount = cartInfo.final_total
+        } else {
+          this.totalCount = cartInfo.total
+        }
       } catch (error) {
         const errorMsg = error.message
         this.$showError('載入購物車失敗')
@@ -220,11 +231,12 @@ export default {
         if (!applyCouponRes.data.success) {
           throw applyCouponRes.data.message
         }
+        this.hasAppliedCoupon = true
         this.$showSuccess('成功套用優惠劵')
         // Update total price
         await this.$store.dispatch('getCart')
-        const { cartFinalTotal, carts } = this.$store.getters
-        this.cartFinalTotal = cartFinalTotal
+        const { cartInfo, carts } = this.$store.getters
+        this.totalCount = cartInfo.final_total // To get the updated price after counting discount, use final_total
         this.carts = carts
       } catch (error) {
         if (typeof error === 'string') {
@@ -240,16 +252,18 @@ export default {
     },
     async deleteCart(cartId) {
       try {
-        this.loader = this.$loading.show()
+        // this.loader = this.$loading.show()
         await apiClientDeleteCart(cartId)
-        this.$showSuccess('已刪除購物車內此節目的所有票卷')
+        setTimeout(() => {
+          this.$showSuccess('已刪除購物車內此節目的所有票卷')
+        }, 3000)
         this.getCart()
       } catch (error) {
         this.$showError('刪除單一購物車資料失敗')
         // eslint-disable-next-line no-console
         console.log(error)
       } finally {
-        this.loader.hide()
+        // this.loader.hide()
       }
     },
   },
