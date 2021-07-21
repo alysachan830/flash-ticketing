@@ -60,7 +60,7 @@
       </div>
       <NuxtChild class="ps-200 py-14 pe-20 w-100" />
     </div>
-    <div
+    <!-- <div
       v-else
       class="
         vh-100
@@ -73,7 +73,7 @@
     >
       <span class="material-icons font-4xl me-12"> error_outline </span>
       請先登入
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -83,6 +83,11 @@ import { apiAdminLogout } from '@/api/index'
 export default {
   layout: 'empty',
   // If user has not signed in, all admin pages will be hidden
+  data() {
+    return {
+      loader: {},
+    }
+  },
   computed: {
     isSignIn() {
       return this.$store.getters.signInStatus
@@ -100,6 +105,7 @@ export default {
   methods: {
     async logout() {
       try {
+        this.loader = this.$loading.show()
         await apiAdminLogout()
         this.$showSuccess('已成功登出')
         // Turn sign in status to false in Vuex
@@ -111,6 +117,8 @@ export default {
         this.$showError('登出失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
   },

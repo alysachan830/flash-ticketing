@@ -47,6 +47,7 @@ export default {
   layout: 'empty',
   data() {
     return {
+      loader: {},
       events: [],
     }
   },
@@ -57,12 +58,15 @@ export default {
     async getAllEvents() {
       try {
         const token = this.$cookies.get('flashTicketingAuth').token
+        this.loader = this.$loading.show()
         await this.$store.dispatch('adminGetAllEvents', token)
         this.events = this.$store.getters.adminEvents
       } catch (error) {
         this.$showError('載入節目活動資料失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
     dateTimeFormat(dateTime) {
