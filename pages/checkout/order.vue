@@ -186,6 +186,9 @@ export default {
         this.$showSuccess('成功刪除所有購物車內容')
         // Refresh cart
         this.getCart()
+        this.$nextTick().then(() => {
+          this.$bus.$emit('refreshCartIcon')
+        })
       } catch (error) {
         this.$showError(error)
         // eslint-disable-next-line no-console
