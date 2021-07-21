@@ -4,7 +4,7 @@
       <h2 class="font-xl mb-13">所有節目</h2>
       <NuxtLink to="/admin/edit/new" class="btn btn-primary">新增節目</NuxtLink>
     </div>
-    <table class="table">
+    <table class="table mb-12">
       <thead>
         <tr>
           <th scope="col">節目標題</th>
@@ -16,7 +16,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="event in events" :key="event.id">
+        <tr v-for="event in filterEvents" :key="event.id">
           <td>{{ event.title }}</td>
           <td>{{ dateTimeFormat(event.dateTime) }}</td>
           <td>
@@ -37,18 +37,41 @@
         </tr>
       </tbody>
     </table>
+    <Pagination :total-pages="Math.ceil(events.length / 8)"></Pagination>
   </div>
 </template>
 
 <script>
 import { apiAdminDeleteProduct } from '@/api/index'
+import Pagination from '@/components/common/Pagination.vue'
 
 export default {
+  components: {
+    Pagination,
+  },
   layout: 'empty',
   data() {
     return {
+      loader: {},
+      currentPage: 1,
       events: [],
     }
+  },
+  computed: {
+    filterEvents() {
+      return this.events.slice(
+        (this.currentPage - 1) * 8,
+        (this.currentPage - 1) * 8 + 8
+      )
+    },
+  },
+  created() {
+    this.$nuxt.$on('clickPageNum', (n) => {
+      this.currentPage = n
+    })
+    this.$bus.$on('clearPageNum', () => {
+      this.currentPage = 1
+    })
   },
   mounted() {
     this.getAllEvents()
@@ -57,12 +80,15 @@ export default {
     async getAllEvents() {
       try {
         const token = this.$cookies.get('flashTicketingAuth').token
+        this.loader = this.$loading.show()
         await this.$store.dispatch('adminGetAllEvents', token)
         this.events = this.$store.getters.adminEvents
       } catch (error) {
         this.$showError('載入節目活動資料失敗')
         // eslint-disable-next-line no-console
         console.log(error)
+      } finally {
+        this.loader.hide()
       }
     },
     dateTimeFormat(dateTime) {

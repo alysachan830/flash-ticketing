@@ -65,6 +65,7 @@ import { apiAdminAddCoupon, apiAdminEditCoupon } from '@/api/index'
 export default {
   data() {
     return {
+      loader: {},
       isNew: false,
       coupon: {},
       inputData: {},
@@ -90,6 +91,7 @@ export default {
           const token = this.$cookies.get('flashTicketingAuth').token
           this.inputData.due_date = moment(this.inputData.due_date).unix()
           this.inputData.is_enabled = Number(this.inputData.is_enabled)
+          this.loader = this.$loading.show()
           const editCouponRes = await apiAdminEditCoupon(
             token,
             this.coupon.id,
@@ -107,12 +109,15 @@ export default {
           }, 2500)
         } catch (error) {
           this.$showError('修改優惠劵失敗')
+        } finally {
+          this.loader.hide()
         }
       } else {
         try {
           const token = this.$cookies.get('flashTicketingAuth').token
           this.inputData.due_date = moment(this.inputData.due_date).unix()
           this.inputData.is_enabled = Number(this.inputData.is_enabled)
+          this.loader = this.$loading.show()
           const addCouponRes = await apiAdminAddCoupon(token, {
             data: this.inputData,
           })
@@ -126,6 +131,8 @@ export default {
           }, 2500)
         } catch (error) {
           this.$showError('新增優惠劵失敗')
+        } finally {
+          this.loader.hide()
         }
       }
     },
