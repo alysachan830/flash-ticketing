@@ -96,7 +96,9 @@ export default {
     async getOrders() {
       const token = this.$cookies.get('flashTicketingAuth').token
       try {
-        this.loader = this.$loading.show()
+        if (Object.keys(this.loader).length === 0) {
+          this.loader = this.$loading.show()
+        }
         const getOrdersRes = await apiAdminGetOrders(token, this.currentPage)
         this.orders = getOrdersRes.data.orders
         this.ordersPagination = getOrdersRes.data.pagination.total_pages
@@ -132,7 +134,6 @@ export default {
         this.$showError(error)
         // eslint-disable-next-line no-console
         console.log(error)
-      } finally {
         this.loader.hide()
       }
     },
@@ -157,7 +158,6 @@ export default {
         this.$showError(error)
         // eslint-disable-next-line no-console
         console.log(error)
-      } finally {
         this.loader.hide()
       }
     },
