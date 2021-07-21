@@ -17,9 +17,9 @@
                 >所有節目</NuxtLink
               >
               <NuxtLink class="text-white me-8" to="/checkout/order"
-                >我的購物車</NuxtLink
+                >結帳付款</NuxtLink
               >
-              <NuxtLink class="text-white me-8" to="/login">後台登入</NuxtLink>
+              <NuxtLink class="text-white me-8" to="/about">關於我們</NuxtLink>
             </div>
             <!-- Shop cart, bookmark, toggle button -->
             <div class="d-flex">
@@ -88,10 +88,10 @@
             >所有節目</NuxtLink
           >
           <NuxtLink class="font-m py-5 text-nowrap me-8" to="/checkout/order"
-            >我的購物車</NuxtLink
+            >結帳付款</NuxtLink
           >
-          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/login"
-            >後台登入</NuxtLink
+          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/about"
+            >關於我們</NuxtLink
           >
         </div>
       </div>

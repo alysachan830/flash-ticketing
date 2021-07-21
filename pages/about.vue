@@ -19,7 +19,7 @@
           </p>
           <ul>
             <li class="mb-12">
-              <p class="mb-4">如有意合作或查詢，歡迎來信與公關部聯絡：</p>
+              <p class="mb-4">如有意合作或查詢，歡迎與公關部聯絡：</p>
               <span class="d-flex">
                 <span class="material-icons me-6 text-primary"> email </span>
                 <span>flashticketinghk@gmail.com</span>
@@ -27,9 +27,13 @@
             </li>
             <li>
               <p class="mb-4">如有任何問題，歡迎與客服中心聯絡：</p>
-              <span class="d-flex">
+              <span class="d-flex mb-6">
                 <span class="material-icons me-6 text-primary"> email </span>
                 <span>info@flashticketing.hk</span>
+              </span>
+              <span class="d-flex">
+                <span class="material-icons me-6 text-primary"> call </span>
+                <span>21234567</span>
               </span>
             </li>
           </ul>
