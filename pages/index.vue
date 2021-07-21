@@ -79,7 +79,13 @@
           <div class="text-center">
             <NuxtLink
               to="/events/all"
-              class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
+              class="
+                btn btn-lg btn-outline-primary
+                px-22
+                py-2
+                w-100 w-lg-auto
+                font-base
+              "
             >
               更多節目
             </NuxtLink>
@@ -152,7 +158,13 @@
           <div class="text-center">
             <NuxtLink
               to="/events/all"
-              class="btn btn-lg btn-outline-primary px-22 py-2 w-100 w-lg-auto"
+              class="
+                btn btn-lg btn-outline-primary
+                px-22
+                py-2
+                w-100 w-lg-auto
+                font-base
+              "
             >
               更多節目
             </NuxtLink>

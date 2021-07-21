@@ -9,7 +9,7 @@
         </h1>
       </NuxtLink>
       <p class="text-white font-xs font-md-s">
-        此網站僅作學習用途，無任何商業用途。
+        此網站僅作學習用途，<br class="d-md-none" />無任何商業用途。
       </p>
       <div class="d-lg-block d-none">
         <!-- Nuxt links -->
