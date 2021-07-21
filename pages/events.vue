@@ -23,7 +23,11 @@
               香港動漫電競中心展覽廳
             </p>
           </div>
-          <button class="btn btn-primary btn-lg px-10">搶先購票</button>
+          <NuxtLink
+            to="/event/-MdYsuv7hjrkbkEBJx6c"
+            class="btn btn-primary btn-lg px-10"
+            >搶先購票</NuxtLink
+          >
         </div>
       </div>
 
@@ -99,11 +103,10 @@
               search
             </span>
             <input
+              v-model.trim="searchKeyword"
               type="text"
               class="form-control border-start-0"
               placeholder="活動名稱"
-              aria-describedby="basic-addon1"
-              v-model.trim="searchKeyword"
             />
           </div>
         </div>
