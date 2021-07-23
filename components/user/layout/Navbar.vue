@@ -31,7 +31,7 @@
                 <span class="material-icons text-white align-middle">
                   shopping_cart
                 </span>
-                <span class="text-white"> {{ cartTotalQty }} </span>
+                <span class="d-none text-white"> {{ cartTotalQty }} </span>
               </a>
               <a href="#" class="me-4" @click.prevent="showFavourite">
                 <span class="material-icons text-white align-middle">
