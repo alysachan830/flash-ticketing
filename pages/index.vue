@@ -15,7 +15,7 @@
       <div
         class="position-absolute top-banner-title text-white text-center w-100"
       >
-        <h2 class="mb-8 font-lg-2xl font-xl">亞洲年度新媒體藝術節 2021</h2>
+        <h2 class="mb-8 font-lg-2xl font-l">亞洲年度新媒體藝術節 2021</h2>
         <div class="mb-12">
           <p class="me-3">
             <span
@@ -173,7 +173,15 @@
       </div>
     </client-only>
     <!-- Footer banner -->
-    <div class="footer-banner d-flex justify-content-center align-items-center">
+    <div
+      class="
+        footer-banner
+        d-flex
+        justify-content-center
+        align-items-center
+        position-relative
+      "
+    >
       <div class="row justify-content-center">
         <h3
           class="
@@ -188,7 +196,8 @@
           訂閱最新消息 <br />
           率先享受最新節目
         </h3>
-        <div class="row justify-content-center">
+
+        <!-- <div class="row justify-content-center">
           <div class="col-md-8 col-10">
             <div class="input-group input-group-lg mb-3">
               <input
@@ -205,6 +214,24 @@
                 訂閱
               </button>
             </div>
+          </div>
+        </div> -->
+
+        <div class="input-btn-wrap position-absolute">
+          <div class="input-group input-group-lg mb-3">
+            <input
+              type="text"
+              class="form-control font-s font-lg-m"
+              placeholder="您的電郵"
+              aria-label="您的電郵"
+            />
+            <button
+              id="subscribe"
+              class="btn btn-outline-secondary font-s font-lg-m"
+              type="button"
+            >
+              訂閱
+            </button>
           </div>
         </div>
       </div>
@@ -297,5 +324,14 @@ export default {
     center / cover no-repeat
       url('@/assets/images/alexander-popov-endMHm-S3d8-unsplash.jpg');
   height: 520px;
+}
+
+.input-btn-wrap {
+  bottom: 30%;
+  width: 60%;
+  @include media-breakpoint-up(md) {
+    width: 40%;
+    bottom: 20%;
+  }
 }
 </style>
