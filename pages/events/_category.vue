@@ -14,14 +14,14 @@
             :image="event.imageUrl"
             :date-time="event.dateTime"
             :tag="event.tag"
-          ></EventCard>
+          />
         </div>
         <div v-if="filterList.length === 0">沒有符合搜尋的結果</div>
       </div>
     </client-only>
     <!-- Pagination -->
     <div class="d-flex justify-content-center mb-19">
-      <Pagination :total-pages="Math.ceil(totalEvents / 12)"></Pagination>
+      <Pagination :total-pages="Math.ceil(totalEvents / 12)" />
     </div>
   </div>
 </template>

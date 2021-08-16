@@ -5,7 +5,7 @@
         <NuxtLink
           to="/event/-MdYsuv7hjrkbkEBJx6c"
           class="filter--dark top-banner bg-img"
-        ></NuxtLink>
+        />
         <div class="position-absolute top-banner-title text-white text-center">
           <h2 class="mb-8 font-2xl">機械人與數碼龐克</h2>
           <div class="mb-12 d-flex justify-content-center">
