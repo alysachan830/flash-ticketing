@@ -202,7 +202,7 @@
         <div class="input-btn-wrap position-absolute">
           <div class="input-group input-group-lg mb-3">
             <input
-              type="text"
+              type="email"
               class="form-control font-s font-lg-m"
               placeholder="您的電郵"
               aria-label="您的電郵"
