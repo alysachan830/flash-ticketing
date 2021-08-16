@@ -38,6 +38,7 @@
       <div ref="advancedSearch" class="advanced-search mb-16 shadow-sm">
         <div class="container">
           <button
+            type="button"
             class="
               advanced-search-btn
               btn
@@ -79,7 +80,11 @@
                 </select>
               </div>
               <div class="col-md-2 col-4 offset-lg-2">
-                <button class="btn btn-primary w-100" @click="filterResult">
+                <button
+                  type="button"
+                  class="btn btn-primary w-100"
+                  @click="filterResult"
+                >
                   搜尋
                 </button>
               </div>
