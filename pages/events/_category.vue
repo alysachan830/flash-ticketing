@@ -72,6 +72,10 @@ export default {
           list = this.allEvents.filter((event) => event.category === '工作坊')
           break
         }
+        default: {
+          list = this.allEvents
+          break
+        }
       }
       this.updatePageNum(list.length)
       return list.slice(
