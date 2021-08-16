@@ -68,6 +68,7 @@
                   <span class="text-primary material-icons font-m me-4">
                     paid
                   </span>
+                  <!-- The ESLint waringing is disabled here since the HTML injected here is safe -->
                   <!-- eslint-disable-next-line vue/no-v-html -->
                   <ul v-html="ticketPriceFormat"></ul>
                 </li>
