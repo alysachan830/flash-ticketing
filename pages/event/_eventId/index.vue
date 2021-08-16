@@ -121,9 +121,7 @@
       <div class="container">
         <h2 class="font-xl mb-14">更多相關節目</h2>
         <client-only>
-          <SwiperRelatedEvents
-            :related-events="relatedEvents"
-          ></SwiperRelatedEvents>
+          <SwiperRelatedEvents :related-events="relatedEvents" />
         </client-only>
       </div>
     </div>
