@@ -121,13 +121,10 @@
 
 <script>
 import Categories from '@/components/user/Categories.vue'
-// import EventCard from '@/components/user/EventCard.vue'
-// import Pagination from '@/components/common/Pagination.vue'
 
 export default {
   components: {
     Categories,
-    // Pagination,
   },
   async asyncData(context) {
     try {
@@ -181,7 +178,6 @@ export default {
       console.error(this.errorMsg)
     }
 
-    // this.filterList = [...this.allEvents]
     this.filterList = this.allEvents
     window.addEventListener('scroll', this.advancedSearchStyle)
   },
@@ -228,7 +224,6 @@ export default {
       }
 
       if (this.searchPrice === 'all' && this.searchTag === 'all') {
-        // return (this.filterList = [...this.allEvents])
         return (this.filterList = this.allEvents)
       } else if (this.searchPrice === 'all') {
         const result = this.allEvents.filter(
