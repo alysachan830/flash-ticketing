@@ -99,5 +99,3 @@ export default {
   },
 }
 </script>
-
-<style class="scss" scoped></style>
