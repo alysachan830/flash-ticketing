@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-primary py-10">
+  <footer class="bg-primary py-10">
     <div class="container d-flex justify-content-between align-items-center">
       <NuxtLink to="/" class="d-flex align-items-center text-white">
         <i class="material-icons font-xl me-2">offline_bolt</i>
@@ -47,11 +47,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </footer>
 </template>
-
-<script>
-export default {}
-</script>
-
-<style></style>
