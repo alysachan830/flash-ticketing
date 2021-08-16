@@ -32,11 +32,10 @@
                 >
                   {{ eventInfo.category }}
                 </span>
-                <a href="#">
+                <a href="#" @click.prevent="addFavourite(eventInfo.id)">
                   <span
                     class="me-2 material-icons font-xl"
                     :class="[isFavourite ? 'text-primary' : 'text-info']"
-                    @click.prevent="addFavourite(eventInfo.id)"
                   >
                     {{ isFavourite ? 'bookmark' : 'bookmark_border' }}
                   </span>
