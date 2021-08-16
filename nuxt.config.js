@@ -56,14 +56,6 @@ export default {
     baseURL: process.env.API_BASE_URL || 'http://localhost:3000',
     proxy: true,
   },
-  proxy: {
-    '/api': {
-      target: 'https://vue3-course-api.hexschool.io',
-      pathRewrite: {
-        '^/api': '/',
-      },
-    },
-  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     // Add exception
