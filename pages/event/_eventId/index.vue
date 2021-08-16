@@ -136,7 +136,6 @@ import SwiperRelatedEvents from '@/components/user/swiper/RelatedEvents.vue'
 
 export default {
   components: {
-    // EventCard
     SwiperRelatedEvents,
   },
   async asyncData({ params, store }) {
@@ -206,8 +205,6 @@ export default {
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
-      // eslint-disable-next-line no-console
-      console.error(this.errorMsg)
     }
   },
   methods: {
