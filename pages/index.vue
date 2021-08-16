@@ -39,14 +39,13 @@
           class="btn btn-primary btn-lg px-10"
           >搶先購票</NuxtLink
         >
-        <!-- <button class="btn btn-primary btn-lg px-10">搶先購票</button> -->
       </div>
     </div>
 
     <!-- Quick search options -->
     <div class="container mb-18 pt-15 d-lg-flex d-block align-items-center">
       <p class="font-m text-info pe-12 text-nowrap mb-4 mb-lg-0">快速搜尋</p>
-      <Categories></Categories>
+      <Categories />
     </div>
     <!-- Body -->
     <div class="container">
@@ -58,7 +57,7 @@
               <h2 class="font-xl mb-4">熱門節目</h2>
               <p>時刻緊貼潮流，為您帶來最豐富的節目體驗。</p>
             </div>
-            <SwiperHotEvents :hot-events="hotEventsSlides"></SwiperHotEvents>
+            <SwiperHotEvents :hot-events="hotEventsSlides" />
           </div>
           <!-- Hot events cards -->
           <div class="row mb-16">
@@ -73,7 +72,7 @@
                 :image="event.imageUrl"
                 :date-time="event.dateTime"
                 :tag="event.tag"
-              ></EventCard>
+              />
             </div>
           </div>
           <div class="text-center">
@@ -97,7 +96,10 @@
     <client-only>
       <div class="mb-23">
         <!-- New event banner -->
-        <a href="#" class="position-relative mb-19">
+        <NuxtLink
+          to="/event/-MeDhhevaeV5e8wUDUuS"
+          class="position-relative mb-19"
+        >
           <span class="d-block">
             <div class="latest-event-banner bg-img"></div>
             <div
@@ -132,7 +134,7 @@
               >
             </div>
           </span>
-        </a>
+        </NuxtLink>
         <!-- New event title -->
         <div class="mb-14 container">
           <h2 class="font-xl mb-4">最新節目</h2>
@@ -152,7 +154,7 @@
                 :image="event.imageUrl"
                 :date-time="event.dateTime"
                 :tag="event.tag"
-              ></EventCard>
+              />
             </div>
           </div>
           <div class="text-center">
@@ -196,26 +198,6 @@
           訂閱最新消息 <br />
           率先享受最新節目
         </h3>
-
-        <!-- <div class="row justify-content-center">
-          <div class="col-md-8 col-10">
-            <div class="input-group input-group-lg mb-3">
-              <input
-                type="text"
-                class="form-control font-s font-lg-m"
-                placeholder="您的電郵"
-                aria-label="您的電郵"
-              />
-              <button
-                id="subscribe"
-                class="btn btn-outline-secondary font-s font-lg-m"
-                type="button"
-              >
-                訂閱
-              </button>
-            </div>
-          </div>
-        </div> -->
 
         <div class="input-btn-wrap position-absolute">
           <div class="input-group input-group-lg mb-3">
@@ -284,8 +266,6 @@ export default {
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
-      // eslint-disable-next-line no-console
-      console.error(this.errorMsg)
     }
   },
 }
