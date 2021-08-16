@@ -275,6 +275,6 @@ export default {
 }
 
 .advanced-search-btn:focus {
-  box-shadow: none !important;
+  box-shadow: none;
 }
 </style>
