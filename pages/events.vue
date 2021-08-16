@@ -94,7 +94,7 @@
       </div>
     </div>
     <div class="container">
-      <Categories class="mb-19"></Categories>
+      <Categories class="mb-19" />
       <!-- Search bar -->
       <div class="row">
         <div class="col-lg-6 col-md-4 col-12">
