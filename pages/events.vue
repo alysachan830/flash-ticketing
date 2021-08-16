@@ -179,8 +179,6 @@ export default {
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
-      // eslint-disable-next-line no-console
-      console.error(this.errorMsg)
     }
 
     this.filterList = this.allEvents
