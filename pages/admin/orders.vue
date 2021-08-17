@@ -96,8 +96,6 @@ export default {
         this.ordersPagination = getOrdersRes.data.pagination.total_pages
       } catch (error) {
         this.$showError('載入節目活動資料失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
         this.loader = {}
@@ -125,8 +123,6 @@ export default {
         this.getOrders()
       } catch (error) {
         this.$showError(error)
-        // eslint-disable-next-line no-console
-        console.log(error)
         this.loader.hide()
       }
     },
@@ -149,8 +145,6 @@ export default {
         this.getOrders()
       } catch (error) {
         this.$showError(error)
-        // eslint-disable-next-line no-console
-        console.log(error)
         this.loader.hide()
       }
     },
