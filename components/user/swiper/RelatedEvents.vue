@@ -16,7 +16,7 @@
           :date-time="event.dateTime"
           :tag="event.tag"
           class="bg-transparent"
-        ></EventCard>
+        />
       </div>
     </div>
     <div class="swiper-pagination"></div>
