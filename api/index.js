@@ -1,6 +1,4 @@
 import axios from 'axios'
-const apiPath = process.env.apiPath
-const apiBaseUrl = process.env.apiBaseUrl
 
 axios.interceptors.response.use(
   (res) => {
@@ -18,17 +16,17 @@ axios.interceptors.response.use(
 
 // Client request
 const clientRequest = axios.create({
-  baseURL: `${apiBaseUrl}/api/${apiPath}`,
+  baseURL: `${process.env.apiBaseUrl}/api/${process.env.apiPath}`,
 })
 
 // Admin sign in
 const adminSignIn = axios.create({
-  baseURL: apiBaseUrl,
+  baseURL: process.env.apiBaseUrl,
 })
 
 // Admin request
 const adminRequest = axios.create({
-  baseURL: `${apiBaseUrl}/api/${apiPath}/admin/`,
+  baseURL: `${process.env.apiBaseUrl}/api/${process.env.apiPath}/admin/`,
 })
 
 // Client axios instance interceptor
