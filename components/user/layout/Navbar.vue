@@ -188,7 +188,7 @@
             <img
               class="offCanvas-img-size me-12 rounded-2"
               :src="event.imageUrl"
-              alt="cart image"
+              alt="image of my favourite event"
             />
             <div class="d-flex justify-content-between w-100">
               <div>
