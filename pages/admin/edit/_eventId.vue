@@ -582,8 +582,6 @@ export default {
       }
     } catch (error) {
       this.$showError('載入節目資料失敗')
-      // eslint-disable-next-line no-console
-      console.log(error)
     } finally {
       this.loader.hide()
     }
@@ -729,8 +727,6 @@ export default {
         this.$refs.mainImage.value = ''
       } catch (error) {
         this.$showError('上載圖片失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }
@@ -758,8 +754,6 @@ export default {
         this.$refs.subImage.value = ''
       } catch (error) {
         this.$showError('上載圖片失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }
@@ -862,8 +856,6 @@ export default {
         } else {
           this.$showError('編輯節目活動失敗')
         }
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }
