@@ -281,19 +281,19 @@ export default {
       this.editingId = ''
     },
     async removeTicket(ticketId) {
-      const confirmDelete = await this.$showConfirm('是否確定刪除此票卷？')
+      const confirmDelete = await this.$showConfirm('是否確定刪除此票劵？')
       if (!confirmDelete) return
       this.isDelete = true
       try {
         await this.updateCart(ticketId)
-        this.$showSuccess('已刪除此票卷')
+        this.$showSuccess('已刪除此票劵')
         this.isDelete = false
         await this.$nuxt.$emit('refreshCart', this.cartItem.id, this.ticketIds)
         this.$nextTick().then(() => {
           this.$bus.$emit('refreshCartIcon')
         })
       } catch (error) {
-        this.$showError('刪除此票卷失敗')
+        this.$showError('刪除此票劵失敗')
         // eslint-disable-next-line no-console
         console.log(error)
       }
