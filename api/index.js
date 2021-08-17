@@ -1,9 +1,6 @@
-/* eslint-disable no-unused-vars */
 import axios from 'axios'
 const apiPath = process.env.apiPath
 const apiBaseUrl = process.env.apiBaseUrl
-
-// Create axios instance
 
 axios.interceptors.response.use(
   (res) => {
@@ -44,7 +41,7 @@ clientRequest.interceptors.request.use(
   }
 )
 
-// Forestage API
+// Client API
 export const apiClientGetAllEvents = () => clientRequest.get('/products/all')
 export const apiClientGetEvent = (id) => clientRequest.get(`/product/${id}`)
 export const apiClientGetCart = () => clientRequest.get('/cart')
@@ -57,8 +54,7 @@ export const apiClientDeleteCart = (id) => clientRequest.delete(`/cart/${id}`)
 export const apiClientDeleteAllCart = () => clientRequest.delete('/carts')
 export const apiClientSubmitOrder = (data) => clientRequest.post('/order', data)
 
-// Complete API
-// Backstage API
+// Admin API
 export const apiAdminSignIn = (data) => adminSignIn.post('/admin/signin', data)
 export const apiCheckSignIn = () => adminSignIn.post('/api/user/check')
 export const apiAdminLogout = () => adminSignIn.post('/admin/logout')
@@ -80,7 +76,7 @@ export const apiAdminDeleteProduct = (token, id) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.delete(`/product/${id}`)
 }
-// export const apiAdminAddArticle = (data) => adminRequest.post(`/article`, data)
+
 export const apiAdminUploadImage = (token, formData) => {
   adminRequest.defaults.headers.common.Authorization = token
   return adminRequest.post('/upload', formData)
