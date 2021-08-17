@@ -4,7 +4,7 @@
       <img
         :src="image"
         class="hover__filter--darken h-100 w-100 position-absolute"
-        alt="hot event"
+        alt="event image"
       />
     </div>
     <div class="card-body">
