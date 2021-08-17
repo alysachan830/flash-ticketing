@@ -13,8 +13,7 @@
           :to="`/event/${event.id}`"
           class="slide-img-bg hover__filter--darken rounded-4"
           :style="`background-image:url(${event.imageUrl})`"
-        >
-        </NuxtLink>
+        />
         <div class="slide-title-wrap position-absolute">
           <span class="badge font-s bg-secondary text-black mb-4">
             {{ event.category }}
