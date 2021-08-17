@@ -463,8 +463,6 @@ export default {
         }
       } catch (error) {
         this.$showError('加入購物車失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }
