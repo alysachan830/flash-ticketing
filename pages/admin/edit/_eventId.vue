@@ -260,7 +260,7 @@
                   :model-config="modelConfig"
                   is-range
                 >
-                  <template v-slot="{ inputValue, inputEvents }">
+                  <template #default="{ inputValue, inputEvents }">
                     <div class="flex justify-center items-center">
                       <input
                         :value="inputValue.start"
@@ -329,7 +329,7 @@
                   v-model="selectedDate.date"
                   :model-config="modelConfig"
                 >
-                  <template v-slot="{ inputValue, inputEvents }">
+                  <template #default="{ inputValue, inputEvents }">
                     <input
                       class="bg-white border px-2 py-1 rounded"
                       :value="inputValue"
