@@ -20,6 +20,7 @@
           <td>{{ event.title }}</td>
           <td>{{ dateTimeFormat(event.dateTime) }}</td>
           <td>
+            <!-- The ESLint waringing is disabled here since the HTML injected here is safe -->
             <!-- eslint-disable vue/no-v-html -->
             <ul v-html="ticketPriceFormat(event.ticketPrice)"></ul>
           </td>
