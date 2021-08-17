@@ -357,6 +357,7 @@
                 <input v-model="selectedDate.endTime" type="time" />
               </div>
               <button
+                type="button"
                 class="btn btn-primary d-block mb-8"
                 @click="addSelectedDate"
               >
