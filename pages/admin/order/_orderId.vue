@@ -74,7 +74,7 @@
         v-for="item in purchases"
         :key="item.id"
         :cart-item="item"
-      ></PurchaseCard>
+      />
       <div class="d-flex font-xl">
         <p class="me-16">總額</p>
         <p class="text-primary">${{ inputData.total }}</p>
