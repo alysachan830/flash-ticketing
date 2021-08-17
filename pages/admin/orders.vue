@@ -2,7 +2,11 @@
   <div>
     <div class="d-flex justify-content-between align-items-start">
       <h2 class="font-xl mb-13">所有訂單</h2>
-      <button class="btn btn-outline-primary" @click="deleteAllOrders">
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        @click="deleteAllOrders"
+      >
         刪除所有訂單
       </button>
     </div>
