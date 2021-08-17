@@ -38,7 +38,7 @@
         </tr>
       </tbody>
     </table>
-    <Pagination :total-pages="ordersPagination"></Pagination>
+    <Pagination :total-pages="ordersPagination" />
     <p>{{ alertSentence }}</p>
   </div>
 </template>
