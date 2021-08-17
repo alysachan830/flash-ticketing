@@ -92,8 +92,6 @@ export default {
         this.couponsPagination = getCouponRes.data.pagination.total_pages
       } catch (error) {
         this.$showError('載入優惠劵資料失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
         this.loader = {}
@@ -126,8 +124,6 @@ export default {
         this.getCoupons()
       } catch (error) {
         this.$showError(error)
-        // eslint-disable-next-line no-console
-        console.log(error)
         this.loader.hide()
       }
     },
