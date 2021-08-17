@@ -271,8 +271,6 @@ export default {
         this.$showSuccess('已更新購物車')
       } catch (error) {
         this.$showError('更新購物車失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }
@@ -294,8 +292,6 @@ export default {
         })
       } catch (error) {
         this.$showError('刪除此票劵失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       }
     },
   },
