@@ -86,8 +86,6 @@ export default {
         this.events = this.$store.getters.adminEvents
       } catch (error) {
         this.$showError('載入節目活動資料失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }
@@ -125,8 +123,6 @@ export default {
         this.getAllEvents()
       } catch (error) {
         this.$showError('刪除節目失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       }
     },
   },
