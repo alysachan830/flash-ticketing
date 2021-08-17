@@ -50,7 +50,7 @@
             class="form-control"
           />
         </div>
-        <button class="btn btn-primary" @click="save">
+        <button type="button" class="btn btn-primary" @click="save">
           {{ isNew ? '新增優惠劵' : '儲存更改' }}
         </button>
       </div>
