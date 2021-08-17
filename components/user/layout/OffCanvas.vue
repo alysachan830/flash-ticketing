@@ -21,9 +21,9 @@
       </div>
       <div class="dropdown mt-3">
         <button
+          id="dropdownMenuButton"
           class="btn btn-secondary dropdown-toggle"
           type="button"
-          id="dropdownMenuButton"
           data-bs-toggle="dropdown"
         >
           Dropdown button
