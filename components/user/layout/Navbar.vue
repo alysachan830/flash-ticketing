@@ -283,8 +283,6 @@ export default {
         }
       } catch (error) {
         this.$showError('載入我的購物車失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       }
     },
     countTotalTickets(cartItem) {
