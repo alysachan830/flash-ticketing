@@ -150,7 +150,6 @@
                     </thead>
                     <tbody>
                       <tr v-for="zone in Object.keys(ticketPrice)" :key="zone">
-                        <!-- <th scope="row">1</th> -->
                         <td>{{ zone }} 區</td>
                         <td>${{ ticketPrice[zone] }}</td>
                         <td>
@@ -616,7 +615,6 @@ export default {
       if (Array.isArray(this.eventInfo.dateTime)) {
         this.dateOption = 'selectedDate'
         this.selectedDates = JSON.parse(JSON.stringify(this.eventInfo.dateTime))
-        // this.selectedDate.date
       } else {
         this.dateOption = 'period'
         this.range.start = this.eventInfo.dateTime.start
@@ -626,7 +624,6 @@ export default {
       }
     },
     addSelectedDate() {
-      // this.selectedDate.date === '' ||
       if (
         this.selectedDate.date === '' ||
         this.selectedDate.endTime === '' ||
@@ -703,7 +700,6 @@ export default {
     },
     addImage(e) {
       this.mainImage = e.target.files[0]
-      // console.log(e.target.files[0])
     },
     deleteImage() {
       this.imageUrl = ''
