@@ -115,12 +115,14 @@
           </div>
           <div class="col-3 w-md-auto w-100">
             <button
+              type="button"
               class="btn btn-lg btn-primary mt-8 w-md-auto w-100 me-6"
               @click="searchTicket"
             >
               搜尋
             </button>
             <button
+              type="button"
               class="btn btn-lg btn-outline-primary mt-8 w-md-auto w-100"
               @click="clearSearch"
             >
@@ -142,7 +144,11 @@
       <!-- Add to cart -->
       <div class="row justify-content-center mb-21">
         <div class="col-md-4">
-          <button class="btn btn-primary w-100 py-4" @click="addCart">
+          <button
+            type="button"
+            class="btn btn-primary w-100 py-4"
+            @click="addCart"
+          >
             加入購物車
           </button>
         </div>
