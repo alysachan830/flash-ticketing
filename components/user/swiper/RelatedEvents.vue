@@ -38,14 +38,17 @@ import Swiper, {
 Swiper.use([Autoplay, Navigation, Pagination])
 
 export default {
+  components: {
+    EventCard,
+  },
   props: {
     relatedEvents: {
       type: Array,
       require: true,
+      default() {
+        return []
+      },
     },
-  },
-  components: {
-    EventCard,
   },
   data() {
     return {
