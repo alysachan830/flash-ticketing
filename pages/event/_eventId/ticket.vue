@@ -63,7 +63,7 @@
           :key="i"
           class="ticket rounded-3 col-6 col-md-4 col-lg-3 mb-6"
         >
-          <TicketCard :item="item"></TicketCard>
+          <TicketCard :item="item" />
         </div>
       </div>
       <!-- Add to cart -->
