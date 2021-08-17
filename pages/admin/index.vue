@@ -37,7 +37,7 @@
         </tr>
       </tbody>
     </table>
-    <Pagination :total-pages="Math.ceil(events.length / 8)"></Pagination>
+    <Pagination :total-pages="Math.ceil(events.length / 8)" />
   </div>
 </template>
 
