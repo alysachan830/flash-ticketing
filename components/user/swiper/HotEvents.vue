@@ -22,13 +22,9 @@
           <h2 class="font-xl text-white">{{ event.title }}</h2>
         </div>
       </div>
-      <!-- <div class="swiper-slide">Slide 2</div>
-      <div class="swiper-slide">Slide 3</div> -->
     </div>
-    <!-- If we need pagination -->
     <div class="swiper-pagination"></div>
 
-    <!-- If we need navigation buttons -->
     <div class="swiper-button-prev"></div>
     <div class="swiper-button-next"></div>
   </div>
@@ -63,11 +59,7 @@ export default {
     this.swiper = new Swiper('.swiper-container', {
       observer: true,
       observeParents: true,
-      // slidesPerView: 1.5,
-      // loop: true,
-      // loopedSlides: 8,
       spaceBetween: 30,
-      // centeredSlides: true,
       autoplay: {
         delay: 2500,
         disableOnInteraction: false,
@@ -89,13 +81,6 @@ export default {
           slidesPerView: 1.5,
         },
       },
-      // on: {
-      //   autoplay() {
-      //     vm.$bus.$emit("triggerAnimation");
-      //   },
-      // },
-      // onProgress: this.$bus.$emit("triggerAnimation"),
-      // onProgress: console.log("123"),
     })
   },
 }
