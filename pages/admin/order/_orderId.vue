@@ -95,7 +95,9 @@
       </textarea>
     </div>
     <div class="d-flex justify-content-end">
-      <button class="btn btn-primary" @click="saveEdit">儲存更改</button>
+      <button type="button" class="btn btn-primary" @click="saveEdit">
+        儲存更改
+      </button>
     </div>
   </div>
 </template>
