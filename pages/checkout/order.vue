@@ -52,9 +52,9 @@
           v-for="item in filterCarts"
           :key="item.id"
           :cart-item="item"
-        ></CartCard>
+        />
         <div class="d-flex justify-content-end mb-18">
-          <Pagination :total-pages="Math.ceil(carts.length / 4)"></Pagination>
+          <Pagination :total-pages="Math.ceil(carts.length / 4)" />
         </div>
         <!-- Total -->
         <div class="row justify-content-between mb-21">
