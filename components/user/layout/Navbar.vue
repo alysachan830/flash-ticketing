@@ -250,9 +250,6 @@ export default {
       if (this.favourites.length === 0) {
         this.favouriteLoadingMsg = '目前沒有收藏任何活動'
       }
-      // if (this.carts.length === 0) {
-      //   this.cartLoadingMsg = '目前購物車沒有資料'
-      // }
     },
   },
   created() {
@@ -333,8 +330,6 @@ export default {
         )
       } catch (error) {
         this.$showError('載入我的收藏失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       }
     },
     dateTimeTemplate(dateTime) {
