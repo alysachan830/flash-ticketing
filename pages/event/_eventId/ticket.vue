@@ -68,7 +68,11 @@
       <!-- Add to cart -->
       <div class="row justify-content-center mb-21">
         <div class="col-md-4">
-          <button class="btn btn-primary w-100 py-4" @click="addCart">
+          <button
+            type="button"
+            class="btn btn-primary w-100 py-4"
+            @click="addCart"
+          >
             加入購物車
           </button>
         </div>
