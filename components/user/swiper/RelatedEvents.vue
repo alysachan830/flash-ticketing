@@ -18,13 +18,9 @@
           class="bg-transparent"
         ></EventCard>
       </div>
-      <!-- <div class="swiper-slide">Slide 2</div>
-      <div class="swiper-slide">Slide 3</div> -->
     </div>
-    <!-- If we need pagination -->
     <div class="swiper-pagination"></div>
 
-    <!-- If we need navigation buttons -->
     <div class="swiper-button-prev"></div>
     <div class="swiper-button-next"></div>
   </div>
@@ -62,10 +58,7 @@ export default {
       observer: true,
       observeParents: true,
       slidesPerView: 1.5,
-      // loop: true,
-      // loopedSlides: 8,
       spaceBetween: 30,
-      // centeredSlides: true,
       autoplay: {
         delay: 2500,
         disableOnInteraction: false,
@@ -87,13 +80,6 @@ export default {
           slidesPerView: 4,
         },
       },
-      // on: {
-      //   autoplay() {
-      //     vm.$bus.$emit("triggerAnimation");
-      //   },
-      // },
-      // onProgress: this.$bus.$emit("triggerAnimation"),
-      // onProgress: console.log("123"),
     })
   },
 }
@@ -104,7 +90,6 @@ export default {
 @import '@/assets/stylesheets/all';
 
 .slide-img-bg {
-  //   height: 382px;
   background-size: cover;
   background-position: center;
   filter: brightness(75%);
@@ -120,16 +105,9 @@ export default {
   color: #fff;
   font-size: 20px;
   top: 146px;
-  // padding: 10px;
-  // border-radius: 4px;
-  // background: rgba(#000, 0.5);
   @include media-breakpoint-up(md) {
     top: 106px;
   }
-
-  // @include media-breakpoint-up(lg) {
-  //   top: 146px;
-  // }
 
   @include media-breakpoint-up(xl) {
     top: 146px;
