@@ -210,7 +210,6 @@
                 class="form-select"
                 aria-label="Default select tag"
               >
-                <!-- <option selected>請選擇標籤</option> -->
                 <option value="newest">最新</option>
                 <option value="hottest">最熱門</option>
                 <option value="recommended">推薦</option>
@@ -514,10 +513,10 @@ export default {
       selectedDates: [],
       modelConfig: {
         type: 'string',
-        mask: 'YYYY-MM-DD', // Uses 'iso' if missing
+        mask: 'YYYY-MM-DD',
       },
       selectedDate: {
-        date: new Date(), // moment().format('YYYY-MM-DD'),
+        date: new Date(),
         startTime: '',
         endTime: '',
       },
@@ -553,7 +552,7 @@ export default {
       organizer: '',
       venue: '',
       tag: 'newest',
-      ticketPrice: 0, //*
+      ticketPrice: 0,
       discount: 0,
       mainImage: '',
       mainImagePreview: '',
