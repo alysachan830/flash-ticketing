@@ -24,13 +24,8 @@
           <td>{{ order.id }}</td>
           <td>{{ order.user.name }}</td>
           <td>{{ order.is_paid ? '已付款' : '未付款' }}</td>
-          <!-- <td>{{ order.products }}</td> -->
           <td>${{ order.total }}</td>
-          <!-- <td>{{ order.user }}</td> -->
           <td>
-            <!-- <NuxtLink :to="`/admin/order/${order.id}`"
-              ><span class="material-icons"> edit </span></NuxtLink
-            > -->
             <a href="#" @click.prevent="editOrder(order)"
               ><span class="material-icons"> edit </span></a
             >
@@ -85,9 +80,6 @@ export default {
     this.$nuxt.$on('clickPageNum', (n) => {
       this.currentPage = n
     })
-    // this.$bus.$on('clearPageNum', () => {
-    //   this.currentPage = 1
-    // })
   },
   mounted() {
     this.getOrders()
@@ -165,5 +157,3 @@ export default {
   },
 }
 </script>
-
-<style></style>
