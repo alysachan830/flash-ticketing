@@ -141,7 +141,7 @@
                   <li>
                     <span class="material-icons font-base me-3">
                       confirmation_number </span
-                    >票卷數量： {{ countTotalTickets(item) }}
+                    >票劵數量： {{ countTotalTickets(item) }}
                   </li>
                   <li>
                     <span class="material-icons font-base me-3"> paid </span>HKD
@@ -308,7 +308,7 @@ export default {
     async deleteCart(item) {
       try {
         const confirmDelete = await this.$showConfirm(
-          `是否確定刪除${item.product.title}的票卷？`
+          `是否確定刪除${item.product.title}的票劵？`
         )
         if (!confirmDelete) return
         await apiClientDeleteCart(item.id)
