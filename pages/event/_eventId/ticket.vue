@@ -77,7 +77,9 @@
             class="btn btn-primary w-100 py-4"
             @click="addCart"
           >
-            加入購物車
+            {{
+              Object.keys(tempCart).length === 0 ? '請選取票劵' : '加入購物車'
+            }}
           </button>
         </div>
       </div>
