@@ -64,7 +64,7 @@
             <div
               v-for="event in hotEventsCards"
               :key="event.id"
-              class="col-lg-3 col-6 mb-10"
+              class="col-lg-3 col-6 mb-lg-10 mb-5"
             >
               <EventCard
                 :id="event.id"
