@@ -6,7 +6,7 @@
         <div
           v-for="event in filterList"
           :key="event.id"
-          class="col-lg-3 col-md-4 col-6"
+          class="col-lg-3 col-md-4 col-6 mb-10"
         >
           <EventCard
             :id="event.id"

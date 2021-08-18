@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="`/event/${id}`" class="card border-0 mb-10">
+  <NuxtLink :to="`/event/${id}`" class="card h-100 border-0 pb-18">
     <div class="img-wrap rounded-4 mb-4">
       <img
         :src="image"
@@ -8,17 +8,11 @@
       />
     </div>
     <div class="card-body">
-      <div class="d-flex justify-content-between mb-lg-6 mb-2">
+      <div class="d-flex justify-content-between">
         <div>
-          <h5 class="card-title font-lg-m font-base">
+          <h5 class="card-title font-lg-m font-base mb-6">
             {{ title }}
           </h5>
-          <p>
-            <span class="font-base material-icons align-text-top me-2">
-              calendar_today
-            </span>
-            {{ dateTimeTemplate }}
-          </p>
         </div>
         <span
           class="favourite-icon material-icons font-lg-l font-m align-baseline"
@@ -28,7 +22,17 @@
           {{ isFavourite ? 'bookmark' : 'bookmark_border' }}
         </span>
       </div>
-      <span class="badge font-lg-s font-xs bg-secondary text-black mb-4">
+    </div>
+    <div>
+      <p class="mb-1 d-flex">
+        <span class="font-base material-icons align-text-top me-2 pt-1">
+          calendar_today
+        </span>
+        <span>
+          {{ dateTimeTemplate }}
+        </span>
+      </p>
+      <span class="badge font-lg-s font-xs bg-secondary text-black">
         {{ formatTag }}
       </span>
     </div>
