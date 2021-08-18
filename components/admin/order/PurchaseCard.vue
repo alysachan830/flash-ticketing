@@ -191,13 +191,9 @@ export default {
           } else {
             perTicketPrice = this.cartItem.product.price
           }
-          //   const updatedTotal = perTicketPrice * this.inputQty
           const updatedTotal = this.countPrice(ticketId, perTicketPrice)
 
           return updatedTotal
-          //   const qty = updatedTotal / this.cartItem.product.price
-          //   console.log('qty => ' + qty)
-          //   return qty
         }
         case 3: {
           const ticketType = ticketIdInfo[2]
@@ -211,8 +207,6 @@ export default {
           const updatedTotal = this.countPrice(ticketId, perTicketPrice)
 
           return updatedTotal
-          //   const updatedTotal = perTicketPrice * this.inputQty
-          //   return updatedTotal
         }
       }
     },
