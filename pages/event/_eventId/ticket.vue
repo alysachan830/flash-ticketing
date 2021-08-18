@@ -274,12 +274,11 @@ export default {
       return qty
     },
     async addCart() {
+      if (Object.keys(this.tempCart).length === 0) {
+        this.$showError('請選購票卷！')
+        return
+      }
       try {
-        if (Object.keys(this.tempCart).length === 0) {
-          this.$showError('請選購票卷！')
-          return
-        }
-
         // Check if items in temp cart are already existed in cart
         const tempCartIds = Object.keys(this.tempCart)
         await this.$store.dispatch('getCart')

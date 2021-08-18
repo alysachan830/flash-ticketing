@@ -402,11 +402,11 @@ export default {
       }
     },
     async addCart() {
+      if (Object.keys(this.tempCart).length === 0) {
+        this.$showError('請選購票卷！')
+        return
+      }
       try {
-        if (Object.keys(this.tempCart).length === 0) {
-          this.$showError('請選購票卷！')
-          return
-        }
         const tempCartIds = Object.keys(this.tempCart)
         await this.$store.dispatch('getCart')
         const { carts } = this.$store.getters
