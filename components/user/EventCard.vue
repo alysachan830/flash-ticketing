@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="`/event/${id}`" class="card h-100 border-0 pb-20">
+  <NuxtLink :to="`/event/${id}`" class="card h-100 border-0 pb-22">
     <div class="img-wrap rounded-4 mb-4">
       <img
         :src="image"
