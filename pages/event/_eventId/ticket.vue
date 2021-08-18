@@ -53,7 +53,9 @@
         </div>
       </div>
       <div class="mb-15">
-        <h3 class="font-l mb-6">選擇時段、座位與票種</h3>
+        <h3 ref="selectTicketTitle" class="font-l mb-6">
+          選擇時段、座位與票種
+        </h3>
         <p class="text-muted mb-2 font-s">*優惠票適用於學生、長者、殘疾人士</p>
       </div>
 
@@ -220,6 +222,12 @@ export default {
         delete this.tempCart[id]
       }
     })
+  },
+  mounted() {
+    // To remind user select tickets, jump to the select ticket section directly when user visits the page
+    const selectTicketTitle = this.$refs.selectTicketTitle.offsetTop
+    // Subtract the height of navbar
+    window.scrollTo(0, selectTicketTitle - 64)
   },
   methods: {
     countQty(accumulatedItems, originalItem) {
