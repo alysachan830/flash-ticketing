@@ -72,6 +72,7 @@
       <div class="row justify-content-center mb-21">
         <div class="col-md-4">
           <button
+            :disabled="Object.keys(tempCart).length === 0"
             type="button"
             class="btn btn-primary w-100 py-4"
             @click="addCart"
@@ -274,10 +275,6 @@ export default {
       return qty
     },
     async addCart() {
-      if (Object.keys(this.tempCart).length === 0) {
-        this.$showError('請選購票卷！')
-        return
-      }
       try {
         // Check if items in temp cart are already existed in cart
         const tempCartIds = Object.keys(this.tempCart)
