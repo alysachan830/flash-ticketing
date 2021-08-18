@@ -98,7 +98,7 @@
       <NuxtLink
         to="/events/all"
         class="all-events-link d-inline-block text-info mb-19"
-        >全部活動
+        >所有節目
         <span class="material-icons pb-1"> chevron_right </span>
       </NuxtLink>
       <!-- Search bar -->
