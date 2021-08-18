@@ -1,11 +1,11 @@
 <template>
   <div class="pt-23">
     <div class="container">
-      <div class="row mb-lg-23 mb-md-18 mb-14">
-        <div class="col-lg-8 mb-10 mb-lg-0">
+      <div class="row mb-lg-23 mb-md-18 mb-14 justify-content-between">
+        <div class="col-lg-6 mb-10 mb-lg-0">
           <img class="rounded-4" :src="eventInfo.imageUrl" alt="event image" />
         </div>
-        <div class="col-lg-3 offset-lg-1">
+        <div class="col-lg-4">
           <span class="badge font-lg-s font-xs bg-secondary text-black mb-6">
             {{ eventInfo.category }}
           </span>
