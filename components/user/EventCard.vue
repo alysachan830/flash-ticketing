@@ -23,14 +23,14 @@
         </span>
       </div>
     </div>
-    <div class="px-1">
+    <div class="px-1 d-flex justify-content-between align-items-start">
       <p class="mb-1 d-flex">
         <span class="font-base material-icons align-text-top me-3 pt-1">
           calendar_today
         </span>
-        <span class="date-time">
-          {{ dateTimeTemplate }}
-        </span>
+        <!-- The ESLint waringing is disabled here since the HTML injected here is safe -->
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <span class="date-time" v-html="dateTimeTemplate"> </span>
       </p>
       <span class="badge font-lg-s font-xs bg-secondary text-black">
         {{ formatTag }}
@@ -91,11 +91,11 @@ export default {
     )
     this.myFavouriteItems = this.$getFavourite()
     if (Array.isArray(this.dateTime)) {
-      this.dateTimeTemplate = `${this.dateTime[0].date} - ${
+      this.dateTimeTemplate = `${this.dateTime[0].date} - <br>${
         this.dateTime[this.dateTime.length - 1].date
       }`
     } else {
-      this.dateTimeTemplate = `${this.dateTime.start} - ${this.dateTime.end}`
+      this.dateTimeTemplate = `${this.dateTime.start} - <br>${this.dateTime.end}`
     }
   },
   methods: {
@@ -139,9 +139,9 @@ export default {
   }
 }
 
-.date-time {
-  @include media-breakpoint-up(lg) {
-    white-space: nowrap;
-  }
-}
+// .date-time {
+//   @include media-breakpoint-up(lg) {
+//     white-space: nowrap;
+//   }
+// }
 </style>
