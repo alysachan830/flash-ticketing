@@ -94,7 +94,13 @@
       </div>
     </div>
     <div class="container">
-      <Categories class="mb-19" />
+      <Categories class="mb-6" />
+      <NuxtLink
+        to="/events/all"
+        class="all-events-link d-inline-block text-info mb-19"
+        >全部活動
+        <span class="material-icons pb-1"> chevron_right </span>
+      </NuxtLink>
       <!-- Search bar -->
       <div class="row">
         <div class="col-lg-6 col-md-4 col-12">
@@ -247,7 +253,7 @@ export default {
 }
 </script>
 
-<style class="scss" scoped>
+<style lang="scss" scoped>
 .top-banner-wrap {
   height: 388px;
 }
@@ -261,6 +267,13 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.all-events-link {
+  transition: transform 0.3s;
+  &:hover {
+    transform: translateX(8px);
+  }
 }
 
 .advanced-search {
