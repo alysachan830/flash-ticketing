@@ -210,16 +210,16 @@ export default {
     // Listen for emit
     this.$nuxt.$on('clickAdd', (id) => {
       if (this.tempCart[id] === undefined) {
-        this.tempCart[id] = 1
+        this.$set(this.tempCart, id, 1)
       } else {
-        this.tempCart[id] += 1
+        this.$set(this.tempCart, id, this.tempCart[id] + 1)
       }
     })
 
     this.$nuxt.$on('clickRemove', (id) => {
-      this.tempCart[id] -= 1
+      this.$set(this.tempCart, id, this.tempCart[id] - 1)
       if (this.tempCart[id] === 0) {
-        delete this.tempCart[id]
+        this.$delete(this.tempCart, id)
       }
     })
   },
