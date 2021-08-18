@@ -147,11 +147,14 @@
       <div class="row justify-content-center mb-21">
         <div class="col-md-4">
           <button
+            :disabled="Object.keys(tempCart).length === 0"
             type="button"
             class="btn btn-primary w-100 py-4"
             @click="addCart"
           >
-            加入購物車
+            {{
+              Object.keys(tempCart).length === 0 ? '請選取票劵' : '加入購物車'
+            }}
           </button>
         </div>
       </div>
@@ -402,10 +405,6 @@ export default {
       }
     },
     async addCart() {
-      if (Object.keys(this.tempCart).length === 0) {
-        this.$showError('請選購票卷！')
-        return
-      }
       try {
         const tempCartIds = Object.keys(this.tempCart)
         await this.$store.dispatch('getCart')
