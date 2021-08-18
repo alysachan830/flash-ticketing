@@ -134,7 +134,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row mb-20">
         <div
           v-for="(item, i) in ticketInfoFormat"
           :key="i"

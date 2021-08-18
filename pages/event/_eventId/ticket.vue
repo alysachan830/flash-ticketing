@@ -59,7 +59,7 @@
         <p class="text-muted mb-2 font-s">*優惠票適用於學生、長者、殘疾人士</p>
       </div>
 
-      <div class="row">
+      <div class="row mb-20">
         <div
           v-for="(item, i) in ticketInfoFormat"
           :key="i"
