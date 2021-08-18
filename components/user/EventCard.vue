@@ -138,10 +138,4 @@ export default {
     color: $primary;
   }
 }
-
-// .date-time {
-//   @include media-breakpoint-up(lg) {
-//     white-space: nowrap;
-//   }
-// }
 </style>
