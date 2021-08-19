@@ -95,6 +95,8 @@ import {
 } from '@/api/index'
 import TicketCard from '@/components/user/ticket/TicketCard.vue'
 
+// let loader
+
 export default {
   components: {
     TicketCard,
@@ -298,6 +300,7 @@ export default {
 
             // User's input ticket quantity
             allData.data[this.eventId] = this.tempCart[this.eventId]
+            this.loader = this.$loading.show()
             const addCartRes = await apiClientAddCart(allData)
             // Clear tempCart and all input quantity
             this.tempCart = {}
@@ -307,6 +310,7 @@ export default {
               throw addCartRes.data.message.join()
             }
             this.$showSuccess('已加入購物車')
+            this.loader.hide()
             return
           }
           const allData = {
@@ -328,6 +332,7 @@ export default {
             throw addCartRes.data.message.join()
           }
           this.$showSuccess('已加入購物車')
+          this.loader.hide()
         } else {
           // User has added this event before
           // Check if this event item contains the same event period
@@ -371,10 +376,10 @@ export default {
             throw updateCartRes.data.message.join()
           }
           this.$showSuccess('已加入購物車')
+          this.loader.hide()
         }
       } catch (error) {
         this.$showError('加入購物車失敗')
-      } finally {
         this.loader.hide()
       }
     },

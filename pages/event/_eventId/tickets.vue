@@ -433,6 +433,7 @@ export default {
             throw addCartRes.data.message.join()
           }
           this.$showSuccess('已加入購物車')
+          this.loader.hide()
         } else {
           // User has added this event before
           // Check if this event item contains the same event period
@@ -467,10 +468,10 @@ export default {
             throw updateCartRes.data.message.join()
           }
           this.$showSuccess('已加入購物車')
+          this.loader.hide()
         }
       } catch (error) {
         this.$showError('加入購物車失敗')
-      } finally {
         this.loader.hide()
       }
     },
