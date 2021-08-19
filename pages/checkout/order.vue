@@ -244,6 +244,7 @@ export default {
       try {
         await apiClientDeleteCart(cartId)
         this.getCart()
+        this.$bus.$emit('refreshCartIcon')
       } catch (error) {
         this.$showError('刪除單一購物車資料失敗')
       }
