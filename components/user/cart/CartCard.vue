@@ -1,66 +1,70 @@
 <template>
-  <div class="card-bg mb-15 p-7 p-md-10 rounded-3 border">
-    <h2 class="font-m mb-6">{{ cartItem.product.title }}</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th class="font-s">日期</th>
-          <th class="font-s">時間</th>
-          <th class="font-s text-nowrap">座位</th>
-          <th class="font-s">價錢</th>
-          <th class="font-s">數量</th>
-          <th
-            scope="col"
-            :class="{ 'd-none': editingId !== '' }"
-            class="font-s"
-          ></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="id in ticketIds" :key="id">
-          <td class="font-s font-md-base">{{ dateTimeFormat(id).date }}</td>
-          <td class="font-s font-md-base">
-            {{ dateTimeFormat(id).startTime }} -
-            {{ dateTimeFormat(id).endTime }}
-          </td>
-          <td class="font-s font-md-base">{{ zone(id) }}</td>
-          <td class="font-s font-md-base">
-            <ul>
-              <li class="font-xs text-nowrap">{{ ticketType(id)[0] }}</li>
-              <li>{{ ticketType(id)[1] }}</li>
-            </ul>
-          </td>
-          <td class="font-s font-md-base" style="width: 20%">
-            <div :ref="id" class="d-flex align-items-center">
-              <input
-                v-if="id === editingId"
-                v-model.number="inputQty"
-                type="number"
-                class="edit-input form-control w-25 me-0"
-                @blur="updateCart(id)"
-              />
-              <p v-else class="text-primary me-6 font-base font-md-m">
-                {{ cartItem[id] }}
-              </p>
-              <a
-                href="#"
-                :class="{ 'd-none': editingId !== '' }"
-                @click.prevent="openEdit(id)"
-                ><span class="font-base material-icons"> edit </span></a
-              >
-            </div>
-          </td>
-          <td
-            class="font-s font-md-base"
-            :class="{ 'd-none': editingId !== '' }"
-          >
-            <a href="#" @click="removeTicket(id)">
-              <span class="material-icons font-base">clear</span>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="d-flex flex-column flex-lg-row card-bg mb-15 rounded-3 border">
+    <img :src="cartItem.product.imageUrl" alt="event image" class="event-img" />
+
+    <div class="p-12 w-100">
+      <h2 class="font-m mb-6">{{ cartItem.product.title }}</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="font-s">日期</th>
+            <th class="font-s">時間</th>
+            <th class="font-s text-nowrap">座位</th>
+            <th class="font-s">價錢</th>
+            <th class="font-s">數量</th>
+            <th
+              scope="col"
+              :class="{ 'd-none': editingId !== '' }"
+              class="font-s"
+            ></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="id in ticketIds" :key="id">
+            <td class="font-s font-md-base">{{ dateTimeFormat(id).date }}</td>
+            <td class="font-s font-md-base">
+              {{ dateTimeFormat(id).startTime }} -
+              {{ dateTimeFormat(id).endTime }}
+            </td>
+            <td class="font-s font-md-base">{{ zone(id) }}</td>
+            <td class="font-s font-md-base">
+              <ul>
+                <li class="font-xs text-nowrap">{{ ticketType(id)[0] }}</li>
+                <li>{{ ticketType(id)[1] }}</li>
+              </ul>
+            </td>
+            <td class="font-s font-md-base" style="width: 20%">
+              <div :ref="id" class="d-flex align-items-center">
+                <input
+                  v-if="id === editingId"
+                  v-model.number="inputQty"
+                  type="number"
+                  class="edit-input form-control w-25 me-0"
+                  @blur="updateCart(id)"
+                />
+                <p v-else class="text-primary me-6 font-base font-md-m">
+                  {{ cartItem[id] }}
+                </p>
+                <a
+                  href="#"
+                  :class="{ 'd-none': editingId !== '' }"
+                  @click.prevent="openEdit(id)"
+                  ><span class="font-base material-icons"> edit </span></a
+                >
+              </div>
+            </td>
+            <td
+              class="font-s font-md-base"
+              :class="{ 'd-none': editingId !== '' }"
+            >
+              <a href="#" @click="removeTicket(id)">
+                <span class="material-icons font-base">clear</span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -303,6 +307,17 @@ export default {
 
 .edit-input {
   width: 60px !important;
+}
+
+.event-img {
+  max-width: 100%;
+  max-height: 240px;
+  border-radius: 0.3rem 0.3rem 0 0;
+  @include media-breakpoint-up(lg) {
+    max-width: 260px;
+    max-height: 100%;
+    border-radius: 0.3rem 0 0 0.3rem;
+  }
 }
 
 .card-bg {
