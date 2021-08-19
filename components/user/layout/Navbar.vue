@@ -150,7 +150,10 @@
                 </ul>
               </div>
               <a href="#">
-                <span class="material-icons" @click="deleteCart(item)">
+                <span
+                  class="material-icons font-m text-info"
+                  @click="deleteCart(item)"
+                >
                   close
                 </span>
               </a>
@@ -164,6 +167,11 @@
           >
         </div>
       </div>
+      <NuxtLink
+        to="/checkout/order"
+        class="checkout-btn p-8 text-white text-center"
+        >結帳去</NuxtLink
+      >
     </div>
 
     <!-- My favourite list offcanvas -->
@@ -214,7 +222,7 @@
                 </ul>
               </div>
               <a href="#" @click.prevent="deleteFavourite(event.id)">
-                <span class="material-icons"> close </span>
+                <span class="material-icons font-m text-info"> close </span>
               </a>
             </div>
           </div>
@@ -226,6 +234,9 @@
           >
         </div>
       </div>
+      <NuxtLink to="/events/all" class="checkout-btn p-8 text-white text-center"
+        >查看更多節目</NuxtLink
+      >
     </div>
   </div>
 </template>
@@ -358,6 +369,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/stylesheets/all';
+
 .container {
   min-height: 0;
 }
@@ -370,5 +383,12 @@ export default {
 .offCanvas-img-size {
   width: 100px;
   height: 100px;
+}
+
+.checkout-btn {
+  background: $primary;
+  &:hover {
+    background: #4b14b1;
+  }
 }
 </style>
