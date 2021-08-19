@@ -157,7 +157,12 @@
             </div>
           </div>
         </div>
-        <p v-else>{{ cartLoadingMsg }}</p>
+        <div v-else>
+          <p class="mb-3">{{ cartLoadingMsg }}</p>
+          <NuxtLink to="/events/all" class="btn btn-outline-primary"
+            >馬上購票</NuxtLink
+          >
+        </div>
       </div>
     </div>
 
@@ -214,7 +219,12 @@
             </div>
           </div>
         </div>
-        <p v-else>{{ favouriteLoadingMsg }}</p>
+        <div v-else>
+          <p class="mb-3">{{ favouriteLoadingMsg }}</p>
+          <NuxtLink to="/events/all" class="btn btn-outline-primary"
+            >馬上購票</NuxtLink
+          >
+        </div>
       </div>
     </div>
   </div>

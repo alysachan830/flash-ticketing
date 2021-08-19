@@ -80,7 +80,12 @@
           </div>
         </div>
       </div>
-      <p v-else class="vh-100">目前購物車為空</p>
+      <div v-else class="vh-100">
+        <p class="font-xl text-primary mb-4">目前購物車為空</p>
+        <NuxtLink to="/events/all" class="btn btn-lg btn-outline-primary"
+          >馬上購票</NuxtLink
+        >
+      </div>
     </div>
     <div></div>
   </div>
