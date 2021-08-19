@@ -59,7 +59,8 @@ export default {
       observeParents: true,
       spaceBetween: 30,
       autoplay: {
-        delay: 2500,
+        delay: 3500,
+        pauseOnMouseEnter: true,
         disableOnInteraction: false,
       },
       pagination: {
