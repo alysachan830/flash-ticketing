@@ -291,9 +291,7 @@ export default {
         this.$showSuccess('已刪除此票劵')
         this.isDelete = false
         await this.$nuxt.$emit('refreshCart', this.cartItem.id, this.ticketIds)
-        this.$nextTick().then(() => {
-          this.$bus.$emit('refreshCartIcon')
-        })
+        this.$bus.$emit('refreshCartIcon')
       } catch (error) {
         this.$showError('刪除此票劵失敗')
       }
