@@ -115,12 +115,6 @@
             aria-label="Close"
           ></button>
         </div>
-        <NuxtLink to="/checkout/order" class="font-s text-primary"
-          >前往編輯更多內容
-          <span class="material-icons align-middle font-base">
-            chevron_right
-          </span>
-        </NuxtLink>
       </div>
       <div class="offcanvas-body">
         <div v-if="carts.length > 0">
