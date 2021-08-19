@@ -3,7 +3,7 @@
     <div class="container">
       <!-- Stepper -->
       <div class="position-relative mb-23">
-        <div class="stepper w-100 bg-primary mt-23"></div>
+        <div class="stepper w-100 bg-primary mt-20"></div>
         <div class="stepper-step-start position-absolute">
           <div class="stepper-circle m-auto mb-3 bg-primary"></div>
           <p class="text-primary">確認訂單</p>

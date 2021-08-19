@@ -11,7 +11,7 @@
             <th class="font-s">時間</th>
             <th class="font-s text-nowrap">座位</th>
             <th class="font-s">價錢</th>
-            <th class="font-s">數量</th>
+            <th class="quantity-th font-s">數量</th>
             <th
               scope="col"
               :class="{ 'd-none': editingId !== '' }"
@@ -34,7 +34,7 @@
               </ul>
             </td>
             <td class="font-s font-md-base" style="width: 20%">
-              <div :ref="id" class="d-flex align-items-center">
+              <div :ref="id" class="ps-5 ps-md-0 d-flex align-items-center">
                 <input
                   v-if="id === editingId"
                   v-model.number="inputQty"
@@ -42,7 +42,7 @@
                   class="edit-input form-control w-25 me-0"
                   @blur="updateCart(id)"
                 />
-                <p v-else class="text-primary me-6 font-base font-md-m">
+                <p v-else class="text-primary me-md-6 me-3 font-base font-md-m">
                   {{ cartItem[id] }}
                 </p>
                 <a
@@ -307,6 +307,15 @@ export default {
   width: 60px !important;
 }
 
+.card-bg {
+  background: #fafafa;
+
+  transition: filter 0.3s;
+  &:hover {
+    filter: drop-shadow(0.5px 0.5px 3px #e0e0e0);
+  }
+}
+
 .event-img {
   max-width: 100%;
   max-height: 240px;
@@ -318,12 +327,10 @@ export default {
   }
 }
 
-.card-bg {
-  background: #fafafa;
-
-  transition: filter 0.3s;
-  &:hover {
-    filter: drop-shadow(0.5px 0.5px 3px #e0e0e0);
+.quantity-th {
+  padding-left: 14px !important;
+  @include media-breakpoint-up(md) {
+    padding: 6px 4px !important; //default padding for th
   }
 }
 
