@@ -243,9 +243,6 @@ export default {
     async deleteCart(cartId) {
       try {
         await apiClientDeleteCart(cartId)
-        setTimeout(() => {
-          this.$showSuccess('已刪除購物車內此節目的所有票卷')
-        }, 3000)
         this.getCart()
       } catch (error) {
         this.$showError('刪除單一購物車資料失敗')
