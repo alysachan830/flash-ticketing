@@ -429,6 +429,7 @@ export default {
           // Clear tempCart and all input quantity
           this.tempCart = {}
           this.$bus.$emit('clearInputQuantity')
+          this.$bus.$emit('refreshCartIcon')
           if (!addCartRes.data.success) {
             throw addCartRes.data.message.join()
           }
@@ -464,6 +465,7 @@ export default {
           // Clear tempCart and all input quantity
           this.tempCart = {}
           this.$bus.$emit('clearInputQuantity')
+          this.$bus.$emit('refreshCartIcon')
           if (!updateCartRes.data.success) {
             throw updateCartRes.data.message.join()
           }
