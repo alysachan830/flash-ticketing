@@ -189,6 +189,7 @@ export default {
           throw deleteAllCartRes.data.message
         }
         this.$showSuccess('成功刪除所有購物車內容')
+        this.loader.hide()
         // Refresh cart
         this.getCart()
         this.$nextTick().then(() => {
@@ -196,7 +197,6 @@ export default {
         })
       } catch (error) {
         this.$showError(error)
-      } finally {
         this.loader.hide()
       }
     },
