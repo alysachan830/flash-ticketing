@@ -74,7 +74,7 @@
         v-for="item in purchases"
         :key="item.id"
         :cart-item="item"
-      ></PurchaseCard>
+      />
       <div class="d-flex font-xl">
         <p class="me-16">總額</p>
         <p class="text-primary">${{ inputData.total }}</p>
@@ -95,7 +95,9 @@
       </textarea>
     </div>
     <div class="d-flex justify-content-end">
-      <button class="btn btn-primary" @click="saveEdit">儲存更改</button>
+      <button type="button" class="btn btn-primary" @click="saveEdit">
+        儲存更改
+      </button>
     </div>
   </div>
 </template>
@@ -164,5 +166,3 @@ export default {
   },
 }
 </script>
-
-<style></style>

@@ -31,7 +31,7 @@
                 <span class="material-icons text-white align-middle">
                   shopping_cart
                 </span>
-                <span class="d-none text-white"> {{ cartTotalQty }} </span>
+                <span class="text-white"> {{ cartTotalQty }} </span>
               </a>
               <a href="#" class="me-4" @click.prevent="showFavourite">
                 <span class="material-icons text-white align-middle">
@@ -115,24 +115,20 @@
             aria-label="Close"
           ></button>
         </div>
-        <NuxtLink to="/checkout/order" class="font-s text-primary"
-          >前往編輯更多內容
-          <span class="material-icons align-middle font-base">
-            chevron_right
-          </span>
-        </NuxtLink>
       </div>
       <div class="offcanvas-body">
         <div v-if="carts.length > 0">
-          <div
+          <NuxtLink
             v-for="item in carts"
             :key="item.id"
+            to="/checkout/order"
             class="d-flex px-2 border-top py-5"
           >
-            <img
+            <nuxt-img
               class="offCanvas-img-size me-12 rounded-2"
               :src="item.product.imageUrl"
               alt="cart image"
+              width="200"
             />
             <div class="d-flex justify-content-between w-100">
               <div>
@@ -141,7 +137,7 @@
                   <li>
                     <span class="material-icons font-base me-3">
                       confirmation_number </span
-                    >票卷數量： {{ countTotalTickets(item) }}
+                    >票劵數量： {{ countTotalTickets(item) }}
                   </li>
                   <li>
                     <span class="material-icons font-base me-3"> paid </span>HKD
@@ -150,15 +146,28 @@
                 </ul>
               </div>
               <a href="#">
-                <span class="material-icons" @click="deleteCart(item)">
+                <span
+                  class="material-icons font-m text-info"
+                  @click="deleteCart(item)"
+                >
                   close
                 </span>
               </a>
             </div>
-          </div>
+          </NuxtLink>
         </div>
-        <p v-else>{{ cartLoadingMsg }}</p>
+        <div v-else>
+          <p class="mb-3">{{ cartLoadingMsg }}</p>
+          <NuxtLink to="/events/all" class="btn btn-outline-primary"
+            >馬上購票</NuxtLink
+          >
+        </div>
       </div>
+      <NuxtLink
+        to="/checkout/order"
+        class="checkout-btn p-8 text-white text-center"
+        >結帳去</NuxtLink
+      >
     </div>
 
     <!-- My favourite list offcanvas -->
@@ -180,15 +189,17 @@
       </div>
       <div class="offcanvas-body">
         <div v-if="favourites.length > 0">
-          <div
+          <NuxtLink
             v-for="event in favourites"
             :key="event.id"
+            :to="`/event/${event.id}`"
             class="d-flex px-2 border-top py-5"
           >
-            <img
+            <nuxt-img
               class="offCanvas-img-size me-12 rounded-2"
               :src="event.imageUrl"
-              alt="cart image"
+              alt="image of my favourite event"
+              width="200"
             />
             <div class="d-flex justify-content-between w-100">
               <div>
@@ -209,13 +220,21 @@
                 </ul>
               </div>
               <a href="#" @click.prevent="deleteFavourite(event.id)">
-                <span class="material-icons"> close </span>
+                <span class="material-icons font-m text-info"> close </span>
               </a>
             </div>
-          </div>
+          </NuxtLink>
         </div>
-        <p v-else>{{ favouriteLoadingMsg }}</p>
+        <div v-else>
+          <p class="mb-3">{{ favouriteLoadingMsg }}</p>
+          <NuxtLink to="/events/all" class="btn btn-outline-primary"
+            >馬上購票</NuxtLink
+          >
+        </div>
       </div>
+      <NuxtLink to="/events/all" class="checkout-btn p-8 text-white text-center"
+        >查看更多節目</NuxtLink
+      >
     </div>
   </div>
 </template>
@@ -250,9 +269,6 @@ export default {
       if (this.favourites.length === 0) {
         this.favouriteLoadingMsg = '目前沒有收藏任何活動'
       }
-      // if (this.carts.length === 0) {
-      //   this.cartLoadingMsg = '目前購物車沒有資料'
-      // }
     },
   },
   created() {
@@ -286,8 +302,6 @@ export default {
         }
       } catch (error) {
         this.$showError('載入我的購物車失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       }
     },
     countTotalTickets(cartItem) {
@@ -313,7 +327,7 @@ export default {
     async deleteCart(item) {
       try {
         const confirmDelete = await this.$showConfirm(
-          `是否確定刪除${item.product.title}的票卷？`
+          `是否確定刪除${item.product.title}的票劵？`
         )
         if (!confirmDelete) return
         await apiClientDeleteCart(item.id)
@@ -333,8 +347,6 @@ export default {
         )
       } catch (error) {
         this.$showError('載入我的收藏失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       }
     },
     dateTimeTemplate(dateTime) {
@@ -355,6 +367,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/stylesheets/all';
+
 .container {
   min-height: 0;
 }
@@ -367,5 +381,12 @@ export default {
 .offCanvas-img-size {
   width: 100px;
   height: 100px;
+}
+
+.checkout-btn {
+  background: $primary;
+  &:hover {
+    background: #4b14b1;
+  }
 }
 </style>

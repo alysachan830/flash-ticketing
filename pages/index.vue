@@ -11,6 +11,9 @@
           align-items-center
           banner-filter
         "
+        :style="
+          resizeImg('/images/brandon-erlinger-ford-wI2Hafqr_f4-unsplash.jpg')
+        "
       ></div>
       <div
         class="position-absolute top-banner-title text-white text-center w-100"
@@ -39,14 +42,13 @@
           class="btn btn-primary btn-lg px-10"
           >搶先購票</NuxtLink
         >
-        <!-- <button class="btn btn-primary btn-lg px-10">搶先購票</button> -->
       </div>
     </div>
 
     <!-- Quick search options -->
     <div class="container mb-18 pt-15 d-lg-flex d-block align-items-center">
       <p class="font-m text-info pe-12 text-nowrap mb-4 mb-lg-0">快速搜尋</p>
-      <Categories></Categories>
+      <Categories />
     </div>
     <!-- Body -->
     <div class="container">
@@ -58,14 +60,14 @@
               <h2 class="font-xl mb-4">熱門節目</h2>
               <p>時刻緊貼潮流，為您帶來最豐富的節目體驗。</p>
             </div>
-            <SwiperHotEvents :hot-events="hotEventsSlides"></SwiperHotEvents>
+            <SwiperHotEvents :hot-events="hotEventsSlides" />
           </div>
           <!-- Hot events cards -->
           <div class="row mb-16">
             <div
               v-for="event in hotEventsCards"
               :key="event.id"
-              class="col-lg-3 col-6"
+              class="col-lg-3 col-6 mb-lg-10 mb-5"
             >
               <EventCard
                 :id="event.id"
@@ -73,7 +75,7 @@
                 :image="event.imageUrl"
                 :date-time="event.dateTime"
                 :tag="event.tag"
-              ></EventCard>
+              />
             </div>
           </div>
           <div class="text-center">
@@ -97,9 +99,17 @@
     <client-only>
       <div class="mb-23">
         <!-- New event banner -->
-        <a href="#" class="position-relative mb-19">
+        <NuxtLink
+          to="/event/-MeDhhevaeV5e8wUDUuS"
+          class="position-relative mb-19"
+        >
           <span class="d-block">
-            <div class="latest-event-banner bg-img"></div>
+            <div
+              class="latest-event-banner bg-img"
+              :style="
+                resizeImg('/images/arindam-mahanta-VEOk8qUl9DU-unsplash.jpg')
+              "
+            ></div>
             <div
               class="
                 position-absolute
@@ -132,7 +142,7 @@
               >
             </div>
           </span>
-        </a>
+        </NuxtLink>
         <!-- New event title -->
         <div class="mb-14 container">
           <h2 class="font-xl mb-4">最新節目</h2>
@@ -144,7 +154,7 @@
             <div
               v-for="event in newEventsCards"
               :key="event.id"
-              class="col-lg-3 col-6"
+              class="col-lg-3 col-6 mb-10"
             >
               <EventCard
                 :id="event.id"
@@ -152,7 +162,7 @@
                 :image="event.imageUrl"
                 :date-time="event.dateTime"
                 :tag="event.tag"
-              ></EventCard>
+              />
             </div>
           </div>
           <div class="text-center">
@@ -181,6 +191,7 @@
         align-items-center
         position-relative
       "
+      :style="resizeImg('/images/alexander-popov-endMHm-S3d8-unsplash.jpg')"
     >
       <div class="row justify-content-center">
         <h3
@@ -197,30 +208,10 @@
           率先享受最新節目
         </h3>
 
-        <!-- <div class="row justify-content-center">
-          <div class="col-md-8 col-10">
-            <div class="input-group input-group-lg mb-3">
-              <input
-                type="text"
-                class="form-control font-s font-lg-m"
-                placeholder="您的電郵"
-                aria-label="您的電郵"
-              />
-              <button
-                id="subscribe"
-                class="btn btn-outline-secondary font-s font-lg-m"
-                type="button"
-              >
-                訂閱
-              </button>
-            </div>
-          </div>
-        </div> -->
-
         <div class="input-btn-wrap position-absolute">
           <div class="input-group input-group-lg mb-3">
             <input
-              type="text"
+              type="email"
               class="form-control font-s font-lg-m"
               placeholder="您的電郵"
               aria-label="您的電郵"
@@ -284,9 +275,13 @@ export default {
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
-      // eslint-disable-next-line no-console
-      console.error(this.errorMsg)
     }
+  },
+  methods: {
+    resizeImg(imgUrl) {
+      const nuxtImgUrl = this.$img(imgUrl, { width: 1920 })
+      return `background-image:url('${nuxtImgUrl}')`
+    },
   },
 }
 </script>
@@ -295,7 +290,6 @@ export default {
 @import '@/assets/stylesheets/all';
 
 .top-banner {
-  background-image: url('@/assets/images/brandon-erlinger-ford-wI2Hafqr_f4-unsplash.jpg');
   height: 388px;
 }
 
@@ -306,7 +300,6 @@ export default {
 }
 
 .latest-event-banner {
-  background-image: url('@/assets/images/arindam-mahanta-VEOk8qUl9DU-unsplash.jpg');
   background-position: bottom;
   background-attachment: fixed;
   height: 720px;
@@ -320,9 +313,9 @@ export default {
 }
 
 .footer-banner {
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)),
-    center / cover no-repeat
-      url('@/assets/images/alexander-popov-endMHm-S3d8-unsplash.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   height: 520px;
 }
 

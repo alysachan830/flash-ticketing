@@ -3,12 +3,17 @@ export default {
   head: {
     title: 'flash_ticketing',
     htmlAttrs: {
-      lang: 'en',
+      lang: 'zh-Hant-HK',
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'description',
+        name: 'description',
+        content:
+          'Flash Ticketing 是以出售香港藝文節目票劵為主的平台，致力以方便可靠的票務功能，為大眾提供及推廣本地各種文化活動。',
+      },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
@@ -31,7 +36,6 @@ export default {
     { src: '~plugins/ckeditor.js', ssr: false },
     { src: '~plugins/myFavourite.js', ssr: false },
     { src: '~plugins/sweetAlert.js', ssr: false },
-    // { src: '~/plugins/vee-validate.js', ssr: true },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -48,21 +52,30 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/proxy',
+    '@nuxt/image',
   ],
+  image: {
+    providers: {
+      customProvider: {
+        name: 'firebase', // optional value to overrider provider name
+        // provider: '~/providers/custom', // Path to custom provider
+        provider: require.resolve('./providers/firebase'),
+        options: {
+          baseURL:
+            'https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/',
+          // ... provider options
+        },
+      },
+    },
+    domains: [
+      'https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/',
+    ],
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: process.env.API_BASE_URL || 'http://localhost:3000',
     proxy: true,
-  },
-  proxy: {
-    '/api': {
-      target: 'https://vue3-course-api.hexschool.io',
-      pathRewrite: {
-        '^/api': '/',
-      },
-    },
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

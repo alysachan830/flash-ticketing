@@ -2,7 +2,11 @@
   <div class="pt-18">
     <div class="position-relative">
       <div class="top-banner-wrap position-relative">
-        <div class="filter--dark top-banner bg-img"></div>
+        <NuxtLink
+          to="/event/-MdYsuv7hjrkbkEBJx6c"
+          class="filter--dark top-banner bg-img"
+          :style="resizeImg('/images/c-robynne-hu-HOrhCnQsxnQ-unsplash.jpg')"
+        />
         <div class="position-absolute top-banner-title text-white text-center">
           <h2 class="mb-8 font-2xl">機械人與數碼龐克</h2>
           <div class="mb-12 d-flex justify-content-center">
@@ -35,6 +39,7 @@
       <div ref="advancedSearch" class="advanced-search mb-16 shadow-sm">
         <div class="container">
           <button
+            type="button"
             class="
               advanced-search-btn
               btn
@@ -76,7 +81,11 @@
                 </select>
               </div>
               <div class="col-md-2 col-4 offset-lg-2">
-                <button class="btn btn-primary w-100" @click="filterResult">
+                <button
+                  type="button"
+                  class="btn btn-primary w-100"
+                  @click="filterResult"
+                >
                   搜尋
                 </button>
               </div>
@@ -86,7 +95,13 @@
       </div>
     </div>
     <div class="container">
-      <Categories class="mb-19"></Categories>
+      <Categories class="mb-6" />
+      <NuxtLink
+        to="/events/all"
+        class="all-events-link d-inline-block text-info mb-19"
+        >所有節目
+        <span class="material-icons pb-1"> chevron_right </span>
+      </NuxtLink>
       <!-- Search bar -->
       <div class="row">
         <div class="col-lg-6 col-md-4 col-12">
@@ -118,13 +133,10 @@
 
 <script>
 import Categories from '@/components/user/Categories.vue'
-// import EventCard from '@/components/user/EventCard.vue'
-// import Pagination from '@/components/common/Pagination.vue'
 
 export default {
   components: {
     Categories,
-    // Pagination,
   },
   async asyncData(context) {
     try {
@@ -174,11 +186,8 @@ export default {
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
-      // eslint-disable-next-line no-console
-      console.error(this.errorMsg)
     }
 
-    // this.filterList = [...this.allEvents]
     this.filterList = this.allEvents
     window.addEventListener('scroll', this.advancedSearchStyle)
   },
@@ -186,6 +195,10 @@ export default {
     window.removeEventListener('scroll', this.advancedSearchStyle)
   },
   methods: {
+    resizeImg(imgUrl) {
+      const nuxtImgUrl = this.$img(imgUrl, { width: 1920 })
+      return `background-image:url('${nuxtImgUrl}')`
+    },
     advancedSearchStyle() {
       if (window.scrollY > 388) {
         this.$refs.advancedSearch.style.position = 'fixed'
@@ -225,7 +238,6 @@ export default {
       }
 
       if (this.searchPrice === 'all' && this.searchTag === 'all') {
-        // return (this.filterList = [...this.allEvents])
         return (this.filterList = this.allEvents)
       } else if (this.searchPrice === 'all') {
         const result = this.allEvents.filter(
@@ -246,13 +258,12 @@ export default {
 }
 </script>
 
-<style class="scss" scoped>
+<style lang="scss" scoped>
 .top-banner-wrap {
   height: 388px;
 }
 
 .top-banner {
-  background-image: url('@/assets/images/c-robynne-hu-HOrhCnQsxnQ-unsplash.jpg');
   height: 388px;
 }
 
@@ -260,6 +271,13 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.all-events-link {
+  transition: transform 0.3s;
+  &:hover {
+    transform: translateX(8px);
+  }
 }
 
 .advanced-search {
@@ -272,6 +290,6 @@ export default {
 }
 
 .advanced-search-btn:focus {
-  box-shadow: none !important;
+  box-shadow: none;
 }
 </style>
