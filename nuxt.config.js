@@ -31,7 +31,6 @@ export default {
     { src: '~plugins/ckeditor.js', ssr: false },
     { src: '~plugins/myFavourite.js', ssr: false },
     { src: '~plugins/sweetAlert.js', ssr: false },
-    // { src: '~/plugins/vee-validate.js', ssr: true },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -48,8 +47,25 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/proxy',
+    '@nuxt/image',
   ],
+  image: {
+    providers: {
+      customProvider: {
+        name: 'firebase', // optional value to overrider provider name
+        // provider: '~/providers/custom', // Path to custom provider
+        provider: require.resolve('./providers/firebase'),
+        options: {
+          baseURL:
+            'https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/',
+          // ... provider options
+        },
+      },
+    },
+    domains: [
+      'https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/',
+    ],
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {

@@ -11,6 +11,9 @@
           align-items-center
           banner-filter
         "
+        :style="
+          resizeImg('/images/brandon-erlinger-ford-wI2Hafqr_f4-unsplash.jpg')
+        "
       ></div>
       <div
         class="position-absolute top-banner-title text-white text-center w-100"
@@ -101,7 +104,12 @@
           class="position-relative mb-19"
         >
           <span class="d-block">
-            <div class="latest-event-banner bg-img"></div>
+            <div
+              class="latest-event-banner bg-img"
+              :style="
+                resizeImg('/images/arindam-mahanta-VEOk8qUl9DU-unsplash.jpg')
+              "
+            ></div>
             <div
               class="
                 position-absolute
@@ -183,6 +191,7 @@
         align-items-center
         position-relative
       "
+      :style="resizeImg('/images/alexander-popov-endMHm-S3d8-unsplash.jpg')"
     >
       <div class="row justify-content-center">
         <h3
@@ -268,6 +277,12 @@ export default {
       this.$showError('載入資料失敗')
     }
   },
+  methods: {
+    resizeImg(imgUrl) {
+      const nuxtImgUrl = this.$img(imgUrl, { width: 1920 })
+      return `background-image:url('${nuxtImgUrl}')`
+    },
+  },
 }
 </script>
 
@@ -275,7 +290,6 @@ export default {
 @import '@/assets/stylesheets/all';
 
 .top-banner {
-  background-image: url('@/assets/images/brandon-erlinger-ford-wI2Hafqr_f4-unsplash.jpg');
   height: 388px;
 }
 
@@ -286,7 +300,6 @@ export default {
 }
 
 .latest-event-banner {
-  background-image: url('@/assets/images/arindam-mahanta-VEOk8qUl9DU-unsplash.jpg');
   background-position: bottom;
   background-attachment: fixed;
   height: 720px;
@@ -300,9 +313,9 @@ export default {
 }
 
 .footer-banner {
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)),
-    center / cover no-repeat
-      url('@/assets/images/alexander-popov-endMHm-S3d8-unsplash.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   height: 520px;
 }
 

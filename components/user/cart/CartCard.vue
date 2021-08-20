@@ -1,6 +1,11 @@
 <template>
   <div class="d-flex flex-column flex-lg-row card-bg mb-15 rounded-3 border">
-    <img :src="cartItem.product.imageUrl" alt="event image" class="event-img" />
+    <nuxt-img
+      :src="cartItem.product.imageUrl"
+      alt="event image"
+      class="event-img"
+      sizes="sm:1388px md:1388px lg:520px"
+    />
 
     <div class="p-12 w-100">
       <h2 class="font-m mb-6">{{ cartItem.product.title }}</h2>

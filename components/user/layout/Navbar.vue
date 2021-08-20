@@ -123,10 +123,11 @@
             :key="item.id"
             class="d-flex px-2 border-top py-5"
           >
-            <img
+            <nuxt-img
               class="offCanvas-img-size me-12 rounded-2"
               :src="item.product.imageUrl"
               alt="cart image"
+              width="200"
             />
             <div class="d-flex justify-content-between w-100">
               <div>
@@ -192,10 +193,11 @@
             :key="event.id"
             class="d-flex px-2 border-top py-5"
           >
-            <img
+            <nuxt-img
               class="offCanvas-img-size me-12 rounded-2"
               :src="event.imageUrl"
               alt="image of my favourite event"
+              width="200"
             />
             <div class="d-flex justify-content-between w-100">
               <div>

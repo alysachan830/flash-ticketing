@@ -3,7 +3,12 @@
     <div class="container">
       <div class="row mb-lg-23 mb-md-18 mb-14 justify-content-between">
         <div class="col-lg-6 mb-10 mb-lg-0">
-          <img class="rounded-4" :src="eventInfo.imageUrl" alt="event image" />
+          <nuxt-img
+            class="rounded-4"
+            :src="eventInfo.imageUrl"
+            alt="event image"
+            sizes="sm:1392px md:912px lg:1272px"
+          />
         </div>
         <div class="col-lg-4">
           <span class="badge font-lg-s font-xs bg-secondary text-black mb-6">

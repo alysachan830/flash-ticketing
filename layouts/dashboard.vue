@@ -53,7 +53,7 @@
       <!-- Avatar -->
       <div class="ps-16 pe-20">
         <div class="d-flex align-items-center mb-3">
-          <div class="avatar rounded-circle me-2"></div>
+          <!-- <div class="avatar rounded-circle me-2"></div> -->
           <span class="text-white font-s">David Chan</span>
         </div>
         <button type="button" class="btn btn-outline-light w-100">登出</button>
@@ -68,12 +68,12 @@ a {
   color: #fff;
 }
 
-.avatar {
-  width: 48px;
-  height: 48px;
-  background: url('~/assets/images/ivana-cajina-_7LbC5J-jw4-unsplash.jpg')
-    center/cover no-repeat;
-}
+// .avatar {
+//   width: 48px;
+//   height: 48px;
+//   background: url('~/static/images/ivana-cajina-_7LbC5J-jw4-unsplash.jpg')
+//     center/cover no-repeat;
+// }
 
 .side-bar-w {
   width: 260px;
