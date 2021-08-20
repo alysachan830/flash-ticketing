@@ -118,9 +118,10 @@
       </div>
       <div class="offcanvas-body">
         <div v-if="carts.length > 0">
-          <div
+          <NuxtLink
             v-for="item in carts"
             :key="item.id"
+            :to="`/event/${item.id}`"
             class="d-flex px-2 border-top py-5"
           >
             <nuxt-img
@@ -153,7 +154,7 @@
                 </span>
               </a>
             </div>
-          </div>
+          </NuxtLink>
         </div>
         <div v-else>
           <p class="mb-3">{{ cartLoadingMsg }}</p>
@@ -188,9 +189,10 @@
       </div>
       <div class="offcanvas-body">
         <div v-if="favourites.length > 0">
-          <div
+          <NuxtLink
             v-for="event in favourites"
             :key="event.id"
+            :to="`/event/${event.id}`"
             class="d-flex px-2 border-top py-5"
           >
             <nuxt-img
@@ -221,7 +223,7 @@
                 <span class="material-icons font-m text-info"> close </span>
               </a>
             </div>
-          </div>
+          </NuxtLink>
         </div>
         <div v-else>
           <p class="mb-3">{{ favouriteLoadingMsg }}</p>
