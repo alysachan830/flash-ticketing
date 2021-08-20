@@ -1,24 +1,7 @@
 <template>
   <div class="row w-100 g-0">
-    <!-- <div class="col-1">
-      <NuxtLink
-        to="/events/all"
-        class="
-          category
-          text-center text-info
-          shadow-sm
-          rounded-2
-          px-5
-          py-3
-          me-6
-          w-auto
-        "
-      >
-        <span class="me-1 text-info align-top material-icons"> apps </span>
-      </NuxtLink>
-    </div> -->
-    <div class="col-12">
-      <div class="row g-0 w-100">
+    <div class="d-flex justify-content-center">
+      <div class="row w-100 g-0">
         <div class="col-lg-3 col-6 mb-4 mb-lg-0">
           <NuxtLink
             to="/events/art"
@@ -29,8 +12,8 @@
               rounded-2
               px-5
               py-3
-              me-6
               w-auto
+              me-3
             "
           >
             <span class="text-info align-top material-icons"> palette </span>
@@ -47,8 +30,9 @@
               rounded-2
               px-5
               py-3
-              me-6
               w-auto
+              ms-3
+              me-lg-3
             "
           >
             <span class="text-info align-top material-icons"> music_note </span>
@@ -65,8 +49,9 @@
               rounded-2
               px-5
               py-3
-              me-6
               w-auto
+              me-3
+              ms-lg-3
             "
             ><span class="me-2 text-info align-top material-icons">
               theater_comedy </span
@@ -83,8 +68,8 @@
               rounded-2
               px-5
               py-3
-              me-6
               w-auto
+              ms-3
             "
           >
             <span class="me-1 text-info align-top material-icons"> work </span>
@@ -95,10 +80,6 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {}
-</script>
 
 <style lang="scss" scoped>
 .category {

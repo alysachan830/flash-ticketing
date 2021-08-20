@@ -190,8 +190,6 @@ export default {
         this.$router.push('/checkout/result')
       } catch (error) {
         this.$showError('結帳失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }

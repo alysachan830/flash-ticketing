@@ -1,24 +1,19 @@
 <template>
-  <NuxtLink :to="`/event/${id}`" class="card border-0 mb-10">
+  <NuxtLink :to="`/event/${id}`" class="card h-100 border-0 pb-22">
     <div class="img-wrap rounded-4 mb-4">
-      <img
+      <nuxt-img
         :src="image"
         class="hover__filter--darken h-100 w-100 position-absolute"
-        alt="hot event"
+        alt="event image"
+        sizes="sm:392px md:672px lg:612px"
       />
     </div>
-    <div class="card-body">
-      <div class="d-flex justify-content-between mb-lg-6 mb-2">
+    <div class="card-body px-1">
+      <div class="d-flex justify-content-between">
         <div>
-          <h5 class="card-title font-lg-m font-base">
+          <h5 class="card-title font-lg-m font-base mb-6">
             {{ title }}
           </h5>
-          <p>
-            <span class="font-base material-icons align-text-top me-2">
-              calendar_today
-            </span>
-            {{ dateTimeTemplate }}
-          </p>
         </div>
         <span
           class="favourite-icon material-icons font-lg-l font-m align-baseline"
@@ -28,7 +23,17 @@
           {{ isFavourite ? 'bookmark' : 'bookmark_border' }}
         </span>
       </div>
-      <span class="badge font-lg-s font-xs bg-secondary text-black mb-4">
+    </div>
+    <div class="px-1 d-flex justify-content-between align-items-start">
+      <p class="mb-1 d-flex">
+        <span class="font-base material-icons align-text-top me-3 pt-1">
+          calendar_today
+        </span>
+        <!-- The ESLint waringing is disabled here since the HTML injected here is safe -->
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <span class="date-time" v-html="dateTimeTemplate"> </span>
+      </p>
+      <span class="badge font-lg-s font-xs bg-secondary text-black">
         {{ formatTag }}
       </span>
     </div>
@@ -87,11 +92,11 @@ export default {
     )
     this.myFavouriteItems = this.$getFavourite()
     if (Array.isArray(this.dateTime)) {
-      this.dateTimeTemplate = `${this.dateTime[0].date} - ${
+      this.dateTimeTemplate = `${this.dateTime[0].date} - <br>${
         this.dateTime[this.dateTime.length - 1].date
       }`
     } else {
-      this.dateTimeTemplate = `${this.dateTime.start} - ${this.dateTime.end}`
+      this.dateTimeTemplate = `${this.dateTime.start} - <br>${this.dateTime.end}`
     }
   },
   methods: {
@@ -126,10 +131,6 @@ export default {
       transform: scale(1.1);
     }
   }
-}
-
-.card-body {
-  padding: 0 4px;
 }
 
 .favourite-icon {

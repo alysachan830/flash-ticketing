@@ -60,20 +60,6 @@
       </div>
       <NuxtChild class="ps-200 py-14 pe-20 w-100" />
     </div>
-    <!-- <div
-      v-else
-      class="
-        vh-100
-        d-flex
-        justify-content-center
-        align-items-center
-        font-2xl
-        text-primary
-      "
-    >
-      <span class="material-icons font-4xl me-12"> error_outline </span>
-      請先登入
-    </div> -->
   </div>
 </template>
 
@@ -155,7 +141,7 @@ a {
 .avatar {
   width: 48px;
   height: 48px;
-  background: url('~/assets/images/ivana-cajina-_7LbC5J-jw4-unsplash.jpg')
+  background: url('~/static/images/ivana-cajina-_7LbC5J-jw4-unsplash.jpg')
     center/cover no-repeat;
 }
 

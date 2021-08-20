@@ -150,7 +150,6 @@
                     </thead>
                     <tbody>
                       <tr v-for="zone in Object.keys(ticketPrice)" :key="zone">
-                        <!-- <th scope="row">1</th> -->
                         <td>{{ zone }} 區</td>
                         <td>${{ ticketPrice[zone] }}</td>
                         <td>
@@ -211,7 +210,6 @@
                 class="form-select"
                 aria-label="Default select tag"
               >
-                <!-- <option selected>請選擇標籤</option> -->
                 <option value="newest">最新</option>
                 <option value="hottest">最熱門</option>
                 <option value="recommended">推薦</option>
@@ -261,7 +259,7 @@
                   :model-config="modelConfig"
                   is-range
                 >
-                  <template v-slot="{ inputValue, inputEvents }">
+                  <template #default="{ inputValue, inputEvents }">
                     <div class="flex justify-center items-center">
                       <input
                         :value="inputValue.start"
@@ -330,7 +328,7 @@
                   v-model="selectedDate.date"
                   :model-config="modelConfig"
                 >
-                  <template v-slot="{ inputValue, inputEvents }">
+                  <template #default="{ inputValue, inputEvents }">
                     <input
                       class="bg-white border px-2 py-1 rounded"
                       :value="inputValue"
@@ -359,6 +357,7 @@
                 <input v-model="selectedDate.endTime" type="time" />
               </div>
               <button
+                type="button"
                 class="btn btn-primary d-block mb-8"
                 @click="addSelectedDate"
               >
@@ -506,7 +505,6 @@ import {
 } from '@/api/index'
 
 export default {
-  layout: 'dashboard',
   data() {
     return {
       loader: {},
@@ -515,10 +513,10 @@ export default {
       selectedDates: [],
       modelConfig: {
         type: 'string',
-        mask: 'YYYY-MM-DD', // Uses 'iso' if missing
+        mask: 'YYYY-MM-DD',
       },
       selectedDate: {
-        date: new Date(), // moment().format('YYYY-MM-DD'),
+        date: new Date(),
         startTime: '',
         endTime: '',
       },
@@ -554,7 +552,7 @@ export default {
       organizer: '',
       venue: '',
       tag: 'newest',
-      ticketPrice: 0, //*
+      ticketPrice: 0,
       discount: 0,
       mainImage: '',
       mainImagePreview: '',
@@ -584,8 +582,6 @@ export default {
       }
     } catch (error) {
       this.$showError('載入節目資料失敗')
-      // eslint-disable-next-line no-console
-      console.log(error)
     } finally {
       this.loader.hide()
     }
@@ -616,7 +612,6 @@ export default {
       if (Array.isArray(this.eventInfo.dateTime)) {
         this.dateOption = 'selectedDate'
         this.selectedDates = JSON.parse(JSON.stringify(this.eventInfo.dateTime))
-        // this.selectedDate.date
       } else {
         this.dateOption = 'period'
         this.range.start = this.eventInfo.dateTime.start
@@ -626,7 +621,6 @@ export default {
       }
     },
     addSelectedDate() {
-      // this.selectedDate.date === '' ||
       if (
         this.selectedDate.date === '' ||
         this.selectedDate.endTime === '' ||
@@ -703,7 +697,6 @@ export default {
     },
     addImage(e) {
       this.mainImage = e.target.files[0]
-      // console.log(e.target.files[0])
     },
     deleteImage() {
       this.imageUrl = ''
@@ -734,8 +727,6 @@ export default {
         this.$refs.mainImage.value = ''
       } catch (error) {
         this.$showError('上載圖片失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }
@@ -763,8 +754,6 @@ export default {
         this.$refs.subImage.value = ''
       } catch (error) {
         this.$showError('上載圖片失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }
@@ -867,8 +856,6 @@ export default {
         } else {
           this.$showError('編輯節目活動失敗')
         }
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }

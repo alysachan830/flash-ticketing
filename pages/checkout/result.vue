@@ -23,7 +23,7 @@
             check_circle
           </span>
           <p class="font-xl text-primary mb-6">成功訂票</p>
-          <p class="text-primary font-m mb-18">入場票卷已寄到您的郵箱</p>
+          <p class="text-primary font-m mb-18">入場票劵已寄到您的郵箱</p>
           <NuxtLink to="/" class="btn btn-primary">回到首頁</NuxtLink>
         </div>
       </div>

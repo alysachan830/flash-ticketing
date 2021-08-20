@@ -1,11 +1,16 @@
 <template>
   <div class="pt-23">
     <div class="container">
-      <div class="row mb-lg-23 mb-md-18 mb-14">
-        <div class="col-lg-8 mb-10 mb-lg-0">
-          <img class="rounded-4" :src="eventInfo.imageUrl" alt="event image" />
+      <div class="row mb-lg-23 mb-md-18 mb-14 justify-content-between">
+        <div class="col-lg-6 mb-10 mb-lg-0">
+          <nuxt-img
+            class="rounded-4"
+            :src="eventInfo.imageUrl"
+            alt="event image"
+            sizes="sm:1392px md:912px lg:1272px"
+          />
         </div>
-        <div class="col-lg-3 offset-lg-1">
+        <div class="col-lg-4">
           <span class="badge font-lg-s font-xs bg-secondary text-black mb-6">
             {{ eventInfo.category }}
           </span>
@@ -35,6 +40,7 @@
               <span class="text-primary material-icons font-m me-4">
                 paid
               </span>
+              <!-- The ESLint waringing is disabled here since the HTML injected here is safe -->
               <!-- eslint-disable-next-line vue/no-v-html -->
               <ul v-html="ticketPriceFormat"></ul>
             </li>
@@ -52,24 +58,33 @@
         </div>
       </div>
       <div class="mb-15">
-        <h3 class="font-l mb-6">選擇時段、座位與票種</h3>
+        <h3 ref="selectTicketTitle" class="font-l mb-6">
+          選擇時段、座位與票種
+        </h3>
         <p class="text-muted mb-2 font-s">*優惠票適用於學生、長者、殘疾人士</p>
       </div>
 
-      <div class="row">
+      <div class="row mb-20">
         <div
           v-for="(item, i) in ticketInfoFormat"
           :key="i"
           class="ticket rounded-3 col-6 col-md-4 col-lg-3 mb-6"
         >
-          <TicketCard :item="item"></TicketCard>
+          <TicketCard :item="item" />
         </div>
       </div>
       <!-- Add to cart -->
       <div class="row justify-content-center mb-21">
         <div class="col-md-4">
-          <button class="btn btn-primary w-100 py-4" @click="addCart">
-            加入購物車
+          <button
+            :disabled="Object.keys(tempCart).length === 0"
+            type="button"
+            class="btn btn-primary w-100 py-4"
+            @click="addCart"
+          >
+            {{
+              Object.keys(tempCart).length === 0 ? '請選取票劵' : '加入購物車'
+            }}
           </button>
         </div>
       </div>
@@ -84,6 +99,8 @@ import {
   apiClientUpdateCart,
 } from '@/api/index'
 import TicketCard from '@/components/user/ticket/TicketCard.vue'
+
+// let loader
 
 export default {
   components: {
@@ -203,18 +220,24 @@ export default {
     // Listen for emit
     this.$nuxt.$on('clickAdd', (id) => {
       if (this.tempCart[id] === undefined) {
-        this.tempCart[id] = 1
+        this.$set(this.tempCart, id, 1)
       } else {
-        this.tempCart[id] += 1
+        this.$set(this.tempCart, id, this.tempCart[id] + 1)
       }
     })
 
     this.$nuxt.$on('clickRemove', (id) => {
-      this.tempCart[id] -= 1
+      this.$set(this.tempCart, id, this.tempCart[id] - 1)
       if (this.tempCart[id] === 0) {
-        delete this.tempCart[id]
+        this.$delete(this.tempCart, id)
       }
     })
+  },
+  mounted() {
+    // To remind user select tickets, jump to the select ticket section directly when user visits the page
+    const selectTicketTitle = this.$refs.selectTicketTitle.offsetTop
+    // Subtract the height of navbar
+    window.scrollTo(0, selectTicketTitle - 64)
   },
   methods: {
     countQty(accumulatedItems, originalItem) {
@@ -262,11 +285,6 @@ export default {
     },
     async addCart() {
       try {
-        if (Object.keys(this.tempCart).length === 0) {
-          this.$showError('請選購票卷！')
-          return
-        }
-
         // Check if items in temp cart are already existed in cart
         const tempCartIds = Object.keys(this.tempCart)
         await this.$store.dispatch('getCart')
@@ -287,6 +305,7 @@ export default {
 
             // User's input ticket quantity
             allData.data[this.eventId] = this.tempCart[this.eventId]
+            this.loader = this.$loading.show()
             const addCartRes = await apiClientAddCart(allData)
             // Clear tempCart and all input quantity
             this.tempCart = {}
@@ -296,6 +315,7 @@ export default {
               throw addCartRes.data.message.join()
             }
             this.$showSuccess('已加入購物車')
+            this.loader.hide()
             return
           }
           const allData = {
@@ -317,6 +337,7 @@ export default {
             throw addCartRes.data.message.join()
           }
           this.$showSuccess('已加入購物車')
+          this.loader.hide()
         } else {
           // User has added this event before
           // Check if this event item contains the same event period
@@ -360,12 +381,10 @@ export default {
             throw updateCartRes.data.message.join()
           }
           this.$showSuccess('已加入購物車')
+          this.loader.hide()
         }
       } catch (error) {
         this.$showError('加入購物車失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
-      } finally {
         this.loader.hide()
       }
     },

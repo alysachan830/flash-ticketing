@@ -3,7 +3,7 @@
     <div class="container">
       <!-- Stepper -->
       <div class="position-relative mb-23">
-        <div class="stepper w-100 bg-primary mt-23"></div>
+        <div class="stepper w-100 bg-primary mt-20"></div>
         <div class="stepper-step-start position-absolute">
           <div class="stepper-circle m-auto mb-3 bg-primary"></div>
           <p class="text-primary">確認訂單</p>
@@ -40,6 +40,7 @@
           </div>
         </div>
         <button
+          type="button"
           class="btn btn-outline-primary text-nowrap"
           @click="deleteAllCart"
         >
@@ -52,10 +53,9 @@
           v-for="item in filterCarts"
           :key="item.id"
           :cart-item="item"
-        ></CartCard>
-        <!-- </div> -->
+        />
         <div class="d-flex justify-content-end mb-18">
-          <Pagination :total-pages="Math.ceil(carts.length / 4)"></Pagination>
+          <Pagination :total-pages="Math.ceil(carts.length / 4)" />
         </div>
         <!-- Total -->
         <div class="row justify-content-between mb-21">
@@ -80,7 +80,12 @@
           </div>
         </div>
       </div>
-      <p v-else class="vh-100">目前購物車為空</p>
+      <div v-else class="vh-100">
+        <p class="font-xl text-primary mb-4">目前購物車為空</p>
+        <NuxtLink to="/events/all" class="btn btn-lg btn-outline-primary"
+          >馬上購票</NuxtLink
+        >
+      </div>
     </div>
     <div></div>
   </div>
@@ -103,7 +108,6 @@ export default {
   async asyncData({ store }) {
     try {
       await store.dispatch('getCart')
-      // const { carts, cartFinalTotal } = store.getters
       const { carts, cartInfo } = store.getters
       const totalCount = cartInfo.total
       return { carts, totalCount }
@@ -157,8 +161,6 @@ export default {
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
-      // eslint-disable-next-line no-console
-      console.error(this.errorMsg)
     }
   },
   methods: {
@@ -173,10 +175,7 @@ export default {
           this.totalCount = cartInfo.total
         }
       } catch (error) {
-        const errorMsg = error.message
         this.$showError('載入購物車失敗')
-        // eslint-disable-next-line no-console
-        console.log(errorMsg)
       }
     },
     async deleteAllCart() {
@@ -195,6 +194,7 @@ export default {
           throw deleteAllCartRes.data.message
         }
         this.$showSuccess('成功刪除所有購物車內容')
+        this.loader.hide()
         // Refresh cart
         this.getCart()
         this.$nextTick().then(() => {
@@ -202,9 +202,6 @@ export default {
         })
       } catch (error) {
         this.$showError(error)
-        // eslint-disable-next-line no-console
-        console.log(error)
-      } finally {
         this.loader.hide()
       }
     },
@@ -244,26 +241,17 @@ export default {
         } else {
           this.$showError('套用優惠劵失敗')
         }
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }
     },
     async deleteCart(cartId) {
       try {
-        // this.loader = this.$loading.show()
         await apiClientDeleteCart(cartId)
-        setTimeout(() => {
-          this.$showSuccess('已刪除購物車內此節目的所有票卷')
-        }, 3000)
         this.getCart()
+        this.$bus.$emit('refreshCartIcon')
       } catch (error) {
         this.$showError('刪除單一購物車資料失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
-      } finally {
-        // this.loader.hide()
       }
     },
   },

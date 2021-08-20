@@ -6,7 +6,7 @@
         <div
           v-for="event in filterList"
           :key="event.id"
-          class="col-lg-3 col-md-4 col-6"
+          class="col-lg-3 col-md-4 col-6 mb-lg-10 mb-1"
         >
           <EventCard
             :id="event.id"
@@ -14,14 +14,14 @@
             :image="event.imageUrl"
             :date-time="event.dateTime"
             :tag="event.tag"
-          ></EventCard>
+          />
         </div>
         <div v-if="filterList.length === 0">沒有符合搜尋的結果</div>
       </div>
     </client-only>
     <!-- Pagination -->
     <div class="d-flex justify-content-center mb-19">
-      <Pagination :total-pages="Math.ceil(totalEvents / 12)"></Pagination>
+      <Pagination :total-pages="Math.ceil(totalEvents / 12)" />
     </div>
   </div>
 </template>
@@ -72,6 +72,10 @@ export default {
           list = this.allEvents.filter((event) => event.category === '工作坊')
           break
         }
+        default: {
+          list = this.allEvents
+          break
+        }
       }
       this.updatePageNum(list.length)
       return list.slice(
@@ -95,5 +99,3 @@ export default {
   },
 }
 </script>
-
-<style class="scss" scoped></style>
