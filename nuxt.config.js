@@ -3,12 +3,17 @@ export default {
   head: {
     title: 'flash_ticketing',
     htmlAttrs: {
-      lang: 'en',
+      lang: 'zh-Hant-HK',
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'description',
+        name: 'description',
+        content:
+          'Flash Ticketing 是以出售香港藝文節目票劵為主的平台，致力以方便可靠的票務功能，為大眾提供及推廣本地各種文化活動。',
+      },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
