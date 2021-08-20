@@ -121,7 +121,7 @@
           <NuxtLink
             v-for="item in carts"
             :key="item.id"
-            :to="`/event/${item.id}`"
+            to="/checkout/order"
             class="d-flex px-2 border-top py-5"
           >
             <nuxt-img
