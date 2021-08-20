@@ -2,7 +2,9 @@
   <div>
     <div class="d-flex justify-content-between align-items-start">
       <h2 class="font-xl mb-13">所有優惠劵</h2>
-      <button class="btn btn-primary" @click="addCoupon">新增優惠券</button>
+      <button type="button" class="btn btn-primary" @click="addCoupon">
+        新增優惠券
+      </button>
     </div>
     <table v-if="coupons.length > 0" class="table">
       <thead>
@@ -36,7 +38,7 @@
         </tr>
       </tbody>
     </table>
-    <Pagination :total-pages="couponsPagination"></Pagination>
+    <Pagination :total-pages="couponsPagination" />
     <p>{{ alertSentence }}</p>
   </div>
 </template>
@@ -90,8 +92,6 @@ export default {
         this.couponsPagination = getCouponRes.data.pagination.total_pages
       } catch (error) {
         this.$showError('載入優惠劵資料失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
         this.loader = {}
@@ -124,13 +124,9 @@ export default {
         this.getCoupons()
       } catch (error) {
         this.$showError(error)
-        // eslint-disable-next-line no-console
-        console.log(error)
         this.loader.hide()
       }
     },
   },
 }
 </script>
-
-<style></style>

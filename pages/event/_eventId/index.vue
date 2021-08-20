@@ -7,19 +7,19 @@
           <div class="col-lg-6 col-12">
             <div
               class="main-image bg-img rounded-4 mb-7"
-              :style="`background-image: url(${eventInfo.imageUrl});`"
+              :style="resizeMainImg(eventInfo.imageUrl)"
             ></div>
             <div class="row">
               <div class="col-6">
                 <div
                   class="sub-image bg-img rounded-4 mb-7"
-                  :style="`background-image: url(${eventInfo.imagesUrl[0]});`"
+                  :style="resizeSubImg(eventInfo.imagesUrl[0])"
                 ></div>
               </div>
               <div class="col-6">
                 <div
                   class="sub-image bg-img rounded-4 mb-7"
-                  :style="`background-image: url(${eventInfo.imagesUrl[1]});`"
+                  :style="resizeSubImg(eventInfo.imagesUrl[1])"
                 ></div>
               </div>
             </div>
@@ -32,11 +32,10 @@
                 >
                   {{ eventInfo.category }}
                 </span>
-                <a href="#">
+                <a href="#" @click.prevent="addFavourite(eventInfo.id)">
                   <span
                     class="me-2 material-icons font-xl"
                     :class="[isFavourite ? 'text-primary' : 'text-info']"
-                    @click.prevent="addFavourite(eventInfo.id)"
                   >
                     {{ isFavourite ? 'bookmark' : 'bookmark_border' }}
                   </span>
@@ -69,6 +68,7 @@
                   <span class="text-primary material-icons font-m me-4">
                     paid
                   </span>
+                  <!-- The ESLint waringing is disabled here since the HTML injected here is safe -->
                   <!-- eslint-disable-next-line vue/no-v-html -->
                   <ul v-html="ticketPriceFormat"></ul>
                 </li>
@@ -121,9 +121,7 @@
       <div class="container">
         <h2 class="font-xl mb-14">更多相關節目</h2>
         <client-only>
-          <SwiperRelatedEvents
-            :related-events="relatedEvents"
-          ></SwiperRelatedEvents>
+          <SwiperRelatedEvents :related-events="relatedEvents" />
         </client-only>
       </div>
     </div>
@@ -136,7 +134,6 @@ import SwiperRelatedEvents from '@/components/user/swiper/RelatedEvents.vue'
 
 export default {
   components: {
-    // EventCard
     SwiperRelatedEvents,
   },
   async asyncData({ params, store }) {
@@ -206,8 +203,6 @@ export default {
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
-      // eslint-disable-next-line no-console
-      console.error(this.errorMsg)
     }
   },
   methods: {
@@ -217,6 +212,14 @@ export default {
       this.$nextTick().then(
         () => (this.myFavouriteItems = this.$getFavourite())
       )
+    },
+    resizeMainImg(imgUrl) {
+      const nuxtImgUrl = this.$img(imgUrl, { width: 1272 })
+      return `background-image:url('${nuxtImgUrl}')`
+    },
+    resizeSubImg(imgUrl) {
+      const nuxtImgUrl = this.$img(imgUrl, { width: 672 })
+      return `background-image:url('${nuxtImgUrl}')`
     },
   },
 }

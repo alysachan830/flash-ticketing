@@ -3,10 +3,11 @@
     <div class="container">
       <div class="row mb-21">
         <div class="col-md-6 mb-12 mb-md-0">
-          <img
+          <nuxt-img
             class="rounded-4"
-            src="@/assets/images/c-yvette-de-wit-NYrVisodQ2M-unsplash.jpg"
+            src="/images/c-yvette-de-wit-NYrVisodQ2M-unsplash.jpg"
             alt="about us"
+            sizes="sm:962px md:672px lg:1040px"
           />
         </div>
         <div class="col-md-5 offset-md-1">
@@ -22,18 +23,22 @@
               <p class="mb-4">如有意合作或查詢，歡迎與公關部聯絡：</p>
               <span class="d-flex">
                 <span class="material-icons me-6 text-primary"> email </span>
-                <span>flashticketinghk@gmail.com</span>
+                <a href="mailto:flashticketinghk@gmail.com"
+                  >flashticketinghk@gmail.com</a
+                >
               </span>
             </li>
             <li>
               <p class="mb-4">如有任何問題，歡迎與客服中心聯絡：</p>
               <span class="d-flex mb-6">
                 <span class="material-icons me-6 text-primary"> email </span>
-                <span>info@flashticketing.hk</span>
+                <a href="mailto:info@flashticketing.hk"
+                  >info@flashticketing.hk</a
+                >
               </span>
               <span class="d-flex">
                 <span class="material-icons me-6 text-primary"> call </span>
-                <span>21234567</span>
+                <a href="tel:+21234567">21234567</a>
               </span>
             </li>
           </ul>
@@ -137,9 +142,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {}
-</script>
-
-<style></style>

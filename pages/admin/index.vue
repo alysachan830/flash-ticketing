@@ -20,6 +20,7 @@
           <td>{{ event.title }}</td>
           <td>{{ dateTimeFormat(event.dateTime) }}</td>
           <td>
+            <!-- The ESLint waringing is disabled here since the HTML injected here is safe -->
             <!-- eslint-disable vue/no-v-html -->
             <ul v-html="ticketPriceFormat(event.ticketPrice)"></ul>
           </td>
@@ -37,7 +38,7 @@
         </tr>
       </tbody>
     </table>
-    <Pagination :total-pages="Math.ceil(events.length / 8)"></Pagination>
+    <Pagination :total-pages="Math.ceil(events.length / 8)" />
   </div>
 </template>
 
@@ -85,8 +86,6 @@ export default {
         this.events = this.$store.getters.adminEvents
       } catch (error) {
         this.$showError('載入節目活動資料失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }
@@ -124,12 +123,8 @@ export default {
         this.getAllEvents()
       } catch (error) {
         this.$showError('刪除節目失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       }
     },
   },
 }
 </script>
-
-<style></style>

@@ -2,7 +2,11 @@
   <div>
     <div class="d-flex justify-content-between align-items-start">
       <h2 class="font-xl mb-13">所有訂單</h2>
-      <button class="btn btn-outline-primary" @click="deleteAllOrders">
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        @click="deleteAllOrders"
+      >
         刪除所有訂單
       </button>
     </div>
@@ -24,13 +28,8 @@
           <td>{{ order.id }}</td>
           <td>{{ order.user.name }}</td>
           <td>{{ order.is_paid ? '已付款' : '未付款' }}</td>
-          <!-- <td>{{ order.products }}</td> -->
           <td>${{ order.total }}</td>
-          <!-- <td>{{ order.user }}</td> -->
           <td>
-            <!-- <NuxtLink :to="`/admin/order/${order.id}`"
-              ><span class="material-icons"> edit </span></NuxtLink
-            > -->
             <a href="#" @click.prevent="editOrder(order)"
               ><span class="material-icons"> edit </span></a
             >
@@ -43,7 +42,7 @@
         </tr>
       </tbody>
     </table>
-    <Pagination :total-pages="ordersPagination"></Pagination>
+    <Pagination :total-pages="ordersPagination" />
     <p>{{ alertSentence }}</p>
   </div>
 </template>
@@ -85,9 +84,6 @@ export default {
     this.$nuxt.$on('clickPageNum', (n) => {
       this.currentPage = n
     })
-    // this.$bus.$on('clearPageNum', () => {
-    //   this.currentPage = 1
-    // })
   },
   mounted() {
     this.getOrders()
@@ -104,8 +100,6 @@ export default {
         this.ordersPagination = getOrdersRes.data.pagination.total_pages
       } catch (error) {
         this.$showError('載入節目活動資料失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
         this.loader = {}
@@ -133,8 +127,6 @@ export default {
         this.getOrders()
       } catch (error) {
         this.$showError(error)
-        // eslint-disable-next-line no-console
-        console.log(error)
         this.loader.hide()
       }
     },
@@ -157,13 +149,9 @@ export default {
         this.getOrders()
       } catch (error) {
         this.$showError(error)
-        // eslint-disable-next-line no-console
-        console.log(error)
         this.loader.hide()
       }
     },
   },
 }
 </script>
-
-<style></style>

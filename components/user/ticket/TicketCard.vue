@@ -35,12 +35,6 @@
         rounded-bottom
       "
     >
-      <a href="#" :class="`${item.date}${item.price}${item.zone}`">
-        <span class="material-icons" @click.prevent="addCart"> add </span>
-      </a>
-      <span :id="`${item.date}${item.price}${item.zone}`">
-        {{ quantity }}
-      </span>
       <a href="#" :class="`${item.date}${item.price}${item.zone}`"
         ><span
           :class="[`${item.date}${item.price}${item.zone}`, 'material-icons']"
@@ -49,6 +43,12 @@
           remove
         </span></a
       >
+      <span :id="`${item.date}${item.price}${item.zone}`">
+        {{ quantity }}
+      </span>
+      <a href="#" :class="`${item.date}${item.price}${item.zone}`">
+        <span class="material-icons" @click.prevent="addCart"> add </span>
+      </a>
     </div>
   </div>
 </template>

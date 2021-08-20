@@ -53,7 +53,6 @@ export default {
   layout: 'empty',
   data() {
     return {
-      // loader: {},
       username: '',
       password: '',
     }
@@ -85,8 +84,6 @@ export default {
         this.$router.push('/admin')
       } catch (error) {
         this.$showError('登入失敗')
-        // eslint-disable-next-line no-console
-        console.log(error)
       } finally {
         this.loader.hide()
       }

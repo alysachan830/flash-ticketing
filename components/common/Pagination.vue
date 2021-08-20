@@ -1,12 +1,13 @@
 <template>
   <nav aria-label="Page navigation example">
     <ul class="pagination">
-      <li
-        class="page-item"
-        :class="{ disabled: currentPage === 1 }"
-        @click.prevent="turnPage(currentPage - 1)"
-      >
-        <a class="page-link" href="#" aria-label="Previous">
+      <li class="page-item" :class="{ disabled: currentPage === 1 }">
+        <a
+          class="page-link"
+          href="#"
+          aria-label="Previous"
+          @click.prevent="turnPage(currentPage - 1)"
+        >
           <span class="material-icons font-m"> chevron_left </span>
         </a>
       </li>
@@ -15,16 +16,16 @@
         :key="n"
         class="page-item"
         :class="{ active: n === currentPage }"
-        @click.prevent="turnPage(n)"
       >
-        <a class="page-link" href="#"> {{ n }} </a>
+        <a class="page-link" href="#" @click.prevent="turnPage(n)"> {{ n }} </a>
       </li>
-      <li
-        class="page-item"
-        :class="{ disabled: currentPage === totalPages }"
-        @click.prevent="turnPage(currentPage + 1)"
-      >
-        <a class="page-link" href="#" aria-label="Next">
+      <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+        <a
+          class="page-link"
+          href="#"
+          aria-label="Next"
+          @click.prevent="turnPage(currentPage + 1)"
+        >
           <span class="material-icons font-m"> chevron_right </span>
         </a>
       </li>
