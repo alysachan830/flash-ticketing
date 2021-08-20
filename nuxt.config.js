@@ -57,7 +57,7 @@ export default {
   image: {
     providers: {
       customProvider: {
-        name: 'firebase', // optional value to override provider name
+        name: 'firebase', // optional value to overrider provider name
         // provider: '~/providers/custom', // Path to custom provider
         provider: require.resolve('./providers/firebase'),
         options: {
