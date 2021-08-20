@@ -505,7 +505,6 @@ import {
 } from '@/api/index'
 
 export default {
-  layout: 'dashboard',
   data() {
     return {
       loader: {},
