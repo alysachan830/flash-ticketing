@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul class="bg-light p-8 rounded-top">
-      <li class="d-flex justify-content-between pb-6">
+      <li class="d-md-flex justify-content-between pb-6">
         <div>
           <p class="text-info font-s mb-1">票種</p>
           <p>{{ item.ticketType }}</p>
