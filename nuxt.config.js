@@ -55,18 +55,18 @@ export default {
     '@nuxt/image',
   ],
   image: {
-    providers: {
-      customProvider: {
-        name: 'firebase', // optional value to overrider provider name
-        // provider: '~/providers/custom', // Path to custom provider
-        provider: require.resolve('./providers/firebase'),
-        options: {
-          baseURL:
-            'https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/',
-          // ... provider options
-        },
-      },
-    },
+    // providers: {
+    //   customProvider: {
+    //     name: 'firebase', // optional value to overrider provider name
+    //     // provider: '~/providers/custom', // Path to custom provider
+    //     provider: require.resolve('./providers/firebase'),
+    //     options: {
+    //       baseURL:
+    //         'https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/',
+    //       // ... provider options
+    //     },
+    //   },
+    // },
     domains: [
       'https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/',
     ],
