@@ -10,9 +10,9 @@
         class="swiper-slide position-relative"
       >
         <NuxtLink
+          v-img:bg,1708="event.imageUrl"
           :to="`/event/${event.id}`"
           class="slide-img-bg hover__filter--darken rounded-4"
-          :style="`background-image: url('${event.imageUrl}')`"
         />
         <div class="slide-title-wrap position-absolute">
           <span class="badge font-s bg-secondary text-black mb-4">
@@ -35,10 +35,12 @@ import Swiper, {
   Navigation,
   Pagination,
 } from '@/node_modules/swiper/core'
+import optimizeImg from '@/mixins/optimizeImg.js'
 
 Swiper.use([Autoplay, Navigation, Pagination])
 
 export default {
+  mixins: [optimizeImg],
   props: {
     hotEvents: {
       type: Array,
@@ -81,6 +83,8 @@ export default {
         },
       },
     })
+
+    // this.optimizeImg(this.event.imageUrl, 1708)
   },
 }
 </script>

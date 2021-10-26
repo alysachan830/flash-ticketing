@@ -35,6 +35,7 @@ export default {
     { src: '~plugins/v-calendar.js', ssr: false },
     { src: '~plugins/ckeditor.js', ssr: false },
     { src: '~plugins/myFavourite.js', ssr: false },
+    { src: '~plugins/directives.js', ssr: false },
     { src: '~plugins/sweetAlert.js', ssr: false },
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
