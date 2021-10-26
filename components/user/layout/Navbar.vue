@@ -123,6 +123,7 @@
             :key="item.id"
             to="/checkout/order"
             class="d-flex px-2 border-top py-5"
+            data-bs-dismiss="offcanvas"
           >
             <img
               class="offCanvas-img-size me-12 rounded-2"
@@ -194,6 +195,7 @@
             :key="event.id"
             :to="`/event/${event.id}`"
             class="d-flex px-2 border-top py-5"
+            data-bs-dismiss="offcanvas"
           >
             <img
               class="offCanvas-img-size me-12 rounded-2"
