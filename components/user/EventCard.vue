@@ -4,7 +4,6 @@
       <img
         v-img:img,612="image"
         class="hover__filter--darken h-100 w-100 position-absolute skeleton-bg"
-        alt="event image"
       />
     </div>
     <div class="card-body px-1">
