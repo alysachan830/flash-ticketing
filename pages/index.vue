@@ -98,87 +98,80 @@
       <!-- </client-only> -->
     </div>
     <!-- New events -->
-    <client-only>
-      <div class="mb-23">
-        <!-- New event banner -->
-        <NuxtLink
-          to="/event/-MeDhhevaeV5e8wUDUuS"
-          class="position-relative mb-19"
-        >
-          <span class="d-block">
-            <div class="latest-event-banner bg-img"></div>
-            <div
-              class="
-                position-absolute
-                latest-event-title
-                container
-                text-center text-lg-start
-              "
-            >
-              <h2 class="mb-8 font-2xl text-white">
-                夏日序曲 — 莫扎特的交響樂
-              </h2>
-              <div class="mb-12">
-                <p class="me-3 text-white font-l">
-                  <span class="material-icons align-text-top me-1 font-l me-3">
-                    calendar_today
-                  </span>
-                  2021-08-11 - 2021-08-13
-                </p>
-                <p class="text-white font-l">
-                  <span class="material-icons align-text-top me-1 font-l me-3">
-                    location_on
-                  </span>
-                  香港表演藝術大學三樓演奏廳
-                </p>
-              </div>
-              <NuxtLink
-                to="/event/-MeDhhevaeV5e8wUDUuS"
-                class="btn btn-primary btn-lg px-10"
-                >搶先購票</NuxtLink
-              >
+    <div class="mb-23">
+      <!-- New event banner -->
+      <div class="position-relative mb-19">
+        <span class="d-block">
+          <div class="latest-event-banner bg-img"></div>
+          <div
+            class="
+              position-absolute
+              latest-event-title
+              container
+              text-center text-lg-start
+            "
+          >
+            <h2 class="mb-8 font-2xl text-white">夏日序曲 — 莫扎特的交響樂</h2>
+            <div class="mb-12">
+              <p class="me-3 text-white font-l">
+                <span class="material-icons align-text-top me-1 font-l me-3">
+                  calendar_today
+                </span>
+                2021-08-11 - 2021-08-13
+              </p>
+              <p class="text-white font-l">
+                <span class="material-icons align-text-top me-1 font-l me-3">
+                  location_on
+                </span>
+                香港表演藝術大學三樓演奏廳
+              </p>
             </div>
-          </span>
-        </NuxtLink>
-        <!-- New event title -->
-        <div class="mb-14 container">
-          <h2 class="font-xl mb-4">最新節目</h2>
-          <p>搶先體驗最新節目活動。</p>
-        </div>
-        <!-- New events cards -->
-        <div class="container">
-          <div class="row mb-16">
-            <div
-              v-for="event in newEventsCards"
-              :key="event.id"
-              class="col-lg-3 col-6 mb-10"
-            >
-              <EventCard
-                :id="event.id"
-                :title="event.title"
-                :image="event.imageUrl"
-                :date-time="event.dateTime"
-                :tag="event.tag"
-              />
-            </div>
-          </div>
-          <div class="text-center">
             <NuxtLink
-              to="/events/all"
-              class="
-                btn btn-lg btn-outline-primary
-                px-22
-                py-2
-                w-100 w-lg-auto
-                font-base
-              "
+              to="/event/-MeDhhevaeV5e8wUDUuS"
+              class="btn btn-primary btn-lg px-10"
+              >搶先購票</NuxtLink
             >
-              更多節目
-            </NuxtLink>
           </div>
+        </span>
+      </div>
+      <!-- New event title -->
+      <div class="mb-14 container">
+        <h2 class="font-xl mb-4">最新節目</h2>
+        <p>搶先體驗最新節目活動。</p>
+      </div>
+      <!-- New events cards -->
+      <div class="container">
+        <div class="row mb-16">
+          <div
+            v-for="event in newEventsCards"
+            :key="event.id"
+            class="col-lg-3 col-6 mb-10"
+          >
+            <EventCard
+              :id="event.id"
+              :title="event.title"
+              :image="event.imageUrl"
+              :date-time="event.dateTime"
+              :tag="event.tag"
+            />
+          </div>
+        </div>
+        <div class="text-center">
+          <NuxtLink
+            to="/events/all"
+            class="
+              btn btn-lg btn-outline-primary
+              px-22
+              py-2
+              w-100 w-lg-auto
+              font-base
+            "
+          >
+            更多節目
+          </NuxtLink>
         </div>
       </div>
-    </client-only>
+    </div>
     <!-- Footer banner -->
     <div
       class="
