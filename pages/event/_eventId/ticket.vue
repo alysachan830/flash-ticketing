@@ -6,7 +6,7 @@
           <img
             v-img:img,1044="eventInfo.imageUrl"
             alt="event image"
-            class="rounded-4"
+            class="skeleton-bg rounded-4"
           />
         </div>
         <div class="col-lg-4">

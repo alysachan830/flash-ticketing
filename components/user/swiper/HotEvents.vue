@@ -1,31 +1,34 @@
 <template>
-  <!-- Slider main container -->
-  <div class="swiper-container">
-    <!-- Additional required wrapper -->
-    <div class="swiper-wrapper">
-      <!-- Slides -->
-      <div
-        v-for="event in hotEvents"
-        :key="event.title"
-        class="swiper-slide position-relative"
-      >
-        <NuxtLink
-          v-img:bg,1708="event.imageUrl"
-          :to="`/event/${event.id}`"
-          class="slide-img-bg hover__filter--darken rounded-4"
-        />
-        <div class="slide-title-wrap position-absolute">
-          <span class="badge font-s bg-secondary text-black mb-4">
-            {{ event.category }}
-          </span>
-          <h2 class="font-xl text-white">{{ event.title }}</h2>
+  <div>
+    <!-- Slider main container -->
+    <div class="swiper-container">
+      <!-- Additional required wrapper -->
+      <div class="swiper-wrapper">
+        <!-- Slides -->
+        <div
+          v-for="event in hotEvents"
+          :key="event.title"
+          class="swiper-slide position-relative"
+        >
+          <NuxtLink
+            v-img:bg,1708="event.imageUrl"
+            :to="`/event/${event.id}`"
+            class="slide-img-bg hover__filter--darken rounded-4 skeleton-bg"
+            :style="`background-image: url('${event.imageUrl}')`"
+          />
+          <div class="slide-title-wrap position-absolute">
+            <span class="badge font-s bg-secondary text-black mb-4">
+              {{ event.category }}
+            </span>
+            <h2 class="font-xl text-white">{{ event.title }}</h2>
+          </div>
         </div>
+        >>>>>>> bugfix/skeleton
       </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
     </div>
-    <div class="swiper-pagination"></div>
-
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-button-next"></div>
   </div>
 </template>
 
@@ -91,6 +94,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/node_modules/swiper/swiper-bundle.css';
+@import '@/assets/stylesheets/all.scss';
 
 .slide-img-bg {
   height: 382px;

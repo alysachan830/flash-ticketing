@@ -126,8 +126,13 @@
             data-bs-dismiss="offcanvas"
           >
             <img
+<<<<<<< HEAD
               v-img:img,200="item.product.imageUrl"
               class="offCanvas-img-size me-12 rounded-2"
+=======
+              class="offCanvas-img-size skeleton-bg me-12 rounded-2"
+              :src="item.product.imageUrl"
+>>>>>>> bugfix/skeleton
               alt="cart image"
             />
             <div class="d-flex justify-content-between w-100">
@@ -198,8 +203,13 @@
             data-bs-dismiss="offcanvas"
           >
             <img
+<<<<<<< HEAD
               v-img:img,200="event.imageUrl"
               class="offCanvas-img-size me-12 rounded-2"
+=======
+              class="offCanvas-img-size skeleton-bg me-12 rounded-2"
+              :src="event.imageUrl"
+>>>>>>> bugfix/skeleton
               alt="image of my favourite event"
             />
             <div class="d-flex justify-content-between w-100">

@@ -4,8 +4,13 @@
       <div class="row mb-lg-23 mb-md-18 mb-14 justify-content-between">
         <div class="col-lg-6 mb-10 mb-lg-0">
           <img
+<<<<<<< HEAD
             v-img:img,1044="eventInfo.imageUrl"
             class="rounded-4"
+=======
+            class="skeleton-bg rounded-4"
+            :src="eventInfo.imageUrl"
+>>>>>>> bugfix/skeleton
             alt="event image"
           />
         </div>

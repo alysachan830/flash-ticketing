@@ -3,7 +3,7 @@
     <div class="img-wrap rounded-4 mb-4">
       <img
         v-img:img,612="image"
-        class="hover__filter--darken h-100 w-100 position-absolute"
+        class="hover__filter--darken h-100 w-100 position-absolute skeleton-bg"
         alt="event image"
       />
     </div>
