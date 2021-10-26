@@ -1,28 +1,25 @@
 import Vue from 'vue'
 import TinyURL from 'tinyurl'
 
-Vue.directive('img', (el, binding, vnode) => {
+Vue.directive('img', async (el, binding, vnode) => {
   const vm = vnode.context.$root
   const [type, width] = binding.arg.split(',')
-  TinyURL.shorten(binding.value).then(
-    (res) => {
-      const resultUrl = vm.$cloudinary.image.fetchRemote(res, {
-        crop: 'scale',
-        width: Number(width),
-      })
-      if (type === 'bg') {
-        el.style = `background-image: url('${resultUrl}')`
-      } else {
-        el.src = resultUrl
-      }
-    },
-    // If TinyURL fails, return the original image url
-    () => {
-      if (type === 'bg') {
-        el.style = `background-image: url('${binding.value}')`
-      } else {
-        el.src = binding.value
-      }
-    }
-  )
+
+  const shorten = (url) =>
+    TinyURL.shorten(url)
+      .then((res) => res)
+      .catch(() => url) // return the original url if tinyURL fails
+
+  const url = await shorten(binding.value)
+
+  const resultUrl = vm.$cloudinary.image.fetchRemote(url, {
+    crop: 'scale',
+    width: Number(width),
+  })
+
+  if (type === 'bg') {
+    el.style = `background-image: url('${resultUrl}')`
+  } else {
+    el.src = resultUrl
+  }
 })
