@@ -125,7 +125,7 @@
             class="d-flex px-2 border-top py-5"
           >
             <img
-              class="offCanvas-img-size me-12 rounded-2"
+              class="offCanvas-img-size skeleton-bg me-12 rounded-2"
               :src="item.product.imageUrl"
               alt="cart image"
             />
@@ -196,7 +196,7 @@
             class="d-flex px-2 border-top py-5"
           >
             <img
-              class="offCanvas-img-size me-12 rounded-2"
+              class="offCanvas-img-size skeleton-bg me-12 rounded-2"
               :src="event.imageUrl"
               alt="image of my favourite event"
             />

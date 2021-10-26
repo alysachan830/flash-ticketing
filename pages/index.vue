@@ -50,47 +50,52 @@
     <!-- Body -->
     <div class="container">
       <!-- Hot events -->
-      <client-only>
-        <div class="mb-23">
-          <div class="mb-lg-22 mb-18">
-            <div class="mb-14">
-              <h2 class="font-xl mb-4">熱門節目</h2>
-              <p>時刻緊貼潮流，為您帶來最豐富的節目體驗。</p>
-            </div>
-            <SwiperHotEvents :hot-events="hotEventsSlides" />
+      <!-- <client-only> -->
+      <div class="mb-23">
+        <div class="mb-lg-22 mb-18">
+          <div class="mb-14">
+            <h2 class="font-xl mb-4">熱門節目</h2>
+            <p>時刻緊貼潮流，為您帶來最豐富的節目體驗。</p>
           </div>
-          <!-- Hot events cards -->
-          <div class="row mb-16">
-            <div
-              v-for="event in hotEventsCards"
-              :key="event.id"
-              class="col-lg-3 col-6 mb-lg-10 mb-5"
-            >
-              <EventCard
-                :id="event.id"
-                :title="event.title"
-                :image="event.imageUrl"
-                :date-time="event.dateTime"
-                :tag="event.tag"
-              />
+          <SwiperHotEvents :hot-events="hotEventsSlides" />
+        </div>
+        <!-- Hot events cards -->
+        <div class="row mb-16">
+          <div v-if="!hotEventsCards">
+            <div v-for="n in 4" :key="n" class="col-lg-3 col-6 mb-lg-10 mb-5">
+              <EventCard></EventCard>
             </div>
           </div>
-          <div class="text-center">
-            <NuxtLink
-              to="/events/all"
-              class="
-                btn btn-lg btn-outline-primary
-                px-22
-                py-2
-                w-100 w-lg-auto
-                font-base
-              "
-            >
-              更多節目
-            </NuxtLink>
+          <div
+            v-for="event in hotEventsCards"
+            :key="event.id"
+            class="col-lg-3 col-6 mb-lg-10 mb-5"
+          >
+            <EventCard
+              :id="event.id"
+              :title="event.title"
+              :image="event.imageUrl"
+              :date-time="event.dateTime"
+              :tag="event.tag"
+            />
           </div>
         </div>
-      </client-only>
+        <div class="text-center">
+          <NuxtLink
+            to="/events/all"
+            class="
+              btn btn-lg btn-outline-primary
+              px-22
+              py-2
+              w-100 w-lg-auto
+              font-base
+            "
+          >
+            更多節目
+          </NuxtLink>
+        </div>
+      </div>
+      <!-- </client-only> -->
     </div>
     <!-- New events -->
     <client-only>
@@ -259,10 +264,6 @@ export default {
     },
   },
   mounted() {
-    const loader = this.$loading.show()
-    setTimeout(() => {
-      loader.hide()
-    }, 5000)
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
