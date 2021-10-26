@@ -123,6 +123,7 @@
             :key="item.id"
             to="/checkout/order"
             class="d-flex px-2 border-top py-5"
+            data-bs-dismiss="offcanvas"
           >
             <img
               v-img:img,200="item.product.imageUrl"
@@ -194,6 +195,7 @@
             :key="event.id"
             :to="`/event/${event.id}`"
             class="d-flex px-2 border-top py-5"
+            data-bs-dismiss="offcanvas"
           >
             <img
               v-img:img,200="event.imageUrl"
