@@ -231,7 +231,10 @@
           >
         </div>
       </div>
-      <NuxtLink to="/events/all" class="checkout-btn p-8 text-white text-center"
+      <NuxtLink
+        to="/events/all"
+        class="checkout-btn p-8 text-white text-center"
+        data-bs-dismiss="offcanvas"
         >查看更多節目</NuxtLink
       >
     </div>
