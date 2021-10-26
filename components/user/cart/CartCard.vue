@@ -1,6 +1,10 @@
 <template>
   <div class="d-flex flex-column flex-lg-row card-bg mb-15 rounded-3 border">
-    <img :src="cartItem.product.imageUrl" alt="event image" class="event-img" />
+    <img
+      v-img:img,1041="cartItem.product.imageUrl"
+      alt="event image"
+      class="event-img"
+    />
     <div class="p-12 w-100">
       <h2 class="font-m mb-6">{{ cartItem.product.title }}</h2>
       <table class="table">

@@ -6,20 +6,20 @@
         <div class="row">
           <div class="col-lg-6 col-12">
             <div
+              v-img:bg,1044="eventInfo.imageUrl"
               class="main-image bg-img rounded-4 mb-7"
-              :style="`background-image:url('${eventInfo.imageUrl}')`"
             ></div>
             <div class="row">
               <div class="col-6">
                 <div
+                  v-img:bg,504="eventInfo.imagesUrl[0]"
                   class="sub-image bg-img rounded-4 mb-7"
-                  :style="`background-image:url('${eventInfo.imagesUrl[0]}')`"
                 ></div>
               </div>
               <div class="col-6">
                 <div
+                  v-img:bg,504="eventInfo.imagesUrl[1]"
                   class="sub-image bg-img rounded-4 mb-7"
-                  :style="`background-image:url('${eventInfo.imagesUrl[1]}')`"
                 ></div>
               </div>
             </div>
