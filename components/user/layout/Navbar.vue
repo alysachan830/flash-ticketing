@@ -125,8 +125,8 @@
             class="d-flex px-2 border-top py-5"
           >
             <img
+              v-img:img,200="item.product.imageUrl"
               class="offCanvas-img-size me-12 rounded-2"
-              :src="item.product.imageUrl"
               alt="cart image"
             />
             <div class="d-flex justify-content-between w-100">
@@ -196,8 +196,8 @@
             class="d-flex px-2 border-top py-5"
           >
             <img
+              v-img:img,200="event.imageUrl"
               class="offCanvas-img-size me-12 rounded-2"
-              :src="event.imageUrl"
               alt="image of my favourite event"
             />
             <div class="d-flex justify-content-between w-100">
