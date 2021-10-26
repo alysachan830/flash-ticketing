@@ -52,14 +52,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxt/image',
   ],
-  image: {
-    domains: [
-      'https://storage.googleapis.com/vue-course-api.appspot.com/flashticketing/',
-    ],
-  },
-
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: process.env.API_BASE_URL || 'http://localhost:3000',

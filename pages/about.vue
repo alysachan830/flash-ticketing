@@ -3,11 +3,10 @@
     <div class="container">
       <div class="row mb-21">
         <div class="col-md-6 mb-12 mb-md-0">
-          <nuxt-img
+          <img
             class="rounded-4"
             src="/images/c-yvette-de-wit-NYrVisodQ2M-unsplash.jpg"
             alt="about us"
-            sizes="sm:962px md:672px lg:1040px"
           />
         </div>
         <div class="col-md-5 offset-md-1">
