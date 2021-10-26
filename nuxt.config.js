@@ -37,7 +37,6 @@ export default {
     { src: '~plugins/myFavourite.js', ssr: false },
     { src: '~plugins/sweetAlert.js', ssr: false },
   ],
-
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: false,
 
@@ -52,7 +51,13 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/cloudinary',
   ],
+  cloudinary: {
+    cloudName: process.env.CLOUDNAME,
+    apiKey: process.env.API_KEY,
+    apiSecret: process.env.API_SECRET,
+  },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: process.env.API_BASE_URL || 'http://localhost:3000',
