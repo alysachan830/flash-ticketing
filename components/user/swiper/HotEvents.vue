@@ -12,7 +12,7 @@
         <NuxtLink
           :to="`/event/${event.id}`"
           class="slide-img-bg hover__filter--darken rounded-4"
-          :style="event.imageUrl"
+          :style="`background-image: url('${event.imageUrl}')`"
         />
         <div class="slide-title-wrap position-absolute">
           <span class="badge font-s bg-secondary text-black mb-4">
