@@ -166,6 +166,7 @@
       <NuxtLink
         to="/checkout/order"
         class="checkout-btn p-8 text-white text-center"
+        data-bs-dismiss="offcanvas"
         >結帳去</NuxtLink
       >
     </div>
