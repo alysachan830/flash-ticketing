@@ -11,9 +11,7 @@
           align-items-center
           banner-filter
         "
-        :style="
-          resizeImg('/images/brandon-erlinger-ford-wI2Hafqr_f4-unsplash.jpg')
-        "
+        style="/images/brandon-erlinger-ford-wI2Hafqr_f4-unsplash.jpg"
       ></div>
       <div
         class="position-absolute top-banner-title text-white text-center w-100"
@@ -106,9 +104,7 @@
           <span class="d-block">
             <div
               class="latest-event-banner bg-img"
-              :style="
-                resizeImg('/images/arindam-mahanta-VEOk8qUl9DU-unsplash.jpg')
-              "
+              style="/images/arindam-mahanta-VEOk8qUl9DU-unsplash.jpg"
             ></div>
             <div
               class="
@@ -191,7 +187,7 @@
         align-items-center
         position-relative
       "
-      :style="resizeImg('/images/alexander-popov-endMHm-S3d8-unsplash.jpg')"
+      style="/images/alexander-popov-endMHm-S3d8-unsplash.jpg"
     >
       <div class="row justify-content-center">
         <h3
@@ -276,12 +272,6 @@ export default {
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
     }
-  },
-  methods: {
-    resizeImg(imgUrl) {
-      const nuxtImgUrl = this.$img(imgUrl, { width: 1920 })
-      return `background-image:url('${nuxtImgUrl}')`
-    },
   },
 }
 </script>

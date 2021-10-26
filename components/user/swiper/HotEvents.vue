@@ -12,7 +12,7 @@
         <NuxtLink
           :to="`/event/${event.id}`"
           class="slide-img-bg hover__filter--darken rounded-4"
-          :style="resizeImg(event.imageUrl)"
+          :style="event.imageUrl"
         />
         <div class="slide-title-wrap position-absolute">
           <span class="badge font-s bg-secondary text-black mb-4">
@@ -81,12 +81,6 @@ export default {
         },
       },
     })
-  },
-  methods: {
-    resizeImg(imgUrl) {
-      const nuxtImgUrl = this.$img(imgUrl, { width: 1708 })
-      return `background-image:url('${nuxtImgUrl}')`
-    },
   },
 }
 </script>

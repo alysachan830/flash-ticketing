@@ -1,11 +1,10 @@
 <template>
   <NuxtLink :to="`/event/${id}`" class="card h-100 border-0 pb-22">
     <div class="img-wrap rounded-4 mb-4">
-      <nuxt-img
+      <img
         :src="image"
         class="hover__filter--darken h-100 w-100 position-absolute"
         alt="event image"
-        sizes="sm:392px md:672px lg:612px"
       />
     </div>
     <div class="card-body px-1">
