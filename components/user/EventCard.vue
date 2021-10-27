@@ -1,11 +1,9 @@
 <template>
   <NuxtLink :to="`/event/${id}`" class="card h-100 border-0 pb-22">
     <div class="img-wrap rounded-4 mb-4">
-      <nuxt-img
-        :src="image"
-        class="hover__filter--darken h-100 w-100 position-absolute"
-        alt="event image"
-        sizes="sm:392px md:672px lg:612px"
+      <img
+        v-img:img,612="image"
+        class="hover__filter--darken h-100 w-100 position-absolute skeleton-bg"
       />
     </div>
     <div class="card-body px-1">
@@ -41,7 +39,10 @@
 </template>
 
 <script>
+// import optimizeImg from '@/mixins/optimizeImg.js'
+
 export default {
+  // mixins: [optimizeImg],
   props: {
     id: {
       type: String,
@@ -98,6 +99,8 @@ export default {
     } else {
       this.dateTimeTemplate = `${this.dateTime.start} - <br>${this.dateTime.end}`
     }
+
+    // this.optimizeImg(this.image, 612)
   },
   methods: {
     addFavourite(id) {

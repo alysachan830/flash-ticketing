@@ -5,7 +5,6 @@
         <NuxtLink
           to="/event/-MdYsuv7hjrkbkEBJx6c"
           class="filter--dark top-banner bg-img"
-          :style="resizeImg('/images/c-robynne-hu-HOrhCnQsxnQ-unsplash.jpg')"
         />
         <div class="position-absolute top-banner-title text-white text-center">
           <h2 class="mb-8 font-2xl">機械人與數碼龐克</h2>
@@ -195,10 +194,6 @@ export default {
     window.removeEventListener('scroll', this.advancedSearchStyle)
   },
   methods: {
-    resizeImg(imgUrl) {
-      const nuxtImgUrl = this.$img(imgUrl, { width: 1920 })
-      return `background-image:url('${nuxtImgUrl}')`
-    },
     advancedSearchStyle() {
       if (window.scrollY > 388) {
         this.$refs.advancedSearch.style.position = 'fixed'
@@ -265,6 +260,7 @@ export default {
 
 .top-banner {
   height: 388px;
+  background-image: url('/images/c-robynne-hu-HOrhCnQsxnQ-unsplash.jpg');
 }
 
 .top-banner-title {

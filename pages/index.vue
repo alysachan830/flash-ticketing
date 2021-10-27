@@ -11,9 +11,6 @@
           align-items-center
           banner-filter
         "
-        :style="
-          resizeImg('/images/brandon-erlinger-ford-wI2Hafqr_f4-unsplash.jpg')
-        "
       ></div>
       <div
         class="position-absolute top-banner-title text-white text-center w-100"
@@ -53,135 +50,128 @@
     <!-- Body -->
     <div class="container">
       <!-- Hot events -->
-      <client-only>
-        <div class="mb-23">
-          <div class="mb-lg-22 mb-18">
-            <div class="mb-14">
-              <h2 class="font-xl mb-4">熱門節目</h2>
-              <p>時刻緊貼潮流，為您帶來最豐富的節目體驗。</p>
-            </div>
-            <SwiperHotEvents :hot-events="hotEventsSlides" />
-          </div>
-          <!-- Hot events cards -->
-          <div class="row mb-16">
-            <div
-              v-for="event in hotEventsCards"
-              :key="event.id"
-              class="col-lg-3 col-6 mb-lg-10 mb-5"
-            >
-              <EventCard
-                :id="event.id"
-                :title="event.title"
-                :image="event.imageUrl"
-                :date-time="event.dateTime"
-                :tag="event.tag"
-              />
-            </div>
-          </div>
-          <div class="text-center">
-            <NuxtLink
-              to="/events/all"
-              class="
-                btn btn-lg btn-outline-primary
-                px-22
-                py-2
-                w-100 w-lg-auto
-                font-base
-              "
-            >
-              更多節目
-            </NuxtLink>
-          </div>
-        </div>
-      </client-only>
-    </div>
-    <!-- New events -->
-    <client-only>
+      <!-- <client-only> -->
       <div class="mb-23">
-        <!-- New event banner -->
-        <NuxtLink
-          to="/event/-MeDhhevaeV5e8wUDUuS"
-          class="position-relative mb-19"
-        >
-          <span class="d-block">
-            <div
-              class="latest-event-banner bg-img"
-              :style="
-                resizeImg('/images/arindam-mahanta-VEOk8qUl9DU-unsplash.jpg')
-              "
-            ></div>
-            <div
-              class="
-                position-absolute
-                latest-event-title
-                container
-                text-center text-lg-start
-              "
-            >
-              <h2 class="mb-8 font-2xl text-white">
-                夏日序曲 — 莫扎特的交響樂
-              </h2>
-              <div class="mb-12">
-                <p class="me-3 text-white font-l">
-                  <span class="material-icons align-text-top me-1 font-l me-3">
-                    calendar_today
-                  </span>
-                  2021-08-11 - 2021-08-13
-                </p>
-                <p class="text-white font-l">
-                  <span class="material-icons align-text-top me-1 font-l me-3">
-                    location_on
-                  </span>
-                  香港表演藝術大學三樓演奏廳
-                </p>
-              </div>
-              <NuxtLink
-                to="/event/-MeDhhevaeV5e8wUDUuS"
-                class="btn btn-primary btn-lg px-10"
-                >搶先購票</NuxtLink
-              >
-            </div>
-          </span>
-        </NuxtLink>
-        <!-- New event title -->
-        <div class="mb-14 container">
-          <h2 class="font-xl mb-4">最新節目</h2>
-          <p>搶先體驗最新節目活動。</p>
+        <div class="mb-lg-22 mb-18">
+          <div class="mb-14">
+            <h2 class="font-xl mb-4">熱門節目</h2>
+            <p>時刻緊貼潮流，為您帶來最豐富的節目體驗。</p>
+          </div>
+          <SwiperHotEvents :hot-events="hotEventsSlides" />
         </div>
-        <!-- New events cards -->
-        <div class="container">
-          <div class="row mb-16">
-            <div
-              v-for="event in newEventsCards"
-              :key="event.id"
-              class="col-lg-3 col-6 mb-10"
-            >
-              <EventCard
-                :id="event.id"
-                :title="event.title"
-                :image="event.imageUrl"
-                :date-time="event.dateTime"
-                :tag="event.tag"
-              />
+        <!-- Hot events cards -->
+        <div class="row mb-16">
+          <div v-if="!hotEventsCards">
+            <div v-for="n in 4" :key="n" class="col-lg-3 col-6 mb-lg-10 mb-5">
+              <EventCard></EventCard>
             </div>
           </div>
-          <div class="text-center">
-            <NuxtLink
-              to="/events/all"
-              class="
-                btn btn-lg btn-outline-primary
-                px-22
-                py-2
-                w-100 w-lg-auto
-                font-base
-              "
-            >
-              更多節目
-            </NuxtLink>
+          <div
+            v-for="event in hotEventsCards"
+            :key="event.id"
+            class="col-lg-3 col-6 mb-lg-10 mb-5"
+          >
+            <EventCard
+              :id="event.id"
+              :title="event.title"
+              :image="event.imageUrl"
+              :date-time="event.dateTime"
+              :tag="event.tag"
+            />
           </div>
+        </div>
+        <div class="text-center">
+          <NuxtLink
+            to="/events/all"
+            class="
+              btn btn-lg btn-outline-primary
+              px-22
+              py-2
+              w-100 w-lg-auto
+              font-base
+            "
+          >
+            更多節目
+          </NuxtLink>
         </div>
       </div>
-    </client-only>
+      <!-- </client-only> -->
+    </div>
+    <!-- New events -->
+    <div class="mb-23">
+      <!-- New event banner -->
+      <div class="position-relative mb-19">
+        <span class="d-block">
+          <div class="latest-event-banner bg-img"></div>
+          <div
+            class="
+              position-absolute
+              latest-event-title
+              container
+              text-center text-lg-start
+            "
+          >
+            <h2 class="mb-8 font-2xl text-white">夏日序曲 — 莫扎特的交響樂</h2>
+            <div class="mb-12">
+              <p class="me-3 text-white font-l">
+                <span class="material-icons align-text-top me-1 font-l me-3">
+                  calendar_today
+                </span>
+                2021-08-11 - 2021-08-13
+              </p>
+              <p class="text-white font-l">
+                <span class="material-icons align-text-top me-1 font-l me-3">
+                  location_on
+                </span>
+                香港表演藝術大學三樓演奏廳
+              </p>
+            </div>
+            <NuxtLink
+              to="/event/-MeDhhevaeV5e8wUDUuS"
+              class="btn btn-primary btn-lg px-10"
+              >搶先購票</NuxtLink
+            >
+          </div>
+        </span>
+      </div>
+      <!-- New event title -->
+      <div class="mb-14 container">
+        <h2 class="font-xl mb-4">最新節目</h2>
+        <p>搶先體驗最新節目活動。</p>
+      </div>
+      <!-- New events cards -->
+      <div class="container">
+        <div class="row mb-16">
+          <div
+            v-for="event in newEventsCards"
+            :key="event.id"
+            class="col-lg-3 col-6 mb-10"
+          >
+            <EventCard
+              :id="event.id"
+              :title="event.title"
+              :image="event.imageUrl"
+              :date-time="event.dateTime"
+              :tag="event.tag"
+            />
+          </div>
+        </div>
+        <div class="text-center">
+          <NuxtLink
+            to="/events/all"
+            class="
+              btn btn-lg btn-outline-primary
+              px-22
+              py-2
+              w-100 w-lg-auto
+              font-base
+            "
+          >
+            更多節目
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
     <!-- Footer banner -->
     <div
       class="
@@ -191,7 +181,6 @@
         align-items-center
         position-relative
       "
-      :style="resizeImg('/images/alexander-popov-endMHm-S3d8-unsplash.jpg')"
     >
       <div class="row justify-content-center">
         <h3
@@ -268,20 +257,10 @@ export default {
     },
   },
   mounted() {
-    const loader = this.$loading.show()
-    setTimeout(() => {
-      loader.hide()
-    }, 5000)
     // Error handling
     if (this.errorMsg) {
       this.$showError('載入資料失敗')
     }
-  },
-  methods: {
-    resizeImg(imgUrl) {
-      const nuxtImgUrl = this.$img(imgUrl, { width: 1920 })
-      return `background-image:url('${nuxtImgUrl}')`
-    },
   },
 }
 </script>
@@ -291,6 +270,7 @@ export default {
 
 .top-banner {
   height: 388px;
+  background-image: url('/images/brandon-erlinger-ford-wI2Hafqr_f4-unsplash.jpg');
 }
 
 .top-banner-title {
@@ -300,6 +280,7 @@ export default {
 }
 
 .latest-event-banner {
+  background-image: url('/images/arindam-mahanta-VEOk8qUl9DU-unsplash.jpg');
   background-position: bottom;
   background-attachment: fixed;
   height: 720px;
@@ -313,9 +294,8 @@ export default {
 }
 
 .footer-banner {
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background: url('/images/alexander-popov-endMHm-S3d8-unsplash.jpg')
+    center/cover no-repeat;
   height: 520px;
 }
 
