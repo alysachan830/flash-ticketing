@@ -1,24 +1,22 @@
 <template>
   <div>
     <!-- Event cards -->
-    <client-only>
-      <div class="row mb-19">
-        <div
-          v-for="event in filterList"
-          :key="event.id"
-          class="col-lg-3 col-md-4 col-6 mb-lg-10 mb-1"
-        >
-          <EventCard
-            :id="event.id"
-            :title="event.title"
-            :image="event.imageUrl"
-            :date-time="event.dateTime"
-            :tag="event.tag"
-          />
-        </div>
-        <div v-if="filterList.length === 0">沒有符合搜尋的結果</div>
+    <div class="row mb-19">
+      <div
+        v-for="event in filterList"
+        :key="event.id"
+        class="col-lg-3 col-md-4 col-6 mb-lg-10 mb-1"
+      >
+        <EventCard
+          :id="event.id"
+          :title="event.title"
+          :image="event.imageUrl"
+          :date-time="event.dateTime"
+          :tag="event.tag"
+        />
       </div>
-    </client-only>
+      <div v-if="filterList.length === 0">沒有符合搜尋的結果</div>
+    </div>
     <!-- Pagination -->
     <div class="d-flex justify-content-center mb-19">
       <Pagination :total-pages="Math.ceil(totalEvents / 12)" />

@@ -40,10 +40,8 @@
               </a>
               <a
                 class="d-lg-none"
-                href="#"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasExample"
                 aria-controls="offcanvasExample"
+                @click.prevent="showMenu"
               >
                 <span class="material-icons text-white align-middle">
                   menu
@@ -55,9 +53,10 @@
       </div>
     </nav>
 
-    <!-- Offcanvas -->
+    <!-- Menu's offcanvas -->
     <div
-      id="offcanvasExample"
+      id="menuOffcanvas"
+      ref="menuOffcanvas"
       class="offcanvas offcanvas-start"
       tabindex="-1"
       aria-labelledby="offcanvasExampleLabel"
@@ -83,14 +82,22 @@
       </div>
       <div class="offcanvas-body">
         <div>
-          <!-- Nuxt links -->
-          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/events/all"
+          <NuxtLink
+            class="font-m py-5 text-nowrap me-8"
+            to="/events/all"
+            data-bs-dismiss="offcanvas"
             >所有節目</NuxtLink
           >
-          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/checkout/order"
+          <NuxtLink
+            class="font-m py-5 text-nowrap me-8"
+            to="/checkout/order"
+            data-bs-dismiss="offcanvas"
             >結帳付款</NuxtLink
           >
-          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/about"
+          <NuxtLink
+            class="font-m py-5 text-nowrap me-8"
+            to="/about"
+            data-bs-dismiss="offcanvas"
             >關於我們</NuxtLink
           >
         </div>
@@ -123,12 +130,12 @@
             :key="item.id"
             to="/checkout/order"
             class="d-flex px-2 border-top py-5"
+            data-bs-dismiss="offcanvas"
           >
-            <nuxt-img
-              class="offCanvas-img-size me-12 rounded-2"
-              :src="item.product.imageUrl"
+            <img
+              v-img:img,200="item.product.imageUrl"
+              class="offCanvas-img-size skeleton-bg me-12 rounded-2"
               alt="cart image"
-              width="200"
             />
             <div class="d-flex justify-content-between w-100">
               <div>
@@ -166,6 +173,7 @@
       <NuxtLink
         to="/checkout/order"
         class="checkout-btn p-8 text-white text-center"
+        data-bs-dismiss="offcanvas"
         >結帳去</NuxtLink
       >
     </div>
@@ -194,12 +202,12 @@
             :key="event.id"
             :to="`/event/${event.id}`"
             class="d-flex px-2 border-top py-5"
+            data-bs-dismiss="offcanvas"
           >
-            <nuxt-img
-              class="offCanvas-img-size me-12 rounded-2"
-              :src="event.imageUrl"
+            <img
+              v-img:img,200="event.imageUrl"
+              class="offCanvas-img-size skeleton-bg me-12 rounded-2"
               alt="image of my favourite event"
-              width="200"
             />
             <div class="d-flex justify-content-between w-100">
               <div>
@@ -232,7 +240,10 @@
           >
         </div>
       </div>
-      <NuxtLink to="/events/all" class="checkout-btn p-8 text-white text-center"
+      <NuxtLink
+        to="/events/all"
+        class="checkout-btn p-8 text-white text-center"
+        data-bs-dismiss="offcanvas"
         >查看更多節目</NuxtLink
       >
     </div>
@@ -253,6 +264,7 @@ export default {
     return {
       bsCartOffcanvas: {},
       bsFavouriteOffcanvas: {},
+      bsMenuOffcanvas: {},
       favourites: [],
       carts: [],
       favouriteLoadingMsg: '載入我的收藏中...',
@@ -277,6 +289,7 @@ export default {
     })
   },
   mounted() {
+    this.bsMenuOffcanvas = new bootstrap.Offcanvas(this.$refs.menuOffcanvas)
     this.bsCartOffcanvas = new bootstrap.Offcanvas(this.$refs.cartOffcanvas)
     this.bsFavouriteOffcanvas = new bootstrap.Offcanvas(
       this.$refs.favouriteOffcanvas
@@ -291,6 +304,9 @@ export default {
     showFavourite() {
       this.bsFavouriteOffcanvas.show()
       this.getMyFavourite()
+    },
+    showMenu() {
+      this.bsMenuOffcanvas.show()
     },
     async getCart() {
       try {
