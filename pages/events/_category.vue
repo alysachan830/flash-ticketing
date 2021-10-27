@@ -1,7 +1,6 @@
 <template>
   <div>
     <!-- Event cards -->
-    <!-- <client-only> -->
     <div class="row mb-19">
       <div
         v-for="event in filterList"
@@ -18,7 +17,6 @@
       </div>
       <div v-if="filterList.length === 0">沒有符合搜尋的結果</div>
     </div>
-    <!-- </client-only> -->
     <!-- Pagination -->
     <div class="d-flex justify-content-center mb-19">
       <Pagination :total-pages="Math.ceil(totalEvents / 12)" />
