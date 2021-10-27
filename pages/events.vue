@@ -63,7 +63,7 @@
           <!-- Collapse body -->
           <div id="advancedSearch" class="collapse mt-4 pb-6">
             <div class="row">
-              <div class="col-lg-4 col-md-5 col-4">
+              <div class="col-md-4 mb-2 mb-md-0">
                 <select v-model="searchPrice" class="form-select">
                   <option value="all">全部</option>
                   <option value="free">免費</option>
@@ -72,20 +72,27 @@
                   <option value="500up">$500以上</option>
                 </select>
               </div>
-              <div class="col-lg-4 col-md-5 col-4">
+              <div class="col-md-4 mb-10 mb-md-0">
                 <select v-model="searchTag" class="form-select">
                   <option value="all">全部</option>
                   <option value="hottest">最熱門節目</option>
                   <option value="newest">最新節目</option>
                 </select>
               </div>
-              <div class="col-md-2 col-4 offset-lg-2">
+              <div class="d-flex col-md-4 mb-2">
                 <button
                   type="button"
-                  class="btn btn-primary w-100"
+                  class="btn btn-primary w-100 me-2"
                   @click="filterResult"
                 >
                   搜尋
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-primary w-100"
+                  @click="clearSearch"
+                >
+                  清除搜尋
                 </button>
               </div>
             </div>
@@ -248,6 +255,12 @@ export default {
           .filter(checkPriceType)
         return (this.filterList = result)
       }
+    },
+    clearSearch() {
+      this.filterList = this.allEvents
+      this.cacheFilterList = null
+      this.searchPrice = 'all'
+      this.searchTag = 'all'
     },
   },
 }
