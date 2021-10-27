@@ -217,6 +217,7 @@ export default {
     filterResult() {
       // Clear cacheFilterList
       this.cacheFilterList = null
+      this.searchKeyword = ''
 
       const checkPriceType = (event) => {
         if (typeof event.ticketPrice !== 'number') {
@@ -259,6 +260,7 @@ export default {
     clearSearch() {
       this.filterList = this.allEvents
       this.cacheFilterList = null
+      this.searchKeyword = ''
       this.searchPrice = 'all'
       this.searchTag = 'all'
     },
