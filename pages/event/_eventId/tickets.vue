@@ -364,7 +364,7 @@ export default {
 
       this.inputDateTime = `${this.allTicketInfoFormat[0].date} ${this.allTicketInfoFormat[0].startTime}-${this.allTicketInfoFormat[0].endTime}`
       // Set default inputSeat
-      if (typeof this.ticketPrice === 'object') {
+      if (typeof this.eventInfo.ticketPrice === 'object') {
         this.inputSeat = 'A區'
       } else {
         this.inputSeat = ''
