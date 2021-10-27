@@ -23,7 +23,6 @@
             <h2 class="font-xl text-white">{{ event.title }}</h2>
           </div>
         </div>
-        >>>>>>> bugfix/skeleton
       </div>
       <div class="swiper-pagination"></div>
       <div class="swiper-button-prev"></div>
