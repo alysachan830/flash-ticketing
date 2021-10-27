@@ -140,11 +140,13 @@
 
       <div class="row mb-20">
         <div
-          v-for="(item, i) in ticketInfoFormat"
-          :key="i"
+          v-for="item in ticketInfoFormat"
+          :key="item.id"
           class="ticket rounded-3 col-6 col-md-4 col-lg-3 mb-6"
         >
-          <TicketCard :item="item" />
+          <keep-alive>
+            <TicketCard :item="item" />
+          </keep-alive>
         </div>
       </div>
       <!-- Add to cart -->
@@ -329,6 +331,9 @@ export default {
         alert('請選擇時段')
         return
       }
+      this.tempCart = {}
+      this.$bus.$emit('clearInputQuantity')
+
       const searchdateTime = this.inputDateTime.split(' ')
       const searchDate = searchdateTime[0]
       const searchStart = searchdateTime[1].split('-')[0]
@@ -354,9 +359,12 @@ export default {
       this.$nextTick().then(() => (this.ticketInfoFormat = searchResult))
     },
     clearSearch() {
+      this.tempCart = {}
+      this.$bus.$emit('clearInputQuantity')
+
       this.inputDateTime = `${this.allTicketInfoFormat[0].date} ${this.allTicketInfoFormat[0].startTime}-${this.allTicketInfoFormat[0].endTime}`
       // Set default inputSeat
-      if (typeof this.ticketPrice === 'object') {
+      if (typeof this.eventInfo.ticketPrice === 'object') {
         this.inputSeat = 'A區'
       } else {
         this.inputSeat = ''
