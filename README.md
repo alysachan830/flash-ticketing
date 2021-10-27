@@ -6,7 +6,7 @@ An online ticketing platform for art and cultural events.
 
 ## 🔗 URL
 
-[Flash Ticketing](http://flash-ticketing.com/)
+[Flash Ticketing](https://flash-ticketing.com/)
 
 ## 🔎 Background
 
