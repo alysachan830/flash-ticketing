@@ -40,10 +40,8 @@
               </a>
               <a
                 class="d-lg-none"
-                href="#"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasExample"
                 aria-controls="offcanvasExample"
+                @click.prevent="showMenu"
               >
                 <span class="material-icons text-white align-middle">
                   menu
@@ -55,9 +53,10 @@
       </div>
     </nav>
 
-    <!-- Offcanvas -->
+    <!-- Menu's offcanvas -->
     <div
-      id="offcanvasExample"
+      id="menuOffcanvas"
+      ref="menuOffcanvas"
       class="offcanvas offcanvas-start"
       tabindex="-1"
       aria-labelledby="offcanvasExampleLabel"
@@ -83,14 +82,22 @@
       </div>
       <div class="offcanvas-body">
         <div>
-          <!-- Nuxt links -->
-          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/events/all"
+          <NuxtLink
+            class="font-m py-5 text-nowrap me-8"
+            to="/events/all"
+            data-bs-dismiss="offcanvas"
             >所有節目</NuxtLink
           >
-          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/checkout/order"
+          <NuxtLink
+            class="font-m py-5 text-nowrap me-8"
+            to="/checkout/order"
+            data-bs-dismiss="offcanvas"
             >結帳付款</NuxtLink
           >
-          <NuxtLink class="font-m py-5 text-nowrap me-8" to="/about"
+          <NuxtLink
+            class="font-m py-5 text-nowrap me-8"
+            to="/about"
+            data-bs-dismiss="offcanvas"
             >關於我們</NuxtLink
           >
         </div>
@@ -257,6 +264,7 @@ export default {
     return {
       bsCartOffcanvas: {},
       bsFavouriteOffcanvas: {},
+      bsMenuOffcanvas: {},
       favourites: [],
       carts: [],
       favouriteLoadingMsg: '載入我的收藏中...',
@@ -281,6 +289,7 @@ export default {
     })
   },
   mounted() {
+    this.bsMenuOffcanvas = new bootstrap.Offcanvas(this.$refs.menuOffcanvas)
     this.bsCartOffcanvas = new bootstrap.Offcanvas(this.$refs.cartOffcanvas)
     this.bsFavouriteOffcanvas = new bootstrap.Offcanvas(
       this.$refs.favouriteOffcanvas
@@ -295,6 +304,9 @@ export default {
     showFavourite() {
       this.bsFavouriteOffcanvas.show()
       this.getMyFavourite()
+    },
+    showMenu() {
+      this.bsMenuOffcanvas.show()
     },
     async getCart() {
       try {
