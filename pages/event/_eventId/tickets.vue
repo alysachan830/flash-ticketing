@@ -144,9 +144,7 @@
           :key="item.id"
           class="ticket rounded-3 col-6 col-md-4 col-lg-3 mb-6"
         >
-          <keep-alive>
-            <TicketCard :item="item" />
-          </keep-alive>
+          <TicketCard :item="item" />
         </div>
       </div>
       <!-- Add to cart -->
