@@ -37,12 +37,10 @@ import Swiper, {
   Navigation,
   Pagination,
 } from '@/node_modules/swiper/core'
-import optimizeImg from '@/mixins/optimizeImg.js'
 
 Swiper.use([Autoplay, Navigation, Pagination])
 
 export default {
-  mixins: [optimizeImg],
   props: {
     hotEvents: {
       type: Array,
@@ -85,8 +83,6 @@ export default {
         },
       },
     })
-
-    // this.optimizeImg(this.event.imageUrl, 1708)
   },
 }
 </script>
