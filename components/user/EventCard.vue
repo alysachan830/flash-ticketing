@@ -39,10 +39,7 @@
 </template>
 
 <script>
-// import optimizeImg from '@/mixins/optimizeImg.js'
-
 export default {
-  // mixins: [optimizeImg],
   props: {
     id: {
       type: String,
